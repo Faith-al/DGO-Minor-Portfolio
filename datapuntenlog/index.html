@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>Datapuntenlog Minor DGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: bosgroene wereld. Bovenaan de grote tweeminutenknop, daaronder schildpad-doeken per leerdoel en het pad van 20 weken.
+   Bewust één thema, zodat de kleuren altijd knallen. Mobiel: één kolom, tabs onderin. */
+:root{
+  --bg:#1E4D2B; --surface:#153A20; --surface-2:#24593A; --ink:#F7F3E3; --ink-2:#D2E3C8; --ink-3:#9DBF95;
+  --line:#3C6E4A; --accent:#F5C542; --accent-ink:#1C2A0E; --accent-soft:#2E5E3A;
+  --c1:#FFD23F; --c2:#3EE6B0; --c3:#FF7EB6; --c4:#FF9D5C;
+  --red:#FF8A8A; --amber:#FFC24D; --green:#3EE6B0;
+  --red-soft:#6A2A2E; --amber-soft:#5A4A14; --green-soft:#0F5A45;
+  --paper:#F7F3E3; --night:#0F2615; --coral:#E8743B;
+  --f-display:'Bricolage Grotesque','Arial Black',system-ui,sans-serif;
+  --f-body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'DM Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 120px;-webkit-text-size-adjust:100%}
+.wrap{max-width:1080px;margin-inline:auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button,input,textarea,select{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;font-stretch:100%}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+/* titelblok */
+.tb{display:grid;grid-template-columns:2.2fr 1fr 1fr;border:1px solid var(--ink);margin-top:16px;background:var(--surface)}
+.tb>div{padding:10px 14px;border-left:1px solid var(--ink);min-width:0}
+.tb>div:first-child{border-left:0}
+.tb h1{font-size:clamp(28px,6vw,46px);line-height:.95;font-weight:800;font-stretch:112%;letter-spacing:-.01em}
+.tb .v{font-family:var(--f-display);font-weight:700;font-size:20px;font-stretch:100%;line-height:1.1;margin-top:4px}
+.tb .v small{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--ink-3)}
+@media (max-width:620px){.tb{grid-template-columns:1fr 1fr}.tb>div:first-child{grid-column:1/-1;border-bottom:1px solid var(--ink)}.tb>div:nth-child(2){border-left:0}}
+
+nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-top:12px;overflow-x:auto}
+nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font-family:var(--f-display);font-weight:700;font-size:15px;font-stretch:100%;color:var(--ink-2);white-space:nowrap}
+nav.tabs button[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button:hover{color:var(--ink)}
+@media (max-width:719px){
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;background:var(--surface);border-top:1px solid var(--line);border-bottom:0;padding:0 8px calc(env(safe-area-inset-bottom,0px) + 0px);justify-content:space-between}
+  nav.tabs button{flex:1;padding:12px 4px;font-size:13px;border-bottom:0;border-top:3px solid transparent;text-align:center}
+  nav.tabs button[aria-current="page"]{border-top-color:var(--accent)}
+}
+
+main{padding-block:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--surface)}
+.stat{padding:12px 14px;border-left:1px solid var(--line);min-width:0}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--f-display);font-size:30px;line-height:1;font-weight:800;font-stretch:108%;margin-top:6px;font-variant-numeric:tabular-nums}
+.stat b small{font-size:14px;font-weight:600;color:var(--ink-3);font-stretch:100%}
+.stat span.sub{display:block;font-size:12px;color:var(--ink-2);margin-top:4px}
+@media (max-width:620px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:28px;min-width:0}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.sec-h h2{font-size:21px;font-weight:800;font-stretch:104%}
+.sec-h .lbl{white-space:nowrap}
+.link{background:none;border:0;padding:0;color:var(--accent);font-weight:600;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+
+.card{background:var(--surface);border:1px solid var(--line);padding:14px 16px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.plan-item{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:start}
+.plan-item p{margin:6px 0 0;font-weight:500}
+.plan-item .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.tk{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.tk::before{content:"";width:9px;height:9px;background:currentColor;flex:none}
+.tk.Project::before{border-radius:0}
+.tk.Leerplek::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.tk.KV::before{border-radius:50%}
+.tk.Overig::before{width:9px;height:2px;border-radius:0}
+.stake{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:11px;color:var(--ink-2)}
+.stake i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink-2);display:inline-block}
+.stake.medium i{background:linear-gradient(90deg,var(--ink-2) 50%,transparent 50%)}
+.stake.high i{background:var(--ink-2)}
+.btn{background:var(--surface);border:1px solid var(--ink);padding:8px 14px;font-weight:600;font-size:14px;border-radius:2px;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.ghost{border-color:var(--line)}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.gap-row{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.gap-row:first-child{border-top:0}
+.gap-row .d{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);min-width:74px}
+.gap-row .t{font-size:14px;min-width:0;overflow-wrap:anywhere}
+.empty{color:var(--ink-2);font-size:14px;padding:6px 0}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--f-mono);font-size:12px;padding:2px 7px;border:1px solid currentColor;border-radius:2px;white-space:nowrap;font-weight:500}
+.tag.c1{color:var(--c1)}.tag.c2{color:var(--c2)}.tag.c3{color:var(--c3)}.tag.c4{color:var(--c4)}
+.tag.pd{color:var(--ink-2);border-color:var(--line)}
+.sig{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;padding:2px 8px;border-radius:99px;white-space:nowrap;font-weight:500}
+.sig.rood{background:var(--red-soft);color:var(--red)}
+.sig.oranje{background:var(--amber-soft);color:var(--amber)}
+.sig.groen{background:var(--green-soft);color:var(--green)}
+
+/* rozet */
+.rose-wrap{background:var(--surface);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;align-items:center}
+.rose{width:100%;max-width:440px;height:auto;display:block}
+.rose text{font-family:var(--f-mono)}
+.petal{cursor:pointer}
+.petal:focus-visible{outline:none}
+.petal:focus-visible .hit,.petal:hover .hit{stroke:var(--ink);stroke-width:1.5}
+.rose.intro .petal{animation:grow .7s cubic-bezier(.2,.8,.2,1) both;transform-box:view-box;transform-origin:center}
+@keyframes grow{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.rose.intro .petal{animation:none}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2);justify-content:center;padding:6px 6px 2px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.legend .sw1{background:var(--ink-2)}.legend .sw2{background:var(--ink-2);opacity:.3}
+
+/* weekstrip */
+.weeks{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:8px}
+.wk{aspect-ratio:1;border:1px solid var(--line);position:relative;background:var(--surface)}
+.wk.f1{background:var(--accent-soft);border-color:var(--accent)}
+.wk.f2{background:var(--accent);border-color:var(--accent)}
+.wk.now{outline:2px solid var(--ink);outline-offset:1px}
+.wk.future{opacity:.45}
+.wk-l{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin-top:4px}
+
+/* dekking lijst */
+.ld{display:grid;grid-template-columns:48px 1fr auto;gap:4px 12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.ld:first-of-type{border-top:0}
+.ld .code{font-family:var(--f-display);font-weight:800;font-size:24px;font-stretch:108%}
+.ld .t{font-size:14px;min-width:0}
+.bar{grid-column:2/3;height:6px;background:var(--surface-2);position:relative;margin-top:2px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--cc)}
+.bar i.l{opacity:.3}
+.ld .cnt{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);grid-column:2/3}
+.ld .act{grid-row:1/4;grid-column:3;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.comp-h{display:flex;align-items:baseline;gap:10px;margin:22px 0 2px}
+.comp-h:first-child{margin-top:0}
+.comp-h h3{font-size:16px;font-weight:800}
+.comp-h::before{content:"";width:12px;height:12px;background:var(--cc);align-self:center}
+
+/* logboek */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.seg{display:inline-flex;border:1px solid var(--ink)}
+.seg button{background:var(--surface);border:0;border-left:1px solid var(--ink);padding:6px 11px;font-size:13px;font-weight:600}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+select,input[type=text],input[type=date],textarea{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:2px;padding:8px 10px;font-size:15px;width:100%}
+select.f{width:auto;padding:6px 8px;font-size:13px}
+textarea{resize:vertical;min-height:96px;line-height:1.45}
+.entry{display:grid;gap:8px}
+.entry .top{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.entry .top .d{font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.entry p{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+.entry .why{color:var(--ink-2);font-size:14px}
+.entry .foot{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px dashed var(--line)}
+.q{display:inline-flex;gap:3px;align-items:center}
+.q i{width:14px;height:5px;background:var(--surface-2)}
+.q i.on{background:var(--green)}
+.q.weak i.on{background:var(--amber)}
+.q-t{font-size:12px;color:var(--ink-2);margin-left:6px}
+.status{display:inline-flex;border:1px solid var(--line)}
+.status button{background:var(--surface);border:0;border-left:1px solid var(--line);padding:4px 9px;font-size:12px;color:var(--ink-2)}
+.status button:first-child{border-left:0}
+.status button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+
+/* planning */
+details.wkc{background:var(--surface);border:1px solid var(--line);margin-bottom:8px}
+details.wkc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 16px}
+details.wkc>summary::-webkit-details-marker{display:none}
+details.wkc>summary .n{font-family:var(--f-display);font-weight:800;font-size:22px;font-stretch:108%;min-width:56px}
+details.wkc>summary .r{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);flex:1}
+details.wkc[open]>summary{border-bottom:1px solid var(--line)}
+details.wkc.now{border-color:var(--ink)}
+.day{display:grid;grid-template-columns:78px 1fr auto;gap:4px 12px;padding:10px 16px;border-top:1px solid var(--line);align-items:start}
+.day:first-of-type{border-top:0}
+.day .d{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);padding-top:2px}
+.day .t{min-width:0;overflow-wrap:anywhere}
+.day .t p{margin:2px 0 0;font-size:14px}
+.day .ok{color:var(--green);font-weight:700}
+.day.past .t p{color:var(--ink-2)}
+
+/* pd */
+.pds{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.pd h3{font-size:18px;font-weight:800;margin:6px 0 4px}
+.pd p{margin:0 0 8px;font-size:14px;color:var(--ink-2);overflow-wrap:anywhere}
+.pd dl{margin:8px 0 0;font-size:13px;display:grid;gap:6px}
+.pd dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pd dd{margin:0;overflow-wrap:anywhere}
+
+/* fab + modal + toast */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:15;background:var(--accent);color:var(--accent-ink);border:0;border-radius:2px;padding:14px 20px;font-family:var(--f-display);font-weight:800;font-size:16px;font-stretch:104%;box-shadow:0 6px 20px rgba(15,21,38,.28);display:flex;gap:8px;align-items:center}
+.fab:hover{filter:brightness(1.08)}
+.fab svg{width:16px;height:16px}
+@media (max-width:719px){.fab{bottom:calc(env(safe-area-inset-bottom,0px) + 64px)}}
+.ov{position:fixed;inset:0;z-index:40;background:rgba(8,20,11,.6);display:flex;align-items:flex-end;justify-content:center;overflow-y:auto}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:100%;overflow-y:auto;padding:18px 18px calc(env(safe-area-inset-bottom,0px) + 22px);border:1px solid var(--ink);border-bottom:0}
+@media (min-width:720px){.ov{align-items:center;padding:24px}.sheet{border-bottom:1px solid var(--ink);max-height:calc(100% - 8px)}}
+.sheet h2{font-size:24px;font-weight:800;font-stretch:108%}
+.sheet .sub{color:var(--ink-2);font-size:14px;margin:2px 0 14px}
+.fld{display:grid;gap:6px;margin-top:14px}
+.fld>label,.fld>.fl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--surface);border:1px solid var(--line);padding:6px 10px;font-size:14px;border-radius:2px;position:relative;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.mono{font-family:var(--f-mono);font-size:13px}
+.chip.sug{border-color:var(--ink-3)}
+.chip.empty::after{content:"";position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+.plan-hint{background:var(--accent-soft);padding:10px 12px;font-size:14px;display:flex;gap:10px;justify-content:space-between;align-items:center}
+.plan-hint span{min-width:0;overflow-wrap:anywhere}
+.starters{display:flex;flex-wrap:wrap;gap:6px}
+.starters button{background:none;border:1px dashed var(--ink-3);padding:3px 9px;font-size:13px;color:var(--ink-2);border-radius:99px}
+.starters button:hover{border-style:solid;color:var(--ink)}
+.meter{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.meter span{font-size:12px;padding:3px 9px;border:1px solid var(--line);color:var(--ink-3);border-radius:99px}
+.meter span.on{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.acts{display:flex;gap:8px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}
+.acts .r{display:flex;gap:8px}
+.err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:50;background:var(--ink);color:var(--bg);padding:11px 16px;font-size:14px;font-weight:500;max-width:min(92vw,460px);text-align:center}
+@media (min-width:720px){.toast{bottom:90px}}
+.foot-note{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+textarea.copy{min-height:200px;font-family:var(--f-mono);font-size:12px}
+
+@media (max-width:719px){nav.tabs button{font-size:12px;padding-inline:2px}}
+.et{font-size:18px;font-weight:800;font-stretch:104%}
+.files{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.thumb img{display:block;width:84px;height:64px;object-fit:cover;border:1px solid var(--line)}
+.fchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:4px 9px;font-size:13px;color:var(--ink);text-decoration:none;max-width:100%;overflow-wrap:anywhere}
+a.fchip:hover{border-color:var(--ink)}
+.fchip button{background:none;border:0;padding:0 2px;font-size:16px;line-height:1;color:var(--ink-2)}
+input[type=file]{font-size:13px;color:var(--ink-2);max-width:100%}
+input[type=file]::file-selector-button{font:inherit;font-weight:600;background:var(--surface);color:var(--ink);border:1px solid var(--ink);padding:6px 12px;margin-right:10px;cursor:pointer;border-radius:2px}
+details.more{margin-top:16px;border:1px solid var(--line);background:var(--surface)}
+details.more>summary{cursor:pointer;padding:10px 12px;font-weight:600;font-size:14px}
+details.more>div{padding:0 12px 14px}
+.next{border-color:var(--ink);display:grid;gap:6px}
+.next h3{font-size:22px;font-weight:800;font-stretch:106%;line-height:1.15}
+.next p{margin:0;color:var(--ink-2);font-size:14px;overflow-wrap:anywhere}
+.next-f{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-top:8px}
+.xp{min-width:150px;flex:1;max-width:260px}
+.xp .xl{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.pbar{height:6px;background:var(--surface-2);position:relative;margin-top:5px}
+.pbar i{position:absolute;inset:0 auto 0 0;background:var(--accent)}
+.pbar.g i{background:var(--green)}
+.ck{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:start;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+.ck:first-child{border-top:0}
+.ck input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent)}
+.ck .ct{min-width:0;overflow-wrap:anywhere}
+.ck .cd{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+.ck .au{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-left:6px}
+.ck.done .ct{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--ink-3)}
+.refl{display:grid;gap:8px}
+.refl .comp-h{margin:0}
+.refl ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:14px}
+.refl .rf{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--ink-3)}
+.refl .rf .ok{color:var(--green);font-weight:600}
+.refl details{font-size:14px}
+.refl details summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:13px}
+.refl details div{padding:6px 0;color:var(--ink-2);overflow-wrap:anywhere}
+.data-card{margin-top:34px}
+.data-card h3{font-size:18px;font-weight:800}
+.data-card p{margin:6px 0 12px;font-size:14px;color:var(--ink-2)}
+.data-card .row{display:flex;flex-wrap:wrap;gap:8px}
+.cmp-note{font-size:13px;color:var(--ink-2)}
+
+.tier{margin-top:26px}.tier:first-of-type{margin-top:10px}
+.techs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:8px}
+.tech{background:var(--surface);border:1px solid var(--line);padding:10px 12px;display:grid;gap:4px}
+.tech.on{border-color:var(--green)}
+.tech .tn{font-family:var(--f-display);font-weight:800;font-size:16px}
+.tech .tc{font-size:12px;color:var(--ink-2)}
+.tech.on .tc{color:var(--green)}
+.tech .ta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tech .x{background:none;border:0;font-size:20px;line-height:1;color:var(--ink-3);padding:0 4px}
+.tech .x:hover{color:var(--red)}
+.techadd{display:flex;gap:8px;margin-top:10px;max-width:520px}
+.techadd input{flex:1;min-width:0}
+
+
+/* weken: opgevouwen strip, uitgevouwen pad */
+.wkbox{background:var(--surface);border-radius:22px;padding:12px 14px 14px;margin-bottom:24px}
+.wkbox .wh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.wkbox .wh h2{font-size:21px;font-weight:800}
+.wkbox .wh .r{display:flex;gap:8px;align-items:center}
+.wkbox .wh .btn{padding:6px 12px}
+.wkstrip{display:flex;align-items:center;gap:6px}
+.wkscroll{flex:1;min-width:0;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding:10px 6px 10px}
+.wkn2{all:unset;box-sizing:border-box;cursor:pointer;flex:none;width:76px;display:flex;flex-direction:column;align-items:center;gap:6px;scroll-snap-align:center;position:relative}
+.wkn2:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:12px}
+.wkn2 .nd{position:relative;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--bg);border:2px solid rgba(255,248,236,.4);font-family:var(--f-display);font-weight:800;font-size:21px;color:var(--ink)}
+.wkn2.f1 .nd{background:#FFD23F;color:#0E1163}
+.wkn2.f2 .nd{background:#3EE6B0;color:#0E1163}
+.wkn2.fut:not(.f1):not(.f2) .nd{opacity:.6}
+.wkn2.now .nd{border:4px solid #FFF8EC}
+.wkn2.now .nd::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:3px solid #FFF8EC;animation:pulse2 1.6s ease-out infinite}
+@keyframes pulse2{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.wkn2 .nd{z-index:1}
+.wkn2:not(:first-child)::before{content:"";position:absolute;left:-26px;top:22px;width:38px;height:8px;background:radial-gradient(circle,rgba(255,248,236,.32) 3px,transparent 3.6px) 0 50%/13px 8px repeat-x}
+/* scrollbars in het thema van de site */
+html{scrollbar-width:thin;scrollbar-color:var(--accent) var(--surface)}
+.wkscroll,.sheet,.ov{scrollbar-width:thin;scrollbar-color:var(--accent) rgba(255,248,236,.14)}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:rgba(255,248,236,.1);border-radius:99px}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:99px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#FFE27A;background-clip:padding-box;border:3px solid transparent}
+::-webkit-scrollbar-corner{background:transparent}
+.wkn2 .lb{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-2);text-align:center;min-height:1.2em;white-space:nowrap}
+.wkn2.now .lb{color:var(--accent)}
+.wkarrow{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--bg);color:var(--ink);font-size:18px;line-height:1;display:grid;place-items:center}
+.wkarrow:hover{border-color:var(--ink)}
+@media(max-width:560px){.wkarrow{display:none}}
+@media(prefers-reduced-motion:reduce){.wkn2.now .nd::after{animation:none}}
+
+
+.fullrow{margin-top:24px;margin-bottom:28px}
+.grid{margin-bottom:28px}
+.milrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.milrow .mc{display:flex;flex-direction:column;gap:8px}
+.milrow .mc b{font-family:var(--f-display);font-size:17px;line-height:1.2}
+@media(max-width:900px){.milrow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.doeken.six{grid-template-columns:repeat(6,minmax(0,1fr))}
+.pot.nogleeg{border:3px dashed var(--line);background:transparent;justify-content:center;gap:10px;padding:12px}
+.doeken.strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.doeken.strip .pot{flex:none;width:150px;scroll-snap-align:start}
+.doeken.mini{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.pot.mini{padding:8px 4px 8px;gap:3px}
+.pot.mini .potb svg{max-width:76px;box-shadow:0 0 0 3px var(--cc)}
+.pot.mini .potb .code{font-size:15px;margin-top:5px}
+.pot.mini .dots i{width:7px;height:7px;border-width:1.5px}
+.pot.mini .dots{gap:3px}
+@media(max-width:700px){.doeken.six{grid-template-columns:repeat(3,minmax(0,1fr))}.doeken.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.tubox{margin-top:24px}
+.tubox .wh .link{white-space:nowrap}
+.tubox .wh .r{gap:14px}
+.doeken.strip{flex:1;min-width:0;padding:10px 4px 10px;scrollbar-width:thin;scrollbar-color:var(--accent) rgba(255,248,236,.14)}
+.doeken.six{margin-top:6px}
+.doeknote{margin-top:10px}
+
+/* leerdoel-suggesties tijdens het schrijven */
+.sugg{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sugg:empty{display:none}
+.sugg .lbl{margin-right:2px}
+.sg{display:inline-flex;align-items:center;gap:6px;border:2px solid color-mix(in srgb,currentColor 35%,transparent);background:transparent;color:inherit;border-radius:99px;padding:5px 12px;font-size:14px;line-height:1.25;text-align:left;max-width:100%}
+.sg::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--cc)}
+.sg b{font-family:var(--f-mono);font-weight:500}
+.sg small{opacity:.75;font-size:12px}
+.sg:hover{border-color:currentColor}
+.quick .sg.on{background:var(--night);color:var(--paper);border-color:var(--night)}
+.sheet .sg.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sgai{border:2px dashed color-mix(in srgb,currentColor 45%,transparent);background:transparent;color:inherit;border-radius:99px;padding:5px 12px;font-size:14px;font-weight:600}
+.sgai:hover{border-style:solid}
+.sgai[disabled]{opacity:.6;cursor:wait}
+.sgnote{font-size:13px;opacity:.8;flex-basis:100%}
+
+
+/* alleen-lezen weergave */
+.vhead{background:var(--paper);color:var(--night);border-radius:28px;padding:clamp(18px,4vw,32px);margin-bottom:24px;display:grid;gap:8px}
+.vhead .lbl{color:rgba(15,38,21,.7)}
+.vhead h2{font-weight:800;font-size:clamp(32px,6vw,56px);line-height:1}
+.vhead p{margin:0;max-width:62ch;font-size:16px}
+body.view .grid{grid-template-columns:minmax(0,1fr)}
+body.view [data-act="new"],body.view [data-act="newgoal"],body.view [data-act="logplan"],body.view [data-act="edit"],body.view [data-act="newpd"],body.view [data-act="editpd"],body.view [data-act="logtech"],body.view [data-act="rmtech"],body.view [data-act="logpd"],body.view [data-act="copy"],body.view [data-act="gaps"],body.view #techf,body.view .techadd,body.view .data-card,body.view .fab,body.view .pot.nogleeg{display:none!important}
+body.view .status button,body.view .ck{pointer-events:none}
+body.view .doeknote{display:none}
+body.view .q,body.view .q-t{display:none}
+
+/* nieuwe stijl */
+.tb{border-radius:20px;overflow:hidden;border-color:var(--line)}
+.tb>div{border-color:var(--line)}
+.tb h1{font-weight:800}
+.card,.stats,details.wkc,.tech,details.more{border-radius:16px}
+.stats{overflow:hidden}
+.btn{border-radius:12px;border-color:var(--ink)}
+.btn.pri{border-color:var(--accent);box-shadow:0 3px 0 #A8820F}
+.btn.pri:active{transform:translateY(2px);box-shadow:0 1px 0 #A8820F}
+.fab{border-radius:16px;box-shadow:0 6px 0 #A8820F;font-weight:800}
+.fab:active{transform:translateY(4px);box-shadow:0 2px 0 #A8820F}
+.chip,.tag,.seg,.status,select,input[type=text],input[type=date],textarea,.sheet{border-radius:10px}
+.seg,.status{overflow:hidden}
+.sheet{border-radius:20px 20px 0 0}
+@media (min-width:720px){.sheet{border-radius:20px}}
+.toast{border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700}
+.next{background:var(--paper);color:var(--night);border-color:var(--paper)}
+.next .lbl,.next p{color:rgba(14,17,99,.75)}
+.next .btn.pri{background:var(--night);border-color:var(--night);color:var(--paper);box-shadow:0 3px 0 #071509}
+.next .xl{color:rgba(14,17,99,.75)}.next .pbar{background:rgba(14,17,99,.15)}.next .pbar i{background:var(--coral)}
+
+/* hero */
+.hero{background:var(--paper);color:var(--night);border-radius:28px;padding:clamp(18px,4vw,34px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center;margin-bottom:24px}
+.hero h1{font-weight:800;font-size:clamp(36px,6.5vw,68px);line-height:1;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em{font-style:normal;background:var(--accent);padding:0 .15em;border-radius:.2em;white-space:nowrap}
+.hero p{margin:12px 0 0;max-width:36ch;font-size:16px}
+.hero .dayb{margin-top:16px;display:inline-block;background:var(--night);color:var(--paper);border-radius:99px;padding:5px 14px}
+.startb{position:relative;display:grid;place-items:center;aspect-ratio:1;width:min(100%,260px);margin-inline:auto;border:0;border-radius:50%;background:var(--coral);color:var(--night);box-shadow:0 9px 0 #B4521F;transition:transform .12s,box-shadow .12s}
+.startb:hover{transform:translateY(-2px)}
+.startb:active{transform:translateY(7px);box-shadow:0 2px 0 #B4521F}
+.startb.run{background:var(--c2);box-shadow:0 9px 0 #1BA37B}
+.startb svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.startb circle{fill:none;stroke-width:9}
+.startb .tr{stroke:rgba(14,17,99,.16)}.startb .pr{stroke:var(--night);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.startb span{position:relative;text-align:center;font-family:var(--f-display);font-weight:800;line-height:1}
+.startb .big{display:block;font-size:clamp(32px,5vw,48px)}
+.startb .sm{display:block;margin-top:8px;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.quick{grid-column:1/-1;min-width:0;border-top:2px dashed rgba(14,17,99,.25);padding-top:18px;display:grid;gap:12px}
+.quick label.q{font-family:var(--f-display);font-weight:800;font-size:21px}
+.quick .qrow{display:flex;gap:10px;flex-wrap:wrap}
+.quick input[type=text]{flex:1 1 240px;min-width:0;background:#fff;color:var(--night);border:3px solid var(--night);border-radius:14px;padding:12px 14px;font-size:16px}
+.quick .qsave{border:0;background:var(--night);color:var(--paper);font-family:var(--f-display);font-weight:800;font-size:17px;border-radius:14px;padding:12px 22px;box-shadow:0 5px 0 #071509}
+.quick .qsave:active{transform:translateY(4px);box-shadow:0 1px 0 #071509}
+.quick .qs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.quick .qs .lbl{color:rgba(14,17,99,.7)}
+.quick .qs button{border:0;background:rgba(14,17,99,.1);color:var(--night);border-radius:10px;padding:6px 11px;font-size:14px}
+.quick .qchips{display:flex;gap:7px;flex-wrap:wrap}
+.quick .qc{border:3px solid var(--night);background:transparent;color:var(--night);border-radius:99px;padding:3px 11px;font-family:var(--f-mono);font-size:13px;font-weight:500}
+.quick .qc[aria-pressed=true]{background:var(--cc)}
+.quick .qhint{font-size:14px;min-height:21px;color:rgba(14,17,99,.8)}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+
+/* doeken */
+.doeken{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.doeken.wide{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pot{background:var(--surface);border-radius:18px;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;text-align:center}
+.potb{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;min-width:0}
+.potb:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
+.potb svg{width:100%;max-width:118px;height:auto;border-radius:12px;box-shadow:0 0 0 4px var(--cc)}
+.pot.done .potb svg{box-shadow:0 0 0 4px var(--cc),0 0 0 8px rgba(255,248,236,.9)}
+.potb .code{font-family:var(--f-display);font-weight:800;font-size:20px;margin-top:8px;color:var(--cc)}
+.potb .t{font-size:12px;line-height:1.3;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.dots{display:flex;gap:5px;justify-content:center}
+.dots i{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);opacity:.45}
+.dots i.on{background:var(--cc);border-color:var(--cc);opacity:1}
+.pot .sig{font-size:10px}
+.doeknote{margin-top:8px;font-size:13px;color:var(--ink-2)}
+
+/* pad */
+.trailwrap{background:var(--surface);border-radius:22px;padding:10px 8px}
+.trail{width:100%;height:auto;display:block;overflow:visible}
+.trail text{font-family:var(--f-display);font-weight:800}
+.trail .lb{font-family:var(--f-mono);font-weight:500;font-size:10px;letter-spacing:.06em}
+.wkn{cursor:pointer}.wkn:focus-visible{outline:none}.wkn:focus-visible circle.nd,.wkn:hover circle.nd{stroke:var(--accent);stroke-width:4}
+@keyframes pulse{0%{r:26;opacity:.9}100%{r:44;opacity:0}}
+.pulse{animation:pulse 1.6s ease-out infinite}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70}
+@media(max-width:700px){.doeken,.doeken.wide{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.pulse{animation:none}.startb,.startb .pr{transition:none}}
+</style>
+
+<canvas id="fx"></canvas>
+<div class="wrap">
+  <header class="tb" id="tb"></header>
+  <nav class="tabs" id="tabs" aria-label="Onderdelen"></nav>
+  <main id="app"></main>
+  <section class="card data-card" aria-labelledby="dt">
+    <h3 id="dt">Je gegevens</h3>
+    <p>Je datapunten en reflecties staan in je eigen account, of alleen in deze browser als synchroniseren niet lukt. Vul geen vertrouwelijke bedrijfsinformatie in. De gewone back-up bevat geen bijlagen. Met &quot;Exporteer met bijlagen&quot; krijg je een zipbestand met alles erin.</p>
+    <div class="row"><button class="btn sm" data-act="export">Exporteer mijn gegevens</button><button class="btn sm" data-act="exportzip">Exporteer met bijlagen</button><button class="btn sm" data-act="import">Importeer back-up</button><input type="file" id="imp" accept=".json,.zip,application/json,application/zip" hidden><button class="btn sm danger" data-act="wipe" id="wipe">Wis datapunten en reflecties</button></div>
+  </section>
+  <div class="foot-note"><span id="syncnote">Laden…</span><span>Eind minor: elk leerdoel minimaal 2 uitgewerkte bewijsstukken.</span></div>
+</div>
+<button class="fab" id="fab" data-act="new" aria-label="Nieuw datapunt"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M8 2v12M2 8h12"/></svg>Datapunt</button>
+<div id="modal"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const PLAN=[{"d":"2026-08-31","w":1,"t":"K&V","x":"Introductie minor. Voorstellen. Ambities. Sociale activiteit. Apparatuur digihub","l":"Aanwezigheid kick-off minor","f":"D","s":"low"},{"d":"2026-09-01","w":1,"t":"K&V","x":"Parametrische demo/workshop - dynamo/GH - Cobot?"},{"d":"2026-09-02","w":1,"t":"K&V","x":"Software prototyping (DataCamp) - hackskills"},{"d":"2026-09-03","w":1,"t":"K&V","x":"Overzicht werkveld en digitalisering gebouwde omgeving - hands-on workshop"},{"d":"2026-09-04","w":1,"t":"Leerplek","x":"Professioneel profiel matchmaking speeddatesessie","l":"Professioneel profiel","f":"O","s":"low"},{"d":"2026-09-04","w":1,"t":"K&V","x":"Zelfscan - Waar sta ik nu?. Start leerdoelformulering (les verlaten met 2-3 ruwe leerdoelen)","l":"Zelfscan","f":"O, D","s":"low"},{"d":"2026-09-07","w":2,"t":"Leerplek","x":"Voorbereiding speeddatesessie met studenten - oefensessies","l":"Leerdoelen leerplek","f":"O","s":"low"},{"d":"2026-09-09","w":2,"t":"Leerplek","x":"SPEEDDATESESSIE 14:00-18:00","l":"Actieve deelname incl. korte reflectie","f":"AD","s":"medium"},{"d":"2026-09-10","w":2,"t":"Project","x":"Project1 Kick-off + Fase 1","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-09-11","w":2,"t":"K&V","x":"Portfolio-voorbeelden vorig jaar (goed/voldoende). Vrijheid van vorm, leerdoelen moeten verantwoord worden. Introductie datapunten-logboek. Leerdoelen inleveren eind van de dag + DATACAMP module"},{"d":"2026-09-14","w":3,"t":"Project","x":"Werken aan project (zonder begeleiding) Fase 1"},{"d":"2026-09-15","w":3,"t":"Project","x":"Werken aan project (zonder begeleiding) Fase 1"},{"d":"2026-09-16","w":3,"t":"Project","x":"Werken aan project Fase 1"},{"d":"2026-09-17","w":3,"t":"Project","x":"Werken aan project Fase 1"},{"d":"2026-09-18","w":3,"t":"K&V","x":"Datapunten-logboek (start van de dag). Peerreview leerdoelen (meetbaar, bewijsplan) - Reflectie op speeddatesessie en project kick-off"},{"d":"2026-09-21","w":4,"t":"Leerplek","x":"Grasshopper"},{"d":"2026-09-23","w":4,"t":"Project","x":"Werken aan project - Fase 1"},{"d":"2026-09-24","w":4,"t":"Project","x":"Tussenpresentatie - Fase 1","l":"Tussenpresentatie Project 1, Fase 1","f":"P","s":"low"},{"d":"2026-09-25","w":4,"t":"K&V","x":"Portfolio-werkopdracht: werk datapunt uit tot volwaardig bewijsstuk. Activiteiten beschrijven, koppelen aan leerdoelen, reflectie (STARR), inleveren op Brightspace.","l":"Uitgewerkt datapunt","f":"O","s":"low"},{"d":"2026-09-25","w":4,"t":"K&V","x":"OPTIE: GIS aanbieden OF TU Delft Intro Digital Fabrication","l":"Deelname en reflectie digitale fabricage TU Delft","f":"AD","s":"low"},{"d":"2026-09-28","w":5,"t":"Project","x":"Werken aan project (zonder begeleiding) Fase 2"},{"d":"2026-09-29","w":5,"t":"Project","x":"Werken aan project (zonder begeleiding) Fase 2"},{"d":"2026-09-30","w":5,"t":"Project","x":"Werken aan project Fase 2"},{"d":"2026-10-01","w":5,"t":"Leerplek","x":"Start leerplek: werken op leerplek"},{"d":"2026-10-02","w":5,"t":"K&V","x":"Portfolio-werkopdracht: werk datapunt uit tot volwaardig bewijsstuk. Activiteiten beschrijven, koppelen aan leerdoelen, reflectie (STARR), inleveren op brightspace.","l":"Uitgewerkt datapunt","f":"O","s":"low"},{"d":"2026-10-02","w":5,"t":"K&V","x":"OPTIE: GIS aanbieden OF TU Delft Intro Digital Fabrication","l":"Reflectie digitale fabricage TU Delft","f":"AD","s":"low"},{"d":"2026-10-05","w":6,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-06","w":6,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-07","w":6,"t":"Project","x":"Werken aan project Fase 2"},{"d":"2026-10-08","w":6,"t":"Project","x":"Werken aan project Fase 2"},{"d":"2026-10-09","w":6,"t":"K&V","x":"Optie GIS aanbieden?"},{"d":"2026-10-09","w":6,"t":"K&V","x":"Portfolio-werkopdracht: werk datapunt uit tot volwaardig bewijsstuk. Activiteiten beschrijven, koppelen aan leerdoelen, reflectie (STARR), inleveren op brightspace. + DATACAMP"},{"d":"2026-10-12","w":7,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-13","w":7,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-14","w":7,"t":"Leerplek","x":"Check-in leerplek 5min./student informeel"},{"d":"2026-10-14","w":7,"t":"Project","x":"Werken aan project Fase 2"},{"d":"2026-10-15","w":7,"t":"K&V","x":"Masterclass? - Eventueel: Hoe verwerk je eindpresentatie project 1 als datapunt?","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-10-16","w":7,"t":"Project","x":"Eindpresentatie Project 1","l":"Eindpresentatie Project 1","f":"P","s":"medium"},{"d":"2026-10-16","w":7,"t":"Project","x":"Kick-off Project 2","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-10-26","w":8,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-27","w":8,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-10-28","w":8,"t":"Leerplek","x":"Check-in leerplek 5min./student informeel"},{"d":"2026-10-28","w":8,"t":"Project","x":"Werken aan project, PVA presenteren","l":"Deelname, PvA uploaden en presenteren","f":"D, P","s":"low"},{"d":"2026-10-29","w":8,"t":"Project","x":"Werken aan project"},{"d":"2026-10-30","w":8,"t":"K&V","x":"Gereflecteerd op competenties. 2 volledig uitgewerkte bewijsstukken + ingevuld datapuntenlog. Wat gaat de student leren in Project 2, welke datapunten uit project 1 helpen hierbij","l":"Reflectie op min. 2 competenties","f":"O","s":"medium"},{"d":"2026-11-02","w":9,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-03","w":9,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-04","w":9,"t":"Project","x":"Werken aan project"},{"d":"2026-11-05","w":9,"t":"Project","x":"Werken aan project"},{"d":"2026-11-06","w":9,"t":"K&V","x":"Externe spreker? Datalogboek-update. Verplichte consult met docent. 1 op 1. Samen door voorlopig datalogboek en leerdoelen heengaan.","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-11-09","w":10,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-10","w":10,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-11","w":10,"t":"Project","x":"Werken aan project"},{"d":"2026-11-12","w":10,"t":"Project","x":"Werken aan project"},{"d":"2026-11-13","w":10,"t":"K&V","x":"Remy Janssen - Twin Motion Datalogboek-update. Verplichte consult met docent. 1 op 1. Samen door voorlopig datalogboek en leerdoelen heengaan. + DATACAMP module","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-11-16","w":11,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-17","w":11,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-18","w":11,"t":"Project","x":"Werken aan project"},{"d":"2026-11-19","w":11,"t":"Project","x":"Eindpresentatie Project 2","l":"Eindpresentatie Project 'Digitale Fabricage'","f":"P","s":"medium"},{"d":"2026-11-20","w":11,"t":"K&V","x":"Formatief Portfolio inleveren","l":"Formatief Portfolio incl. dekkingsmatrix","f":"O","s":"medium"},{"d":"2026-11-20","w":11,"t":"K&V","x":"Dekkingsmatrix, elke student verzameld datapunten en legt deze af t.o.v. competentietabel. Welke leerdoelen verdienen extra aandacht?"},{"d":"2026-11-23","w":12,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-24","w":12,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-11-25","w":12,"t":"K&V","x":"Formatief Assessment","l":"Formatief Assessment","f":"AD","s":"medium"},{"d":"2026-11-25","w":12,"t":"K&V","x":"Rest werkt aan portfolio"},{"d":"2026-11-26","w":12,"t":"Project","x":"Kick-off Project 3","l":"Aanwezigheid","f":"D","s":"low"},{"d":"2026-11-27","w":12,"t":"K&V","x":"Formatief Assessment","l":"Formatief Assessment","f":"AD","s":"medium"},{"d":"2026-11-27","w":12,"t":"K&V","x":"Rest werkt aan project"},{"d":"2026-11-30","w":13,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-01","w":13,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-02","w":13,"t":"Project","x":"Werken aan project"},{"d":"2026-12-03","w":13,"t":"Project","x":"Werken aan project"},{"d":"2026-12-04","w":13,"t":"K&V","x":"Datapuntenlogboek."},{"d":"2026-12-07","w":14,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-08","w":14,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-09","w":14,"t":"Project","x":"Werken aan project"},{"d":"2026-12-10","w":14,"t":"Project","x":"Werken aan project - Pitch","l":"Tussenpresentatie Project 3","f":"P","s":"low"},{"d":"2026-12-11","w":14,"t":"K&V","x":"Datapuntlogboek: Rode draad opschrijven tussen alle tracks."},{"d":"2026-12-14","w":15,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-15","w":15,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2026-12-16","w":15,"t":"Project","x":"Werken aan project"},{"d":"2026-12-17","w":15,"t":"Leerplek","x":"Presenteren Leerplekuitkomsten aan medestudenten (AP)","l":"Presenteren uitkomsten leerplek","f":"P","s":"medium"},{"d":"2026-12-17","w":15,"t":"Project","x":"Werken aan project"},{"d":"2026-12-18","w":15,"t":"Leerplek","x":"Presenteren Leerplekuitkomsten aan medestudenten (AP)","l":"Presenteren uitkomsten leerplek","f":"P","s":"medium"},{"d":"2026-12-18","w":15,"t":"Project","x":"Werken aan project - Pizzamiddag/Kerstborrel"},{"d":"2027-01-04","w":16,"t":"Leerplek","x":"Werken op leerplek","l":"Bedrijfsbeoordeling en presentatie bij bedrijf","f":"P, O","s":"medium"},{"d":"2027-01-05","w":16,"t":"Leerplek","x":"Werken op leerplek"},{"d":"2027-01-06","w":16,"t":"Leerplek","x":"Presenteren Leerplekuitkomsten aan medestudenten (AP)","l":"Presenteren uitkomsten leerplek","f":"P","s":"medium"},{"d":"2027-01-06","w":16,"t":"Project","x":"Werken aan project"},{"d":"2027-01-07","w":16,"t":"Leerplek","x":"Presenteren Leerplekuitkomsten aan medestudenten (AP)","l":"Presenteren uitkomsten leerplek","f":"P","s":"medium"},{"d":"2027-01-07","w":16,"t":"Project","x":"Werken aan project"},{"d":"2027-01-08","w":16,"t":"K&V","x":"Assessment trainen: vragen stellen naan elkaar. D.m.v. voorbeeldvragen.","f":"D","s":"low"},{"d":"2027-01-11","w":17,"t":"Leerplek","x":"Werken op leerplek - presentatie bij bedrijf/beoordeling","l":"Presentatie bij bedrijf","f":"P, O","s":"medium"},{"d":"2027-01-12","w":17,"t":"Leerplek","x":"Werken op leerplek - leerplek afronden"},{"d":"2027-01-13","w":17,"t":"Project","x":"Werken aan project"},{"d":"2027-01-14","w":17,"t":"Project","x":"Werken aan project"},{"d":"2027-01-15","w":17,"t":"Project","x":"Eindpresentatie Project 3 (9:00-11:00","l":"Eindpresentatie Project 3","f":"P","s":"medium"},{"d":"2027-01-15","w":17,"t":"Leerplek","x":"Leerplekkenmarkt: expo resultaten + koffie/koek (11:00-12:00)","l":"Leerplek presentatie in marktvorm","f":"P","s":"medium"},{"d":"2027-01-18","w":18,"t":"Overig","x":"Portfolio Inleveren 9:00","l":"Portfolio Inleveren","f":"O","s":"high"},{"d":"2027-01-19","w":18,"t":"Overig","x":"Beoordelen portfolio"},{"d":"2027-01-20","w":18,"t":"Overig","x":"Beoordelen portfolio"},{"d":"2027-01-21","w":18,"t":"K&V","x":"Portfolio Assessment","l":"Portfolio en Assessment","f":"A","s":"high"},{"d":"2027-01-22","w":18,"t":"K&V","x":"Portfolio Assessment","l":"Portfolio en Assessment","f":"A","s":"high"},{"d":"2027-01-25","w":19,"t":"Overig","x":"Uitloop/Herkansing"},{"d":"2027-01-26","w":19,"t":"Overig","x":"Uitloop/Herkansing"},{"d":"2027-02-01","w":20,"t":"Overig","x":"Herkansing Portfolio Inleveren 9:00","f":"O","s":"high"},{"d":"2027-02-02","w":20,"t":"Overig","x":"Beoordelen portfolio herkansers"},{"d":"2027-02-03","w":20,"t":"Overig","x":"Beoordelen portfolio herkansers"},{"d":"2027-02-04","w":20,"t":"K&V","x":"Herkansing Portfolio Assessment","f":"A","s":"high"},{"d":"2027-02-05","w":20,"t":"K&V","x":"Herkansing Portfolio Assessment","f":"A","s":"high"}];
+const SEED=[{"id":"s3","date":"2026-08-31","track":"K&V","text":"Start minor & kennismaking van de klas — eerste kennismaking met de klas en de minor en verwachtingen.","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s4","date":"2026-09-01","track":"K&V","text":"Parametrische demo/workshop - · Rhino & Grasshopper - Cobot","goals":["1.3"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s5","date":"2026-09-02","track":"K&V","text":"Software prototyping (DataCamp) - hackskills - AI - Ollama ai","goals":["1.3"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s6","date":"2026-09-03","track":"K&V","text":"Overzicht werkveld en digitalisering gebouwde omgeving - hands-on workshop","goals":["3.3"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s7","date":"2026-09-04","track":"K&V","text":"Zelfscan - Waar sta ik nu?. Start leerdoelformulering (les verlaten met 2-3 ruwe leerdoelen)","goals":["3.1"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s8","date":"2026-09-07","track":"Leerplek","text":"Voorbereiden voor bedrijvenspeeddate","goals":["2.3"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s9","date":"2026-09-09","track":"Leerplek","text":"bedrijvenspeeddate","goals":["2.3"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s10","date":"2026-09-10","track":"Project","text":"start project 1, groep gemaakt","goals":["2.1"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s11","date":"2026-09-11","track":"K&V","text":"bewijslast verzamelen voor leerdoelen","goals":["3.1"],"pds":[],"why":"Een klasgenoot en ik hebben elkaars leerdoen kritisch bekeken en feedbeek ontvangen","evidence":"","status":"Genoteerd"},{"id":"s12","date":"2026-09-14","track":"Project","text":"verder met project","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s13","date":"2026-09-15","track":"Project","text":"verder met project","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s14","date":"2026-09-16","track":"Project","text":"verder met project","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s15","date":"2026-09-17","track":"Project","text":"verder met project","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s16","date":"2026-09-18","track":"K&V","text":"Museumbezoek NXT","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s19","date":"2026-09-23","track":"Project","text":"verder met project","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s20","date":"2026-09-24","track":"Project","text":"Tussenpresentatie","goals":["2.2"],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s21","date":"2026-09-25","track":"K&V","text":"Newmakers bezoek","goals":[],"pds":[],"why":"","evidence":"","status":"Genoteerd"},{"id":"s25","date":"2026-10-01","track":"Leerplek","text":"Eerste dag op de leerplek (ca. 10:00–12:15). Kennismakingsgesprek over mogelijke werkzaamheden en projectrichtingen. Op hoofdlijnen gaat het om digitale/parametrische ontwerp- en BIM-workflows en materiaal- of kaartinformatie. Mogelijk werk ik met Rhino/Grasshopper, AI/Claude en Revit. De concrete invulling kan nog veranderen.","goals":["2.3"],"pds":[],"why":"De eerste kennismaking draagt bij aan het opbouwen van professioneel contact en het verkennen van mogelijke werkzaamheden.","evidence":"","status":"Genoteerd"}];
+const SEED_PDS=[{"id":"PD1","tier":1,"name":"Computational & Parametric Design","desc":"Ik wil computationele en parametrische ontwerptechnieken inzetten om architectonische ontwerpideeën te ontwikkelen, te variëren en te onderzoeken.","goals":["1.1","1.2","1.3","3.3"],"start":"Basiservaring met Rhino/Grasshopper; wil zelfstandiger leren ontwerpen.","target":"Zelfstandig parametrisch systeem maken en minimaal 3 ontwerpvarianten genereren en vergelijken.","action":"Klein parametrisch ontwerp maken met minimaal 3 variabelen.","tags":["Rhino","Grasshopper","Python","Dynamo","Revit"]},{"id":"PD2","tier":1,"name":"AI × Architectuur","desc":"Ik wil onderzoeken hoe AI-technologieën, zoals generative AI, LLM's en AI-agents, het architectonisch ontwerpproces kunnen ondersteunen en veranderen. Ik ontwikkel of integreer minimaal één AI-toepassing en evalueer de meerwaarde, beperkingen en betrouwbaarheid kritisch.","goals":["1.1","1.3","1.4","3.3"],"start":"Interesse en basiservaring met AI; nog weinig ervaring met AI-agents/LLM-workflows.","target":"Min. 3 AI-toepassingen of -technieken testen en 1 AI-workflow of agent ontwikkelen, integreren en evalueren.","action":"3 AI-toepassingen kiezen, het verschil tussen AI, LLM en agents onderzoeken en één kleine architectonische workflow testen.","tags":["AI-agents","LLM's","Generative AI","AI-visualisatie"]},{"id":"PD3","tier":1,"name":"Digital Fabrication","desc":"Ik wil digitale en parametrische ontwerpen vertalen naar fysieke prototypes met digital fabrication, zoals 3D-printen, kleiprint en robotische/Cobot-productie. Ik onderzoek de mogelijkheden en beperkingen en verbeter mijn ontwerp iteratief.","goals":["1.3","1.4","3.3"],"start":"Ik heb de 3D printer een paar keer gezien en een paar modelen bekeken, maar heb het nog nooit zelf gebruikt","target":"Min. 2 fabricagetechnieken testen en minimaal 1 prototype maken, evalueren en verbeteren.","action":"Beschikbare printers en de Cobot onderzoeken en een eerste klein ontwerp voorbereiden en printen.","tags":["3D-printen","Kleiprint","Cobot"]},{"id":"PD4","tier":2,"name":"VR/AR","desc":"Ik wil leren hoe ik VR- en AR-technologie kan inzetten om digitale architectonische ontwerpen ruimtelijk te ervaren, visualiseren en evalueren, en onderzoeken hoe deze technologieën kunnen bijdragen aan het ontwerpproces en de communicatie van ontwerpkeuzes.","goals":["1.3","1.4","2.2","3.3"],"start":"Interesse in VR/AR, maar beperkte ervaring met architectonische toepassingen.","target":"Een 3D-model in VR/AR plaatsen, testen met gebruikers en verbeteren op basis van feedback.","action":"Beschikbare software/apparatuur onderzoeken en een bestaand 3D-model testen."},{"id":"PD5","tier":2,"name":"Coderen/Python","desc":"Aan het einde van de minor kan ik zelfstandig eenvoudige tot middelcomplexe Python-scripts ontwikkelen en toepassen binnen een digitale workflow in de gebouwde omgeving. Ik kan hiermee minimaal één proces automatiseren, data analyseren of een ontwerpworkflow uitbreiden en mijn gemaakte keuzes en werking van de code uitleggen.","goals":["1.1","1.3","3.2","3.3"],"start":"Basiskennis van coderen; nog weinig toegepast binnen de gebouwde omgeving.","target":"Zelfstandig een Python-script maken dat minimaal 1 proces automatiseert/analyseert.","action":"Python-leerpad kiezen en een klein bouwkundig automatiseringsprobleem zoeken."},{"id":"PD6","tier":2,"name":"BonsaiBIM","desc":"Aan het einde van de minor kan ik zelfstandig een eenvoudig BIM-model opzetten en bewerken met BonsaiBIM, waarbij ik gebruikmaak van een open BIM/IFC-workflow. Ik kan deze workflow koppelen aan andere digitale ontwerptechnieken en onderbouwen wanneer BonsaiBIM geschikt is voor een bouwkundig ontwerpproces.","goals":["1.3","2.1","3.3"],"start":"Ervaring met BIM/Revit, maar weinig ervaring met BonsaiBIM en IFC.","target":"Zelfstandig eenvoudig BIM-model maken, IFC importeren/exporteren en workflow testen.","action":"BonsaiBIM installeren en een eenvoudig BIM-model + IFC-workflow testen."}];
+const VIEW=true;
+const SNAP={"checks":{},"entries":[{"date":"2026-08-31","evidence":"","goals":[],"id":"s3","pds":[],"status":"Genoteerd","text":"Start minor & kennismaking van de klas — eerste kennismaking met de klas en de minor en verwachtingen.","track":"K&V","why":""},{"date":"2026-09-01","evidence":"","goals":["1.3"],"id":"s4","pds":[],"status":"Genoteerd","text":"Parametrische demo/workshop - · Rhino & Grasshopper - Cobot","track":"K&V","why":""},{"date":"2026-09-02","evidence":"","goals":["1.3"],"id":"s5","pds":[],"status":"Genoteerd","text":"Software prototyping (DataCamp) - hackskills - AI - Ollama ai","track":"K&V","why":""},{"date":"2026-09-03","evidence":"","goals":["3.3"],"id":"s6","pds":[],"status":"Genoteerd","text":"Overzicht werkveld en digitalisering gebouwde omgeving - hands-on workshop","track":"K&V","why":""},{"date":"2026-09-04","evidence":"","goals":["3.1"],"id":"s7","pds":[],"status":"Genoteerd","text":"Zelfscan - Waar sta ik nu?. Start leerdoelformulering (les verlaten met 2-3 ruwe leerdoelen)","track":"K&V","why":""},{"date":"2026-09-07","evidence":"","goals":["2.3"],"id":"s8","pds":[],"status":"Genoteerd","text":"Voorbereiden voor bedrijvenspeeddate","track":"Leerplek","why":""},{"date":"2026-09-09","evidence":"","goals":["2.3"],"id":"s9","pds":[],"status":"Genoteerd","text":"bedrijvenspeeddate","track":"Leerplek","why":""},{"date":"2026-09-10","evidence":"","goals":["2.1"],"id":"s10","pds":[],"status":"Genoteerd","text":"start project 1, groep gemaakt","track":"Project","why":""},{"date":"2026-09-11","evidence":"","goals":["3.1"],"id":"s11","pds":[],"status":"Genoteerd","text":"bewijslast verzamelen voor leerdoelen","track":"K&V","why":"Een klasgenoot en ik hebben elkaars leerdoen kritisch bekeken en feedbeek ontvangen"},{"date":"2026-09-14","evidence":"","goals":[],"id":"s12","pds":[],"status":"Genoteerd","text":"verder met project","track":"Project","why":""},{"date":"2026-09-15","evidence":"","goals":[],"id":"s13","pds":[],"status":"Genoteerd","text":"verder met project","track":"Project","why":""},{"date":"2026-09-16","evidence":"","goals":[],"id":"s14","pds":[],"status":"Genoteerd","text":"verder met project","track":"Project","why":""},{"date":"2026-09-17","evidence":"","goals":[],"id":"s15","pds":[],"status":"Genoteerd","text":"verder met project","track":"Project","why":""},{"date":"2026-09-18","evidence":"","goals":[],"id":"s16","pds":[],"status":"Genoteerd","text":"Museumbezoek NXT","track":"K&V","why":""},{"date":"2026-09-23","evidence":"","goals":[],"id":"s19","pds":[],"status":"Genoteerd","text":"verder met project","track":"Project","why":""},{"date":"2026-09-24","evidence":"","goals":["2.2"],"id":"s20","pds":[],"status":"Genoteerd","text":"Tussenpresentatie","track":"Project","why":""},{"date":"2026-09-25","evidence":"","goals":[],"id":"s21","pds":[],"status":"Genoteerd","text":"Newmakers bezoek","track":"K&V","why":""},{"date":"2026-10-01","evidence":"","goals":["2.3"],"id":"s25","pds":[],"status":"Genoteerd","text":"Eerste dag op de leerplek (ca. 10:00–12:15). Kennismakingsgesprek over mogelijke werkzaamheden en projectrichtingen. Op hoofdlijnen gaat het om digitale/parametrische ontwerp- en BIM-workflows en materiaal- of kaartinformatie. Mogelijk werk ik met Rhino/Grasshopper, AI/Claude en Revit. De concrete invulling kan nog veranderen.","track":"Leerplek","why":"De eerste kennismaking draagt bij aan het opbouwen van professioneel contact en het verkennen van mogelijke werkzaamheden."},{"contribution":"","created":1791745211425,"date":"2026-10-06","evidence":"","files":[],"goals":[],"id":"emv46u59d","pds":[],"place":"","reflection":"","result":"","stake":"","status":"Genoteerd","text":"Ging naar hun andere locatie in zwolle","title":"","tools":[],"track":"Leerplek","why":""}],"pds":[{"action":"Klein parametrisch ontwerp maken met minimaal 3 variabelen.","desc":"Ik wil computationele en parametrische ontwerptechnieken inzetten om architectonische ontwerpideeën te ontwikkelen, te variëren en te onderzoeken.","goals":["1.1","1.2","1.3","3.3"],"id":"PD1","name":"Computational & Parametric Design","start":"Basiservaring met Rhino/Grasshopper; wil zelfstandiger leren ontwerpen.","tags":["Rhino","Grasshopper","Python","Dynamo","Revit"],"target":"Zelfstandig parametrisch systeem maken en minimaal 3 ontwerpvarianten genereren en vergelijken.","tier":1},{"action":"3 AI-toepassingen kiezen, het verschil tussen AI, LLM en agents onderzoeken en één kleine architectonische workflow testen.","desc":"Ik wil onderzoeken hoe AI-technologieën, zoals generative AI, LLM's en AI-agents, het architectonisch ontwerpproces kunnen ondersteunen en veranderen. Ik ontwikkel of integreer minimaal één AI-toepassing en evalueer de meerwaarde, beperkingen en betrouwbaarheid kritisch.","goals":["1.1","1.3","1.4","3.3"],"id":"PD2","name":"AI × Architectuur","start":"Interesse en basiservaring met AI; nog weinig ervaring met AI-agents/LLM-workflows.","tags":["AI-agents","LLM's","Generative AI","AI-visualisatie"],"target":"Min. 3 AI-toepassingen of -technieken testen en 1 AI-workflow of agent ontwikkelen, integreren en evalueren.","tier":1},{"action":"Beschikbare printers en de Cobot onderzoeken en een eerste klein ontwerp voorbereiden en printen.","desc":"Ik wil digitale en parametrische ontwerpen vertalen naar fysieke prototypes met digital fabrication, zoals 3D-printen, kleiprint en robotische/Cobot-productie. Ik onderzoek de mogelijkheden en beperkingen en verbeter mijn ontwerp iteratief.","goals":["1.3","1.4","3.3"],"id":"PD3","name":"Digital Fabrication","start":"Ik heb de 3D printer een paar keer gezien en een paar modelen bekeken, maar heb het nog nooit zelf gebruikt","tags":["3D-printen","Kleiprint","Cobot"],"target":"Min. 2 fabricagetechnieken testen en minimaal 1 prototype maken, evalueren en verbeteren.","tier":1},{"action":"Beschikbare software/apparatuur onderzoeken en een bestaand 3D-model testen.","desc":"Ik wil leren hoe ik VR- en AR-technologie kan inzetten om digitale architectonische ontwerpen ruimtelijk te ervaren, visualiseren en evalueren, en onderzoeken hoe deze technologieën kunnen bijdragen aan het ontwerpproces en de communicatie van ontwerpkeuzes.","goals":["1.3","1.4","2.2","3.3"],"id":"PD4","name":"VR/AR","start":"Interesse in VR/AR, maar beperkte ervaring met architectonische toepassingen.","target":"Een 3D-model in VR/AR plaatsen, testen met gebruikers en verbeteren op basis van feedback.","tier":2},{"action":"Python-leerpad kiezen en een klein bouwkundig automatiseringsprobleem zoeken.","desc":"Aan het einde van de minor kan ik zelfstandig eenvoudige tot middelcomplexe Python-scripts ontwikkelen en toepassen binnen een digitale workflow in de gebouwde omgeving. Ik kan hiermee minimaal één proces automatiseren, data analyseren of een ontwerpworkflow uitbreiden en mijn gemaakte keuzes en werking van de code uitleggen.","goals":["1.1","1.3","3.2","3.3"],"id":"PD5","name":"Coderen/Python","start":"Basiskennis van coderen; nog weinig toegepast binnen de gebouwde omgeving.","target":"Zelfstandig een Python-script maken dat minimaal 1 proces automatiseert/analyseert.","tier":2},{"action":"BonsaiBIM installeren en een eenvoudig BIM-model + IFC-workflow testen.","desc":"Aan het einde van de minor kan ik zelfstandig een eenvoudig BIM-model opzetten en bewerken met BonsaiBIM, waarbij ik gebruikmaak van een open BIM/IFC-workflow. Ik kan deze workflow koppelen aan andere digitale ontwerptechnieken en onderbouwen wanneer BonsaiBIM geschikt is voor een bouwkundig ontwerpproces.","goals":["1.3","2.1","3.3"],"id":"PD6","name":"BonsaiBIM","start":"Ervaring met BIM/Revit, maar weinig ervaring met BonsaiBIM en IFC.","target":"Zelfstandig eenvoudig BIM-model maken, IFC importeren/exporteren en workflow testen.","tier":2}],"pdv":2,"reflections":{},"rev":1791745211425,"tech":[{"id":"t1","name":"Digital Twins"},{"id":"t2","name":"GIS"},{"id":"t3","name":"LiDAR"},{"id":"t4","name":"Point Clouds"},{"id":"t5","name":"Machine Learning"},{"id":"t6","name":"Revit/Dynamo"},{"id":"t7","name":"AI-visualisatie"}],"v":1};
+const SNAPDATE='13 oktober 2026';
+
+/* ---------- vaste gegevens uit de minor-documenten ---------- */
+const COMP={1:{n:'De digitale expert',v:'--c1'},2:{n:'De teamspeler',v:'--c2'},3:{n:'De zelfsturende professional',v:'--c3'},4:{n:'Professioneel handelen HBO',v:'--c4'}};
+const LD=[
+ {c:'1.1',k:1,t:'Formuleert digitale onderzoeks- of ontwerpvragen en kiest passende methoden',tr:['Project']},
+ {c:'1.2',k:1,t:'Verzamelt, analyseert en interpreteert data kritisch',tr:['Project']},
+ {c:'1.3',k:1,t:'Integreert en prototypeert digitale tools in innovatieve oplossingen',tr:['Project','Leerplek']},
+ {c:'1.4',k:1,t:'Reflecteert kritisch en valideert de impact met stakeholders',tr:['Project','Leerplek','K&V']},
+ {c:'2.1',k:2,t:'Werkt effectief samen in multidisciplinaire teams met digitale middelen',tr:['Project']},
+ {c:'2.2',k:2,t:'Communiceert bevindingen helder, visueel en doelgroepgericht',tr:['Project','Leerplek']},
+ {c:'2.3',k:2,t:'Bouwt een professioneel netwerk en draagt bij aan kennisdeling',tr:['Project','Leerplek','K&V']},
+ {c:'3.1',k:3,t:'Stelt meetbare persoonlijke leerdoelen op en stuurt bij op reflectie',tr:['K&V']},
+ {c:'3.2',k:3,t:'Toont een zelflerende houding in vakbekwaamheid en softskills',tr:['Project','Leerplek','K&V']},
+ {c:'3.3',k:3,t:'Signaleert innovaties en eigent zich zelfstandig nieuwe tools toe',tr:['Project','Leerplek','K&V']},
+ {c:'4.1',k:4,t:'Handelt professioneel (HBO)',tr:[]}
+];
+const LDM=Object.fromEntries(LD.map(l=>[l.c,l]));
+const STATUS=['Genoteerd','Uitgewerkt','In portfolio'];
+const TRACKS=['Project','Leerplek','K&V'];
+const TARGET=2;
+const STAKE={low:'Low-stake',medium:'Medium-stake',high:'High-stake'};
+
+/* ---------- datums ---------- */
+const BASE=new Date(2026,7,31);
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pd_=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const wStart=w=>addDays(BASE,7*(w-1)+(w>=8?7:0)+(w>=16?14:0));
+const WEEKS=Array.from({length:20},(_,i)=>i+1);
+function weekOf(s){const t=pd_(s).getTime();for(const w of WEEKS){const a=wStart(w).getTime();if(t>=a&&t<a+7*864e5)return w}return null}
+const fmtD=(s,o)=>{const t=new Intl.DateTimeFormat('nl-NL',o||{weekday:'short',day:'numeric',month:'short'}).format(pd_(s));return t.replace(/\./g,'')};
+const today=()=>iso(new Date());
+const TK=t=>t==='K&V'?'KV':t;
+
+/* ---------- opslag ---------- */
+const LS='dpl-dgo-v1';
+let S=null, ref=null, writing=false, dirty=false, tmr=null, syncState='local';
+function clone(x){return JSON.parse(JSON.stringify(x))}
+const SEED_TECH=['Digital Twins','GIS','LiDAR','Point Clouds','Machine Learning','Revit/Dynamo','AI-visualisatie'].map((name,i)=>({id:'t'+(i+1),name}));
+let migrated=false;
+const OLD_PD=['PD1','PD2','PD3','PD4','PD5','PD7','PD8','PD9','PD10'];
+const PD_MAP={PD7:'PD1',PD3:'PD2',PD8:'PD2',PD1:'PD3',PD9:'PD3',PD5:'PD4',PD10:'PD4',PD2:'PD5',PD4:'PD6'};
+function seedState(){return {v:1,rev:0,pdv:2,entries:clone(SEED),pds:clone(SEED_PDS),tech:clone(SEED_TECH),reflections:{},checks:{}}}
+function norm(s){
+  s.entries=s.entries||[];s.pds=s.pds||[];s.reflections=s.reflections||{};s.checks=s.checks||{};
+  if((s.pdv||0)<2){
+    const olds=s.pds.filter(p=>OLD_PD.includes(p.id));
+    if(olds.length){
+      const keep=s.pds.filter(p=>!OLD_PD.includes(p.id)&&!SEED_PDS.some(n=>n.id===p.id)).map(p=>({...p,tier:p.tier||2}));
+      s.pds=[...clone(SEED_PDS),...keep];
+      s.entries.forEach(e=>{if((e.pds||[]).length)e.pds=[...new Set(e.pds.map(x=>PD_MAP[x]||x))]});
+    }
+    s.pdv=2;migrated=true;
+  }
+  if(!Array.isArray(s.tech)){s.tech=clone(SEED_TECH);migrated=true}
+  return s;
+}
+function loadLocal(){if(VIEW)return clone(SNAP);try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.entries))return o}}catch(e){}return null}
+S=norm(loadLocal()||seedState());
+function persist(){if(VIEW)return;
+  S.rev=Date.now();
+  try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
+  if(ref){dirty=true;clearTimeout(tmr);tmr=setTimeout(flush,500)}
+}
+async function flush(){
+  if(!ref||!dirty)return;
+  if(writing){tmr=setTimeout(flush,300);return}
+  writing=true;dirty=false;
+  try{await ref.set(clone(S));syncState='cloud'}catch(e){syncState='error'}
+  writing=false;setSync();
+  if(dirty)tmr=setTimeout(flush,300);
+}
+function setSync(){
+  const el=document.getElementById('syncnote');if(!el)return;
+  if(VIEW){el.textContent='Alleen-lezen weergave, stand van '+SNAPDATE+'.';return}
+  el.textContent=syncState==='cloud'?'Opgeslagen in je account, ook beschikbaar op je telefoon.':syncState==='error'?'Opslaan in je account lukt nu niet. Wijzigingen blijven in deze browser staan.':'Opgeslagen in deze browser, niet gesynchroniseerd.';
+}
+async function initDb(){if(VIEW)return;
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+    if(!db||!user)return;
+    const uid=await user.id();
+    if(!uid)return;
+    const r=db.doc('data/users/'+uid+'/state');
+    const first=await r.get();
+    if(first.exists){
+      const d=first.data();
+      if(d&&Array.isArray(d.entries)&&(d.rev||0)>=(S.rev||0)){S=norm(clone(d));render()}
+    }
+    ref=r;
+    if(migrated||!first.exists||(S.rev||0)>(first.data().rev||0)){dirty=true;await flush();migrated=false}else{syncState='cloud'}
+    setSync();
+    r.onSnapshot(snap=>{
+      if(snap.metadata.hasPendingWrites||writing||dirty||!snap.exists)return;
+      const d=snap.data();
+      if(d&&Array.isArray(d.entries)&&(d.rev||0)>(S.rev||0)){S=norm(clone(d));try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render()}
+    },()=>{});
+  }catch(e){syncState=ref?'error':'local';setSync()}
+}
+
+/* ---------- afgeleide gegevens ---------- */
+const byDate=new Map();PLAN.forEach((p,i)=>{p.i=i;if(!byDate.has(p.d))byDate.set(p.d,[]);byDate.get(p.d).push(p)});
+function counts(){
+  const m=Object.fromEntries(LD.map(l=>[l.c,{total:0,done:0}]));
+  S.entries.forEach(e=>(e.goals||[]).forEach(g=>{if(m[g]){m[g].total++;if(e.status!=='Genoteerd')m[g].done++}}));
+  return m;
+}
+const sig=c=>c.total===0?'rood':c.done===0?'oranje':'groen';
+const SIGT={rood:'Geen bewijs',oranje:'Nog niet uitgewerkt',groen:'Op koers'};
+function hasEv(e){return (e.evidence||'').trim().length>0||(e.files||[]).length>0}
+function quality(e){
+  const k=[(e.text||'').trim().length>=70,(e.goals||[]).length>0,(e.why||'').trim().length>=10,hasEv(e),(e.reflection||'').trim().length>=15];
+  return {k,n:k.filter(Boolean).length};
+}
+function weekCount(w){return S.entries.filter(e=>weekOf(e.date)===w).length}
+function curWeek(){return weekOf(today())}
+function streak(){
+  let w=curWeek();
+  if(w===null){const t=today();w=t<iso(BASE)?0:20}
+  if(w>=1&&weekCount(w)===0&&curWeek()!==null)w--;
+  let n=0;while(w>=1&&weekCount(w)>0){n++;w--}return n;
+}
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- UI helpers ---------- */
+const tkChip=t=>`<span class="tk ${TK(t)}">${esc(t)}</span>`;
+const stakeB=(s,l)=>s?`<span class="stake ${s}" title="${STAKE[s]}"><i></i>${esc(l||STAKE[s])}</span>`:'';
+const ldTag=c=>`<span class="tag c${LDM[c]?LDM[c].k:4}">${esc(c)}</span>`;
+function sector(cx,cy,ri,ro,a0,a1){
+  const p=(r,a)=>[(cx+r*Math.cos(a)).toFixed(2),(cy+r*Math.sin(a)).toFixed(2)];
+  const [x0,y0]=p(ro,a0),[x1,y1]=p(ro,a1),[x2,y2]=p(ri,a1),[x3,y3]=p(ri,a0);
+  const L=(a1-a0)>Math.PI?1:0;
+  return `M${x0} ${y0}A${ro} ${ro} 0 ${L} 1 ${x1} ${y1}L${x2} ${y2}A${ri} ${ri} 0 ${L} 0 ${x3} ${y3}Z`;
+}
+let introDone=false;
+function rose(){
+  const cnt=counts(),N=LD.length,W=440,cx=W/2,cy=W/2,R=W/2-30,r0=R*.24,MAX=4,step=(R-r0)/MAX,slice=2*Math.PI/N,gap=.03;
+  let rings='',petals='',labels='';
+  for(let k=1;k<=MAX;k++){rings+=`<circle cx="${cx}" cy="${cy}" r="${(r0+k*step).toFixed(1)}" fill="none" ${k===TARGET?'stroke="var(--accent)" stroke-dasharray="4 4" stroke-width="1.6"':'stroke="var(--line)" stroke-width="1"'}/>`}
+  rings+=`<circle cx="${cx}" cy="${cy}" r="${r0.toFixed(1)}" fill="var(--bg)" stroke="var(--ink)" stroke-width="1"/>`;
+  LD.forEach((l,i)=>{
+    const c=cnt[l.c],a0=-Math.PI/2+i*slice+gap,a1=-Math.PI/2+(i+1)*slice-gap,am=(a0+a1)/2,col=`var(${COMP[l.k].v})`;
+    const ro=r0+Math.min(c.total,MAX)*step,rd=r0+Math.min(c.done,MAX)*step;
+    let g=`<path class="hit" d="${sector(cx,cy,r0+1,R+2,a0-.01,a1+.01)}" fill="transparent" stroke="none"/>`;
+    if(c.total===0)g+=`<path d="${sector(cx,cy,r0+2,r0+.3*step,a0,a1)}" fill="none" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="3 3"/>`;
+    else{g+=`<path d="${sector(cx,cy,r0+1,ro,a0,a1)}" fill="${col}" opacity=".3"/>`;
+      if(c.done>0)g+=`<path d="${sector(cx,cy,r0+1,rd,a0,a1)}" fill="${col}"/>`;
+      g+=`<path d="${sector(cx,cy,r0+1,ro,a0,a1)}" fill="none" stroke="${col}" stroke-width="1.5"/>`}
+    const lx=cx+(R+15)*Math.cos(am),ly=cy+(R+15)*Math.sin(am);
+    g+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="var(--ink)">${l.c}</text>`;
+    petals+=`<g class="petal" data-act="goal" data-ld="${l.c}" tabindex="0" role="button" aria-label="${l.c}: ${c.total} datapunten, ${c.done} uitgewerkt" style="animation-delay:${i*45}ms">${g}</g>`;
+  });
+  const total=S.entries.length;
+  const centre=`<text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="34" fill="var(--ink)" style="font-family:var(--f-display)">${total}</text><text x="${cx}" y="${cy+16}" text-anchor="middle" font-size="9.5" letter-spacing=".08em" fill="var(--ink-3)">DATAPUNTEN</text>`;
+  const svg=`<svg class="rose${introDone?'':' intro'}" viewBox="0 0 ${W} ${W}" role="group" aria-label="Dekking per minor-leerdoel">${rings}${petals}${centre}</svg>`;
+  introDone=true;
+  return `<div class="rose-wrap">${svg}<div class="legend"><span><i class="sw1"></i>uitgewerkt</span><span><i class="sw2"></i>genoteerd</span><span><span style="display:inline-block;width:16px;border-top:2px dashed var(--accent);vertical-align:3px;margin-right:5px"></span>doel: 2 uitgewerkt</span></div></div>`;
+}
+
+/* ---------- views ---------- */
+let tab='vandaag', openWeeks=new Set(), showAllGaps=false, flt={track:'',status:'',goal:'',miss:'',stake:''};
+const TABS=[['vandaag','Vandaag'],['dekking','Dekking'],['log','Logboek'],['planning','Planning'],['portfolio','Portfolio'],['doelen','Doelen']];
+
+function renderHead(){
+  const t=today(),w=weekOf(t);
+  document.getElementById('tb').innerHTML=`
+   <div><div class="lbl">Minor DGO · Digital Skills Built Environment</div><h1>Datapunten</h1></div>
+   <div><div class="lbl">Periode</div><div class="v">Herfst 2026</div></div>
+   <div><div class="lbl">Studieweek</div><div class="v">${w?w:'–'} <small>/ 20${w?'':' · vrij'}</small></div></div>`;
+  document.getElementById('tabs').innerHTML=TABS.map(([k,l])=>`<button data-act="tab" data-tab="${k}" ${tab===k?'aria-current="page"':''}>${l}</button>`).join('');
+}
+
+function planItemHTML(p,canLog){
+  return `<div class="card plan-item"><div><div class="meta">${tkChip(p.t)}${stakeB(p.s,p.l)}</div><p>${esc(p.x||'Geen onderwerp ingepland')}</p>${p.h?`<p class="empty" style="margin-top:4px">Huiswerk: ${esc(p.h)}</p>`:''}</div>${canLog?`<button class="btn pri sm" data-act="logplan" data-i="${p.i}">Log dit</button>`:''}</div>`;
+}
+function vandaag(){
+  const t=today(),cnt=counts(),w=curWeek();
+  const wc=w?weekCount(w):0;
+  const doneTotal=LD.reduce((a,l)=>a+Math.min(cnt[l.c].done,TARGET),0);
+  const st=streak();
+  let items=byDate.get(t)||[],label='Op de planning vandaag',future=false,when=t;
+  if(!items.length){
+    const nx=[...byDate.keys()].filter(d=>d>t).sort()[0];
+    if(nx){items=byDate.get(nx);when=nx;future=true;label='Eerstvolgende: '+fmtD(nx)}
+    else label='Geen planning meer'
+  }
+  const gapsAll=[...byDate.keys()].filter(d=>d<t&&!S.entries.some(e=>e.date===d)).sort().reverse();
+  const gaps=showAllGaps?gapsAll:gapsAll.slice(0,4);
+  const mil=PLAN.filter(p=>p.d>=t&&(p.s==='medium'||p.s==='high')&&p.l).filter((p,i,a)=>a.findIndex(q=>q.d===p.d&&q.l===p.l)===i).sort((a,b)=>a.d<b.d?-1:1).slice(0,4);
+  const zero=LD.filter(l=>cnt[l.c].total===0);
+  const days=d=>Math.round((pd_(d)-pd_(t))/864e5);
+  return `
+  ${hero()}
+  ${weekBox()}
+  <div class="stats">
+    <div class="stat"><span class="lbl">Deze week</span><b>${wc}<small> / 2</small></b><span class="sub">${w?'datapunten in week '+w:'vakantie, geen week'}</span></div>
+    <div class="stat"><span class="lbl">Reeks</span><b>${st}<small> ${st===1?'week':'weken'}</small></b><span class="sub">op rij minimaal 1 datapunt</span></div>
+    <div class="stat"><span class="lbl">Totaal</span><b>${S.entries.length}</b><span class="sub">datapunten vastgelegd</span></div>
+    <div class="stat"><span class="lbl">Bewijsstukken</span><b>${doneTotal}<small> / ${LD.length*TARGET}</small></b><span class="sub">uitgewerkt, doel eind minor</span></div>
+  </div>
+  <div class="grid">
+   <div class="col">
+    ${nextStep(t,gapsAll)}
+    <section><div class="sec-h"><h2>${esc(label)}</h2>${items.length?`<span class="lbl">${esc(fmtD(when,{day:'numeric',month:'long'}))}${weekOf(when)?' · wk '+weekOf(when):''}</span>`:''}</div>
+     <div class="stack">${items.length?items.map(p=>planItemHTML(p,!future)).join(''):'<div class="empty">Er staat niets meer in de planning.</div>'}
+     ${future?'<div class="empty">Log het zodra je het gedaan hebt. Dan weet je het nog.</div>':''}</div>
+    </section>
+   </div>
+   <div class="col">
+    <section${VIEW?' hidden':''}><div class="sec-h"><h2>Nog in te vullen</h2><span class="lbl">${gapsAll.length} ${gapsAll.length===1?'dag':'dagen'} zonder datapunt</span></div>
+     <div class="card">${gaps.length?gaps.map(d=>{const its=byDate.get(d);return `<div class="gap-row"><span class="d">${esc(fmtD(d))}</span><span class="t">${[...new Set(its.map(p=>p.t))].map(tkChip).join(' ')} <span style="color:var(--ink-2)">${esc((its.find(p=>p.x)||{x:''}).x.slice(0,70))}</span></span><button class="btn sm" data-act="logplan" data-i="${its[0].i}">Invullen</button></div>`}).join(''):'<div class="empty">Alles bijgewerkt.</div>'}
+     ${gapsAll.length>4?`<div style="padding-top:8px"><button class="link" data-act="gaps">${showAllGaps?'Toon minder':'Toon alle '+gapsAll.length}</button></div>`:''}</div>
+    </section>
+   </div>
+  </div>
+  ${mil.length?`<section class="fullrow"><div class="sec-h"><h2>Eerstvolgende beoordelingen</h2></div><div class="milrow">${mil.map(p=>{const n=days(p.d);return `<div class="card mc"><span class="mono" style="font-size:12px;color:var(--ink-2)">${esc(fmtD(p.d))} · ${n===0?'vandaag':n===1?'morgen':'over '+n+' d'}</span><b>${esc(p.l)}</b><span>${tkChip(p.t)} ${stakeB(p.s)}</span></div>`}).join('')}</div></section>`:''}
+  ${tuBox()}`;
+}
+
+
+function doekenX(mode){
+  const cnt=counts();
+  const tile=l=>{const c=cnt[l.c],s=sig(c),col=COLH[l.k],f=[c.total>=1,c.total>=2,c.done>=1,c.done>=TARGET],L=f.filter(Boolean).length;
+    const mini=mode==='mini';
+    return `<div class="pot${L===4?' done':''}${mini?' mini':''}" style="--cc:${col}"><button type="button" class="potb" data-act="goal" data-ld="${l.c}" title="${esc(l.t)}">${turtleArt(l.c,col,L)}<span class="code">${l.c}</span>${mini?'':`<span class="t">${esc(l.t)}</span>`}<span class="dots">${f.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</span></button>${mini?'':`<span class="sig ${s}">${SIGT[s]}</span><button type="button" class="btn sm" data-act="newgoal" data-ld="${l.c}">+ Datapunt</button>`}</div>`};
+  const zero=LD.filter(l=>cnt[l.c].total===0);
+  const last=`<div class="pot nogleeg"><span class="lbl">Nog leeg</span><span class="t" style="min-height:0">Begin hier, dan komt er kleur in.</span><div class="tags" style="justify-content:center">${zero.map(l=>`<button class="tag c${l.k}" style="background:none;cursor:pointer" data-act="newgoal" data-ld="${l.c}">${l.c} +</button>`).join('')||'<span class="t">Alles heeft kleur.</span>'}</div></div>`;
+  return `<div class="doeken ${mode}"${mode==='strip'?' id="tuscroll"':''}>${LD.map(tile).join('')}${mode==='six'?last:''}</div>`;
+}
+
+let tuOpen=false;
+function tuBox(){
+  const head=`<div class="wh"><h2>Jouw schildpadden</h2><div class="r"><button type="button" class="link" data-act="tab" data-tab="dekking">Details</button><button type="button" class="btn sm" data-act="tutoggle" aria-expanded="${tuOpen}">${tuOpen?'Vouw in':'Klap uit'}</button></div></div>`;
+  if(tuOpen)return `<section class="wkbox tubox" aria-label="Schildpadden">${head}${doekenX('six')}<p class="doeknote">Elk doek begint als potloodschets. 1 en 2 datapunten kleuren de schildpad, 1 en 2 uitgewerkte datapunten maken hem af.</p></section>`;
+  return `<section class="wkbox tubox" aria-label="Schildpadden">${head}<div class="wkstrip"><button type="button" class="wkarrow" data-act="wkscroll" data-dir="-1" data-t="tuscroll" aria-label="Vorige schildpadden">‹</button>${doekenX('strip')}<button type="button" class="wkarrow" data-act="wkscroll" data-dir="1" data-t="tuscroll" aria-label="Volgende schildpadden">›</button></div><div class="doeknote" style="margin-top:2px">Veeg of gebruik de pijltjes. Tik op een schildpad voor je datapunten.</div></section>`;
+}
+
+function dekking(){
+  const cnt=counts();
+  let html='<div class="grid"><div class="col">'+doeken(true)+'</div><div class="col"><div>';
+  [1,2,3,4].forEach(k=>{
+    const list=LD.filter(l=>l.k===k);
+    html+=`<div class="comp-h" style="--cc:var(${COMP[k].v})"><h3>Competentie ${k} · ${esc(COMP[k].n)}</h3></div>`;
+    list.forEach(l=>{
+      const c=cnt[l.c],s=sig(c);
+      html+=`<div class="ld" style="--cc:var(${COMP[k].v})"><span class="code">${l.c}</span><span class="t">${esc(l.t)}</span><div class="act"><span class="sig ${s}">${SIGT[s]}</span><button class="btn sm" data-act="newgoal" data-ld="${l.c}">+ Datapunt</button></div>
+       <div class="bar"><i class="l" style="width:${Math.min(100,c.total/TARGET*100)}%"></i><i style="width:${Math.min(100,c.done/TARGET*100)}%"></i></div>
+       <span class="cnt">${c.total} genoteerd · ${c.done} van ${TARGET} uitgewerkt${l.tr.length?' · vooral '+l.tr.join(', '):''}</span></div>`;
+    });
+  });
+  return html+'</div></div></div>';
+}
+
+function entryHTML(e){
+  const q=quality(e),w=weekOf(e.date);
+  const files=(e.files||[]).map(f=>/^image\//.test(f.type||'')?`<a class="thumb" href="/_blob/${esc(f.id)}" target="_blank" rel="noopener" title="${esc(f.name)}"><img src="/_blob/${esc(f.id)}" alt="${esc(f.name)}" loading="lazy"></a>`:`<a class="fchip" href="/_blob/${esc(f.id)}" target="_blank" rel="noopener">${esc(f.name)}</a>`).join('');
+  const ex=(l,v)=>v?`<p class="why"><b>${l}:</b> ${esc(v)}</p>`:'';
+  return `<article class="card entry">
+   <div class="top"><span class="d">${esc(fmtD(e.date))}${w?' · wk '+w:''}</span>${tkChip(e.track)}${STAKE[e.stake]?stakeB(e.stake):''}<span class="tags">${(e.goals||[]).map(ldTag).join('')}${(e.pds||[]).map(p=>`<span class="tag pd">${esc(p)}</span>`).join('')}${(e.tools||[]).map(p=>`<span class="tag pd">${esc(p)}</span>`).join('')}</span></div>
+   ${e.title?`<h3 class="et">${esc(e.title)}</h3>`:''}
+   <p>${esc(e.text)}</p>
+   ${ex('Mijn bijdrage',e.contribution)}${ex('Werkplek of project',e.place)}${ex('Feedback en resultaat',e.result)}${ex('Waarom bewijs',e.why)}${ex('Reflectie',e.reflection)}${ex('Bewijsstuk',e.evidence)}
+   ${files?`<div class="files">${files}</div>`:''}
+   <div class="foot"><span style="display:inline-flex;align-items:center"><span class="q ${q.n<4?'weak':''}" aria-hidden="true">${q.k.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</span><span class="q-t">${q.n===5?'Sterk datapunt':q.n>=4?'Bijna sterk':'Maak concreter'}</span></span>
+   <span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="status" role="group" aria-label="Status">${STATUS.map(s=>`<button data-act="status" data-id="${esc(e.id)}" data-s="${s}" aria-pressed="${e.status===s}">${s}</button>`).join('')}</span><button class="btn sm ghost" data-act="edit" data-id="${esc(e.id)}">Bewerk</button></span></div>
+  </article>`;
+}
+const MISS={uitwerken:e=>e.status==='Genoteerd',reflectie:e=>!(e.reflection||'').trim(),bewijs:e=>!hasEv(e),sterker:e=>quality(e).n<4};
+const MISSL={uitwerken:'Nog uitwerken',reflectie:'Reflectie ontbreekt',bewijs:'Bewijs ontbreekt',sterker:'Kan sterker'};
+function log(){
+  let list=[...S.entries].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(b.created||0)-(a.created||0));
+  if(flt.track)list=list.filter(e=>e.track===flt.track);
+  if(flt.status)list=list.filter(e=>e.status===flt.status);
+  if(flt.goal)list=list.filter(e=>(e.goals||[]).includes(flt.goal));
+  if(flt.stake)list=list.filter(e=>e.stake===flt.stake);
+  if(flt.miss)list=list.filter(MISS[flt.miss]);
+  return `<div class="sec-h"><h2>Logboek</h2><button class="btn sm" data-act="copy">Kopieer voor Excel</button></div>
+   <div class="filters">
+    <span class="seg" role="group" aria-label="Track">${[['','Alle'],...TRACKS.map(t=>[t,t])].map(([v,l])=>`<button data-act="ftrack" data-v="${esc(v)}" aria-pressed="${flt.track===v}">${esc(l)}</button>`).join('')}</span>
+    <select class="f" id="fgoal" aria-label="Leerdoel"><option value="">Alle leerdoelen</option>${LD.map(l=>`<option value="${l.c}" ${flt.goal===l.c?'selected':''}>${l.c}</option>`).join('')}</select>
+    <select class="f" id="fstatus" aria-label="Status"><option value="">Alle statussen</option>${STATUS.map(s=>`<option ${flt.status===s?'selected':''}>${s}</option>`).join('')}</select>
+    <select class="f" id="fstake" aria-label="Stake"><option value="">Alle stakes</option>${Object.keys(STAKE).map(s=>`<option value="${s}" ${flt.stake===s?'selected':''}>${STAKE[s]}</option>`).join('')}</select>
+   </div>
+   <div class="filters">${Object.keys(MISS).map(k=>`<button class="chip" style="padding:5px 10px;font-size:13px" data-act="fmiss" data-v="${k}" aria-pressed="${flt.miss===k}">${MISSL[k]} (${S.entries.filter(MISS[k]).length})</button>`).join('')}</div>
+   <div class="stack">${list.length?list.map(entryHTML).join(''):'<div class="card empty">Geen datapunten met deze filters.</div>'}</div>`;
+}
+
+function planning(){
+  const t=today(),cw=curWeek();
+  return `<div class="sec-h"><h2>Planning</h2><span class="lbl">20 studieweken</span></div>`+WEEKS.map(w=>{
+    const a=wStart(w),b=addDays(a,4),n=weekCount(w);
+    const dates=[...byDate.keys()].filter(d=>weekOf(d)===w).sort();
+    const open=openWeeks.has(w)||(cw===w&&!openWeeks.has(-w));
+    const rows=dates.map(d=>{
+      const its=byDate.get(d),logged=S.entries.some(e=>e.date===d);
+      return `<div class="day ${d<t?'past':''}"><span class="d">${esc(fmtD(d))}</span><div class="t">${its.map(p=>`<div style="margin-bottom:4px">${tkChip(p.t)} ${stakeB(p.s,p.l)}<p>${esc(p.x||'')}</p></div>`).join('')}</div><span style="display:flex;gap:8px;align-items:center">${logged?'<span class="ok" title="Datapunt gelogd">✓</span>':''}<button class="btn sm ghost" data-act="logplan" data-i="${its[0].i}" aria-label="Log ${esc(fmtD(d))}">+</button></span></div>`;
+    }).join('')||'<div class="day"><span class="d"></span><div class="t"><p>Uitloop en herkansing. Geen vaste onderdelen.</p></div></div>';
+    return `<details class="wkc ${cw===w?'now':''}" data-w="${w}" ${open?'open':''}><summary><span class="n">wk ${w}</span><span class="r">${esc(fmtD(iso(a),{day:'numeric',month:'short'}))} – ${esc(fmtD(iso(b),{day:'numeric',month:'short'}))}</span><span class="mono" style="font-size:12px;color:var(--ink-2)">${n} datapunt${n===1?'':'en'}</span></summary>${rows}</details>`;
+  }).join('');
+}
+
+const TIERS={1:{t:'Hoofdleerdoelen',c:'--accent'},2:{t:'Sterke extra interesses',c:'--c1'}};
+function techMatch(name,tools){
+  const parts=name.split('/').map(s=>s.trim().toLowerCase()).filter(Boolean),tl=(tools||[]).map(s=>String(s).toLowerCase());
+  return parts.some(p=>tl.includes(p));
+}
+function pdCard(p,per){
+  return `<article class="card pd"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="tag pd">${esc(p.id)}</span><span class="mono" style="font-size:12px;color:var(--ink-2)">${per[p.id]||0} datapunt${per[p.id]===1?'':'en'}</span></div>
+   <h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="tags">${(p.goals||[]).map(ldTag).join('')}</div>
+   ${(p.tags||[]).length?`<div class="tags" style="margin-top:8px">${p.tags.map(x=>`<span class="tag pd">${esc(x)}</span>`).join('')}</div>`:''}
+   <dl>${p.target?`<div><dt>Gewenst niveau</dt><dd>${esc(p.target)}</dd></div>`:''}${p.action?`<div><dt>Eerste actie</dt><dd>${esc(p.action)}</dd></div>`:''}</dl>
+   <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn sm" data-act="logpd" data-id="${esc(p.id)}">+ Datapunt</button><button class="btn sm ghost" data-act="editpd" data-id="${esc(p.id)}">Bewerk</button></div></article>`;
+}
+function doelen(){
+  const per=Object.fromEntries(S.pds.map(p=>[p.id,S.entries.filter(e=>(e.pds||[]).includes(p.id)).length]));
+  const sec=k=>{const g=S.pds.filter(p=>(p.tier||2)===k);
+    return `<section class="tier" style="--cc:var(${TIERS[k].c})"><div class="comp-h"><h3>${TIERS[k].t}</h3><span class="lbl">${g.length}</span></div><div class="pds">${g.map(p=>pdCard(p,per)).join('')||'<div class="card empty">Nog niets in deze groep.</div>'}</div></section>`};
+  const nT=S.tech.filter(x=>S.entries.some(e=>techMatch(x.name,e.tools))).length;
+  return `<div class="sec-h"><h2>Mijn persoonlijke leerdoelen</h2><button class="btn pri sm" data-act="newpd">Nieuw leerdoel</button></div>
+  ${sec(1)}${sec(2)}
+  <section class="tier" style="--cc:var(--green)"><div class="comp-h"><h3>Technologieën om te verkennen</h3><span class="lbl">${nT} van ${S.tech.length} verkend</span></div>
+   <div class="techs">${S.tech.map(x=>{const n=S.entries.filter(e=>techMatch(x.name,e.tools)).length;
+     return `<div class="tech ${n?'on':''}"><span class="tn">${esc(x.name)}</span><span class="mono tc">${n?n+' datapunt'+(n===1?'':'en'):'nog niet verkend'}</span><span class="ta"><button class="link" data-act="logtech" data-id="${esc(x.id)}">+ Datapunt</button><button class="x" data-act="rmtech" data-id="${esc(x.id)}" aria-label="Verwijder ${esc(x.name)}">×</button></span></div>`}).join('')||'<div class="card empty">Nog geen technologieën.</div>'}</div>
+   <form class="techadd" id="techf"><input type="text" id="t-new" placeholder="Nog een technologie, bijv. Photogrammetrie" aria-label="Nieuwe technologie" maxlength="60"><button class="btn sm" type="submit">Toevoegen</button></form>
+   <p class="hintt" style="margin:8px 0 0;font-size:12px;color:var(--ink-3)">Zet een technologie bij Skills en tools in een datapunt, dan telt hij mee als verkend.</p></section>`;
+}
+
+function render(){
+  renderHead();
+  const el=document.getElementById('app');
+  el.innerHTML=({vandaag,dekking,log,planning,portfolio,doelen})[tab]();
+  setSync();
+  centerWeek();
+}
+
+/* ---------- capture ---------- */
+let editing=null;
+function chipGroup(name,items,sel,mono,extra){
+  return `<div class="chips" data-grp="${name}">${items.map(i=>`<button type="button" class="chip ${mono?'mono':''} ${extra&&extra(i)||''}" data-v="${esc(i.v)}" aria-pressed="${sel.includes(i.v)}" ${i.t?`title="${esc(i.t)}"`:''}>${esc(i.l)}</button>`).join('')}</div>`;
+}
+const TOOLS=['Rhino','Grasshopper','Python','Revit','BonsaiBIM','Dynamo','AI/LLM','Cobot','3D-printen','GIS','VR/AR','Twinmotion'];
+function toolList(){
+  const low=TOOLS.map(x=>x.toLowerCase()),out=[...TOOLS];
+  S.tech.forEach(x=>{const parts=x.name.split('/').map(s=>s.trim().toLowerCase());if(!low.includes(x.name.toLowerCase())&&!parts.some(p=>low.includes(p))&&!out.some(o=>o.toLowerCase()===x.name.toLowerCase()))out.push(x.name)});
+  return out;
+}
+const STAKEO=[{v:'low',l:'Low'},{v:'medium',l:'Medium'},{v:'high',l:'High'},{v:'onbekend',l:'Nog onbekend'}];
+let capFiles=[],capRemoved=[],capNew=[],capSaved=false;
+const filesHTML=()=>capFiles.map(f=>`<span class="fchip">${esc(f.name)}<button type="button" data-rmfile="${esc(f.id)}" aria-label="Verwijder ${esc(f.name)}">×</button></span>`).join('');
+function openCapture(o){
+  o=o||{};
+  const e=o.entry||null; editing=e?e.id:null;
+  capFiles=e&&e.files?clone(e.files):[];capRemoved=[];capNew=[];capSaved=false;
+  const cnt=counts();
+  const tr=e?e.track:(o.track||'Project');
+  const sugg=l=>(LDM[l.v].tr.includes(tr)?'sug':'');
+  const goals=e?[...(e.goals||[])]:(o.goals||[]);
+  const hint=o.hint||'';
+  const tools=e?(e.tools||[]):(o.tools||[]);
+  const otherTools=tools.filter(x=>!toolList().includes(x)).join(', ');
+  const stake=e?(e.stake||''):(o.stake||'');
+  const more=!!(e&&(e.title||e.contribution||e.place||tools.length||e.stake||e.result))||(o.tools||[]).length>0;
+  const m=document.getElementById('modal');
+  m.innerHTML=`<div class="ov" data-act="ovclose"><form class="sheet" id="capf" role="dialog" aria-modal="true" aria-labelledby="capt">
+   <h2 id="capt">${e?'Datapunt bewerken':'Nieuw datapunt'}</h2>
+   <p class="sub">Twee zinnen zijn genoeg: wat deed je zelf, en wat leerde je ervan?</p>
+   ${hint?`<div class="plan-hint"><span><b>Planning:</b> ${esc(hint)}</span><button type="button" class="link" id="usehint">Neem over</button></div>`:''}
+   <div class="row2"><div class="fld"><label for="f-date">Datum</label><input type="date" id="f-date" value="${esc(e?e.date:(o.date||today()))}"></div>
+   <div class="fld"><span class="fl">Track</span>${chipGroup('track',TRACKS.map(t=>({v:t,l:t})),[tr])}</div></div>
+   <div class="fld"><label for="f-text">Wat deed ik concreet?</label>
+    <textarea id="f-text" placeholder="Bijv. Grasshopper-script gebouwd dat gevelpanelen varieert; eerste versie faalde op naadaansluiting, opgelost met offset-logica.">${esc(e?e.text:'')}</textarea>
+    <div class="sugg" id="f-sugg" aria-live="polite"></div>
+    <div class="starters">${['Ik bouwde…','Dit ging mis:','Ik loste het op met…','Ik leerde dat…'].map(s=>`<button type="button" data-start="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>
+   <div class="fld"><span class="fl">Minor-leerdoel (kies er een of meer)</span>${chipGroup('goals',LD.map(l=>({v:l.c,l:l.c,t:l.t})),goals,true,i=>sugg(i)+(cnt[i.v].total===0?' empty':''))}
+    <span style="font-size:12px;color:var(--ink-3)">Rode stip = nog geen bewijs. Omlijnd = past bij deze track.</span></div>
+   <div class="fld"><span class="fl">Persoonlijk leerdoel</span>${S.pds.length?chipGroup('pds',S.pds.map(p=>({v:p.id,l:p.id+' · '+p.name})),e?(e.pds||[]):(o.pds||[])):'<span style="font-size:13px;color:var(--ink-2)">Nog geen persoonlijke leerdoelen.</span>'}</div>
+   <div class="fld"><label for="f-why">Waarom is dit bewijs? (1-2 zinnen)</label><input type="text" id="f-why" value="${esc(e?e.why:'')}" placeholder="Laat zien dat ik…"></div>
+   <div class="fld"><label for="f-reflect">Reflectie</label><textarea id="f-reflect" style="min-height:72px" placeholder="Wat leerde je, en wat doe je een volgende keer anders?">${esc(e?(e.reflection||''):'')}</textarea></div>
+   <div class="fld"><label for="f-ev">Bewijsstuk (link of bestandsnaam)</label><input type="text" id="f-ev" value="${esc(e?e.evidence:'')}" placeholder="Bijv. screenshot in OneDrive/log/wk6"></div>
+   <div class="fld"><span class="fl">Bijlagen (foto, pdf, video of tekstbestand)</span>
+    ${ASSETS?`<input type="file" id="f-file" multiple accept="image/*,.pdf,.mp4,.webm,.csv,.md,.json,.txt"><div class="files" id="flist">${filesHTML()}</div><div class="cmp-note" id="fstat">Word, Excel en PowerPoint kunnen hier niet. Sla ze op als PDF of zet de link bij Bewijsstuk.</div>`:`<span class="cmp-note">Uploaden is in deze weergave niet beschikbaar. Zet een link of bestandsnaam bij Bewijsstuk.</span>`}</div>
+   <details class="more" ${more?'open':''}><summary>Meer details (titel, bijdrage, tools, stake, resultaat)</summary><div>
+    <div class="fld"><label for="f-title">Titel</label><input type="text" id="f-title" value="${esc(e?(e.title||''):'')}" placeholder="Bijv. Parametrisch gevelmodel v2"></div>
+    <div class="fld"><label for="f-contrib">Mijn persoonlijke bijdrage</label><input type="text" id="f-contrib" value="${esc(e?(e.contribution||''):'')}" placeholder="Wat deed jij, los van de rest van het team?"></div>
+    <div class="fld"><label for="f-place">Werkplek of project</label><input type="text" id="f-place" value="${esc(e?(e.place||''):'')}" placeholder="Bijv. Project 1 of de naam van je leerplek"><span class="cmp-note">Vul geen vertrouwelijke bedrijfsinformatie in.</span></div>
+    <div class="fld"><span class="fl">Skills en tools</span>${chipGroup('tools',toolList().map(x=>({v:x,l:x})),tools)}<input type="text" id="f-tools" value="${esc(otherTools)}" placeholder="Andere tools, gescheiden door komma's"></div>
+    <div class="fld"><span class="fl">Stake</span>${chipGroup('stake',STAKEO,[stake])}</div>
+    <div class="fld"><label for="f-result">Feedback en resultaat</label><input type="text" id="f-result" value="${esc(e?(e.result||''):'')}" placeholder="Wat kwam eruit, en wat zei iemand ervan?"></div>
+   </div></details>
+   <div class="fld"><span class="fl">Status</span>${chipGroup('status',STATUS.map(s=>({v:s,l:s})),[e?e.status:'Genoteerd'])}</div>
+   <div class="fld"><span class="fl">Kwaliteit</span><div class="meter" id="meter"></div></div>
+   <div class="err" id="err" role="alert"></div>
+   <div class="acts"><div>${e?`<button type="button" class="btn danger" id="del">Verwijder</button>`:''}</div><div class="r"><button type="button" class="btn" data-act="close">Annuleer</button><button type="submit" class="btn pri">Opslaan</button></div></div>
+  </form></div>`;
+  const f=document.getElementById('capf');
+  if(hint)document.getElementById('usehint').onclick=()=>{const t=document.getElementById('f-text');if(!t.value.trim()){t.value=hint+' — '}t.focus();meter()};
+  f.addEventListener('click',ev=>{
+    if(ev.target.closest('[data-act="close"]')){closeModal();return}
+    ev.stopPropagation();
+    if(sugClick(ev,'f'))return;
+    const rm=ev.target.closest('[data-rmfile]');
+    if(rm){const id=rm.dataset.rmfile;capFiles=capFiles.filter(x=>x.id!==id);if(capNew.includes(id)){capNew=capNew.filter(x=>x!==id);if(ASSETS)ASSETS.delete(id).catch(()=>{})}else capRemoved.push(id);document.getElementById('flist').innerHTML=filesHTML();meter();return}
+    const chip=ev.target.closest('.chip');
+    if(chip){const g=chip.parentElement.dataset.grp;
+      if(g==='track'||g==='status'||g==='stake'){const on=chip.getAttribute('aria-pressed')==='true';chip.parentElement.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));if(!(g==='stake'&&on))chip.setAttribute('aria-pressed','true');if(g==='track')refreshSug(chip.dataset.v)}
+      else chip.setAttribute('aria-pressed',chip.getAttribute('aria-pressed')!=='true');
+      meter();return}
+    const st=ev.target.closest('[data-start]');
+    if(st){const t=document.getElementById('f-text');t.value=(t.value&&!/\s$/.test(t.value)?t.value+' ':t.value)+st.dataset.start+' ';t.focus();meter()}
+  });
+  const fi=document.getElementById('f-file');
+  if(fi)fi.addEventListener('change',ev=>{addFiles([...ev.target.files]);ev.target.value=''});
+  f.addEventListener('input',meter);
+  setTimeout(()=>renderSugg('f'),0);
+  f.addEventListener('submit',ev=>{ev.preventDefault();saveCapture()});
+  const del=document.getElementById('del');
+  if(del)del.onclick=()=>{if(del.dataset.sure){const en=S.entries.find(x=>x.id===editing);(en&&en.files||[]).forEach(x=>{if(ASSETS)ASSETS.delete(x.id).catch(()=>{})});capSaved=true;S.entries=S.entries.filter(x=>x.id!==editing);persist();closeModal();render();toast('Datapunt verwijderd.')}else{del.dataset.sure='1';del.textContent='Zeker weten?'}};
+  document.addEventListener('keydown',escClose);
+  meter();
+  setTimeout(()=>{const t=document.getElementById('f-text');if(t)t.focus({preventScroll:true})},50);
+}
+const EXT={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',svg:'image/svg+xml',pdf:'application/pdf',mp4:'video/mp4',webm:'video/webm',csv:'text/csv',md:'text/markdown',json:'application/json',txt:'text/plain'};
+const UPERR={too_large:'Het bestand is te groot (maximaal 20 MB).',quota_or_state:'De opslag voor bijlagen is vol.',rate_limited:'Je uploadt te snel. Wacht even en probeer opnieuw.',unsupported_type:'Dit bestandstype kan niet.'};
+async function addFiles(list){
+  const st=document.getElementById('fstat');if(!st||!ASSETS)return;
+  const msgs=[];
+  for(const f of list){
+    const ext=(f.name.split('.').pop()||'').toLowerCase(),type=EXT[ext];
+    if(!type){msgs.push(`${f.name}: dit bestandstype kan niet. Gebruik een afbeelding, pdf, video, csv, md, json of txt.`);continue}
+    if(f.size>(type==='image/svg+xml'?2:20)*1048576){msgs.push(`${f.name}: te groot.`);continue}
+    try{st.textContent='Uploaden van '+f.name+'…';const r=await ASSETS.upload(f,{type});capFiles.push({id:r.id,name:f.name,type:r.contentType});capNew.push(r.id);const fl=document.getElementById('flist');if(fl)fl.innerHTML=filesHTML();meter()}
+    catch(e){msgs.push(`${f.name}: ${UPERR[e&&e.code]||'uploaden mislukt, probeer het later opnieuw.'}`)}
+  }
+  const s2=document.getElementById('fstat');if(s2)s2.textContent=msgs.join(' ')||'Klaar.';
+}
+function refreshSug(track){document.querySelectorAll('[data-grp="goals"] .chip').forEach(c=>c.classList.toggle('sug',LDM[c.dataset.v].tr.includes(track)))}
+function sel(g){return [...document.querySelectorAll(`[data-grp="${g}"] .chip[aria-pressed="true"]`)].map(c=>c.dataset.v)}
+function meter(){
+  const el=document.getElementById('meter');if(!el)return;
+  const k=[document.getElementById('f-text').value.trim().length>=70,sel('goals').length>0,document.getElementById('f-why').value.trim().length>=10,document.getElementById('f-ev').value.trim().length>0||capFiles.length>0,document.getElementById('f-reflect').value.trim().length>=15];
+  const L=['Concreet (70+ tekens)','Leerdoel gekoppeld','Waarom ingevuld','Bewijsstuk','Reflectie'];
+  el.innerHTML=k.map((x,i)=>`<span class="${x?'on':''}">${x?'✓ ':''}${L[i]}</span>`).join('');
+}
+function saveCapture(){
+  const text=document.getElementById('f-text').value.trim(),date=document.getElementById('f-date').value;
+  const err=document.getElementById('err');
+  if(!date){err.textContent='Kies een datum.';return}
+  if(text.length<3){err.textContent='Schrijf eerst kort wat je deed.';document.getElementById('f-text').focus();return}
+  const before=counts(),xp0=xp(),v=id=>document.getElementById(id).value.trim();
+  const tools=[...new Set([...sel('tools'),...v('f-tools').split(',').map(s=>s.trim()).filter(Boolean)])];
+  const o={date,track:sel('track')[0]||'Project',text,goals:sel('goals'),pds:sel('pds'),why:v('f-why'),evidence:v('f-ev'),status:sel('status')[0]||'Genoteerd',
+    title:v('f-title'),contribution:v('f-contrib'),place:v('f-place'),tools,stake:sel('stake')[0]||'',result:v('f-result'),reflection:v('f-reflect'),files:clone(capFiles)};
+  let isNew=false;
+  if(editing){const i=S.entries.findIndex(x=>x.id===editing);if(i>=0)S.entries[i]={...S.entries[i],...o}}
+  else{S.entries.push({id:'e'+Date.now().toString(36),created:Date.now(),...o});isNew=true}
+  capSaved=true;capRemoved.forEach(id=>{if(ASSETS)ASSETS.delete(id).catch(()=>{})});
+  persist();closeModal();render();
+  const after=counts();
+  let msg=isNew?`Datapunt ${S.entries.length} vastgelegd.`:'Opgeslagen.';
+  const g=o.goals[0];
+  if(g&&after[g]){if(before[g].total===0&&after[g].total>0)msg+=` ${g} is niet meer rood.`;else msg+=` ${g}: ${after[g].total} datapunt${after[g].total===1?'':'en'}, ${after[g].done} uitgewerkt.`}
+  else if(isNew)msg+=' Koppel later nog een leerdoel.';
+  const dx=xp()-xp0;if(dx>0)msg+=` +${dx} XP.`;
+  toast(msg);
+  if(isNew)confetti();
+}
+function escClose(ev){if(ev.key==='Escape')closeModal()}
+function closeModal(){if(!capSaved&&capNew.length&&ASSETS)capNew.forEach(id=>ASSETS.delete(id).catch(()=>{}));capNew=[];document.getElementById('modal').innerHTML='';document.removeEventListener('keydown',escClose);editing=null}
+let tt=null;
+function toast(m){const t=document.getElementById('toast');t.innerHTML=`<div class="toast">${esc(m)}</div>`;clearTimeout(tt);tt=setTimeout(()=>{t.innerHTML=''},4200)}
+
+/* persoonlijk leerdoel bewerken */
+function openPd(id){
+  const p=id?S.pds.find(x=>x.id===id):{id:'',name:'',desc:'',goals:[],target:'',action:''};
+  document.getElementById('modal').innerHTML=`<div class="ov" data-act="ovclose"><form class="sheet" id="pdf" role="dialog" aria-modal="true" aria-labelledby="pdt">
+   <h2 id="pdt">${id?'Leerdoel bewerken':'Nieuw persoonlijk leerdoel'}</h2><p class="sub">Meetbaar en met een eerste actie voor de komende twee weken.</p>
+   <div class="row2"><div class="fld"><label for="p-id">Code</label><input type="text" id="p-id" value="${esc(p.id)}" placeholder="PD7" ${id?'readonly':''}></div><div class="fld"><label for="p-name">Korte naam</label><input type="text" id="p-name" value="${esc(p.name)}" placeholder="Bijv. Python-scripts"></div></div>
+   <div class="fld"><span class="fl">Groep</span>${chipGroup('ptier',[{v:'1',l:'Hoofdleerdoel'},{v:'2',l:'Extra interesse'}],[String(p.tier||2)])}</div>
+   <div class="fld"><label for="p-desc">Leerdoel</label><textarea id="p-desc">${esc(p.desc)}</textarea></div>
+   <div class="fld"><span class="fl">Gekoppeld aan minor-leerdoel</span>${chipGroup('pgoals',LD.map(l=>({v:l.c,l:l.c,t:l.t})),p.goals||[],true)}</div>
+   <div class="fld"><label for="p-target">Gewenst niveau (meetbaar)</label><input type="text" id="p-target" value="${esc(p.target||'')}"></div>
+   <div class="fld"><label for="p-action">Eerste actie</label><input type="text" id="p-action" value="${esc(p.action||'')}"></div>
+   <div class="err" id="err" role="alert"></div>
+   <div class="acts"><div>${id?'<button type="button" class="btn danger" id="pdel">Verwijder</button>':''}</div><div class="r"><button type="button" class="btn" data-act="close">Annuleer</button><button type="submit" class="btn pri">Opslaan</button></div></div></form></div>`;
+  const f=document.getElementById('pdf');
+  f.addEventListener('click',ev=>{if(ev.target.closest('[data-act="close"]')){closeModal();return}ev.stopPropagation();const c=ev.target.closest('.chip');if(!c)return;if(c.parentElement.dataset.grp==='ptier')c.parentElement.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c));else c.setAttribute('aria-pressed',c.getAttribute('aria-pressed')!=='true')});
+  f.addEventListener('submit',ev=>{ev.preventDefault();
+    const code=document.getElementById('p-id').value.trim().toUpperCase(),name=document.getElementById('p-name').value.trim();
+    const err=document.getElementById('err');
+    if(!code||!name){err.textContent='Vul een code en een korte naam in.';return}
+    if(!/^[A-Z0-9_-]+$/.test(code)){err.textContent='Gebruik alleen letters en cijfers in de code, bijvoorbeeld PD11.';return}
+    if(!id&&S.pds.some(x=>x.id===code)){err.textContent='Deze code bestaat al.';return}
+    const o={id:id||code,name,tier:+(sel('ptier')[0]||2),desc:document.getElementById('p-desc').value.trim(),goals:sel('pgoals'),target:document.getElementById('p-target').value.trim(),action:document.getElementById('p-action').value.trim()};
+    if(id){const i=S.pds.findIndex(x=>x.id===id);S.pds[i]={...S.pds[i],...o}}else S.pds.push(o);
+    persist();closeModal();render();toast('Leerdoel opgeslagen.');
+  });
+  const d=document.getElementById('pdel');
+  if(d)d.onclick=()=>{if(d.dataset.sure){S.pds=S.pds.filter(x=>x.id!==id);S.entries.forEach(e=>{e.pds=(e.pds||[]).filter(x=>x!==id)});persist();closeModal();render();toast('Leerdoel verwijderd.')}else{d.dataset.sure='1';d.textContent='Zeker weten?'}};
+  document.addEventListener('keydown',escClose);
+}
+
+/* kopieer als tabel voor het Excel-logboek */
+function tsv(){
+  const clean=s=>String(s||'').replace(/[\t\r\n]+/g,' ').trim();
+  return [...S.entries].sort((a,b)=>a.date<b.date?-1:1).map(e=>{const d=pd_(e.date);
+    return [`${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`,weekOf(e.date)||'',e.track,clean(e.text),(e.goals||[]).join(', '),(e.pds||[]).join(', '),clean(e.why),clean(e.evidence),e.status].join('\t')}).join('\n');
+}
+async function copyTable(){
+  const t=tsv();
+  try{await navigator.clipboard.writeText(t);toast('Gekopieerd. Plak in je Excel-logboek onder de kopregel.');return}catch(e){}
+  document.getElementById('modal').innerHTML=`<div class="ov" data-act="ovclose"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ct"><h2 id="ct">Kopieer voor Excel</h2><p class="sub">Selecteer alles, kopieer en plak onder de kopregel van je logboek.</p><textarea class="copy" id="cp" readonly>${esc(t)}</textarea><div class="acts"><span></span><button class="btn pri" data-act="close">Sluiten</button></div></div></div>`;
+  const c=document.getElementById('cp');c.addEventListener('click',ev=>ev.stopPropagation());c.focus();c.select();document.addEventListener('keydown',escClose);
+}
+
+/* ---------- nieuwe stijl: hero, doeken, pad, confetti ---------- */
+const COLH={1:'#FFD23F',2:'#3EE6B0',3:'#FF7EB6',4:'#FF9D5C'};
+const qPicked=new Set();let qLeft=120,qTm=null;const QC=2*Math.PI*44;
+const QSTEPS=[['Project','Ik werkte aan mijn project en '],['Iets geleerd','Ik heb iets nieuws geleerd over '],['Bezoek','Ik bezocht '],['Oefenen','Ik oefende met ']];
+function hero(){
+  if(VIEW)return `<div class="vhead"><span class="lbl">Alleen-lezen weergave · stand van ${SNAPDATE}</span><h2>Mijn datapuntenlog</h2><p>Een overzicht van wat ik tijdens de minor Digital Skills Built Environment heb vastgelegd: per studieweek, per leerdoel en als logboek. De schildpadden onderaan laten per minor-leerdoel zien hoe ver mijn bewijs is.</p></div>`;
+  const t=today(),w=curWeek(),st=streak(),has=S.entries.some(e=>e.date===t);
+  const lead=has?'Vandaag staat er al een datapunt. Alles wat je nu nog toevoegt is bonus.':(st===0?'Een nieuwe reeks begint met één zin. Schrijf er nu één.':'Je zit op '+st+' '+(st===1?'week':'weken')+' op rij. Houd de reeks levend met één zin.');
+  const dl=fmtD(t,{weekday:'long',day:'numeric',month:'long'});
+  return `<div class="hero"><div><h1>Twee minuten. <em>Meer niet.</em></h1><p>${esc(lead)}</p><div class="dayb lbl" style="color:var(--paper)">${w?'Studieweek '+w+' van 20 · ':''}${esc(dl)}</div></div>
+  <button class="startb${qTm?' run':''}" type="button" data-act="qtimer" aria-label="Start de timer van twee minuten"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" id="qring" cx="50" cy="50" r="44" stroke-dasharray="${QC.toFixed(2)}" stroke-dashoffset="0"/></svg><span><span class="big" id="qbig">Start</span><span class="sm" id="qsm">2 minuten</span></span></button>
+  <form class="quick" id="qform" autocomplete="off"><label class="q" for="q-what">Wat deed je vandaag?</label>
+   <div class="qs"><span class="lbl">Of kies een kleine stap:</span>${QSTEPS.map(([l,p])=>`<button type="button" data-act="qstep" data-s="${esc(p)}">${l}</button>`).join('')}</div>
+   <div class="qrow"><input type="text" id="q-what" maxlength="300" placeholder="Bijv. Grasshopper-definitie gebouwd voor de gevel"><button class="qsave" type="submit">Opslaan +10 XP</button></div>
+   <div class="sugg" id="q-sugg" aria-live="polite"></div>
+   <div><div class="lbl" style="color:rgba(14,17,99,.7);margin-bottom:6px">Welk leerdoel?</div><div class="qchips">${LD.map(l=>`<button type="button" class="qc" data-act="qchip" data-c="${l.c}" aria-pressed="${qPicked.has(l.c)}" title="${esc(l.t)}" style="--cc:${COLH[l.k]}">${l.c}</button>`).join('')}</div></div>
+   <div class="qhint" id="qhint" aria-live="polite"></div>
+   <div class="lbl" style="color:rgba(14,17,99,.65)">Wil je meer invullen? Tik op &ldquo;Datapunt&rdquo; rechtsonder.</div></form></div>`;
+}
+function qSetRing(){const r=document.getElementById('qring');if(r)r.style.strokeDashoffset=String(QC*(1-qLeft/120))}
+function qStop(){clearInterval(qTm);qTm=null;qLeft=120;qSetRing();const b=document.querySelector('.startb'),g=document.getElementById('qbig'),m=document.getElementById('qsm');if(b)b.classList.remove('run');if(g)g.textContent='Start';if(m)m.textContent='2 minuten'}
+function qToggle(){
+  if(qTm){qStop();return}
+  const input=document.getElementById('q-what');if(input)input.focus();
+  const hint=document.getElementById('qhint');if(hint)hint.textContent='Typ nu één zin. De timer is alleen om te beginnen.';
+  const tick=()=>{const b=document.querySelector('.startb'),g=document.getElementById('qbig'),m=document.getElementById('qsm');if(!b)return;
+    b.classList.add('run');qSetRing();
+    if(qLeft<=0){clearInterval(qTm);qTm=null;toast('Tijd om! Sla op wat je hebt.');b.classList.remove('run');g.textContent='Klaar';m.textContent='opnieuw?';qLeft=120;return}
+    g.textContent=Math.floor(qLeft/60)+':'+String(qLeft%60).padStart(2,'0');m.textContent='tik om te stoppen';qLeft--};
+  tick();qTm=setInterval(tick,1000);
+}
+function quickSave(){
+  const inp=document.getElementById('q-what'),text=inp.value.trim(),hint=document.getElementById('qhint');
+  if(text.length<3){hint.textContent='Typ eerst één zin. Ook "verder met project" telt.';inp.focus();return}
+  const t=today(),pi=(byDate.get(t)||[])[0],track=pi&&TRACKS.includes(pi.t)?pi.t:'Project',xp0=xp(),before=counts();
+  S.entries.push({id:'e'+Date.now().toString(36),created:Date.now(),date:t,track,text,goals:[...qPicked],pds:[],why:'',evidence:'',status:'Genoteerd',title:'',contribution:'',place:'',tools:[],stake:'',result:'',reflection:'',files:[]});
+  const g=[...qPicked][0];qPicked.clear();qStop();persist();render();
+  const after=counts();let msg='Datapunt '+S.entries.length+' vastgelegd.';
+  if(g&&after[g])msg+=before[g].total===0?` ${g} is niet meer rood.`:` ${g}: ${after[g].total} datapunt${after[g].total===1?'':'en'}.`;
+  else msg+=' Koppel later nog een leerdoel.';
+  const dx=xp()-xp0;if(dx>0)msg+=` +${dx} XP.`;
+  toast(msg);confetti();
+}
+function turtleArt(c,col,L){
+  const ink='#0E1163',G='#3EE6B0';
+  const limbs=[['ellipse','cx="28" cy="56" rx="15" ry="7" transform="rotate(-35 28 56)"'],['ellipse','cx="92" cy="56" rx="15" ry="7" transform="rotate(35 92 56)"'],['ellipse','cx="35" cy="104" rx="11" ry="6" transform="rotate(35 35 104)"'],['ellipse','cx="85" cy="104" rx="11" ry="6" transform="rotate(-35 85 104)"'],['path','d="M54 112l6 16 6-16z"'],['ellipse','cx="60" cy="32" rx="11" ry="13"']];
+  const lm=limbs.map(l=>`<${l[0]} ${l[1]}/>`).join(''),shell='<ellipse cx="60" cy="78" rx="32" ry="38"/>',hex='<path d="M60 65l11 6.5v13L60 91l-11-6.5v-13z"/>';
+  let o=`<svg viewBox="0 0 120 140" role="img" aria-label="Doek ${esc(c)}, ${L} van 4 lagen verf"><rect width="120" height="140" fill="#FFF8EC"/>`;
+  if(L>=4)o+=`<rect width="120" height="140" fill="${col}" fill-opacity=".22"/><circle cx="100" cy="22" r="12" fill="#FFD23F"/><g fill="none" stroke="#2E8B9A" stroke-width="3" stroke-linecap="round"><path d="M6 130q6-5 12 0t12 0"/><path d="M84 132q6-5 12 0t12 0"/></g>`;
+  o+=`<g fill="none" stroke="${ink}" stroke-opacity=".28" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round">${lm}${shell}${hex}</g>`;
+  if(L>=2)o+=`<g fill="${G}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round">${lm}</g>`;
+  if(L>=1)o+=`<g fill="${col}" stroke="${ink}" stroke-width="3">${shell}</g>`;
+  if(L>=3)o+=`<g fill="none" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">${hex}<path d="M60 65V42M71 71.5l17-9M71 84.5l17 9M60 91v24M49 84.5l-17 9M49 71.5l-17-9"/></g><ellipse cx="48" cy="56" rx="7" ry="4" fill="#fff" fill-opacity=".35"/><circle cx="55" cy="29" r="2.6" fill="${ink}"/><circle cx="65" cy="29" r="2.6" fill="${ink}"/><path d="M55 37q5 4 10 0" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  if(L>=4)o+='<path d="M16 24l3 5m-8 4h5M96 74l4-3m2 12l5 1" stroke="#FFD23F" stroke-width="3" stroke-linecap="round"/>';
+  return o+'</svg>';
+}
+function doeken(wide){
+  const cnt=counts();
+  return `<div class="doeken${wide?' wide':''}">${LD.map(l=>{const c=cnt[l.c],s=sig(c),col=COLH[l.k];
+    const f=[c.total>=1,c.total>=2,c.done>=1,c.done>=TARGET],L=f.filter(Boolean).length;
+    return `<div class="pot${L===4?' done':''}" style="--cc:${col}"><button type="button" class="potb" data-act="goal" data-ld="${l.c}" aria-label="${l.c}: ${c.total} genoteerd, ${c.done} uitgewerkt. Toon in logboek">${turtleArt(l.c,col,L)}<span class="code">${l.c}</span><span class="t">${esc(l.t)}</span><span class="dots" aria-hidden="true">${f.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</span></button><span class="sig ${s}">${SIGT[s]}</span><button type="button" class="btn sm" data-act="newgoal" data-ld="${l.c}">+ Datapunt</button></div>`}).join('')}</div>
+  <p class="doeknote">Elk doek begint als potloodschets. 1 en 2 datapunten kleuren de schildpad, 1 en 2 uitgewerkte datapunten maken hem af. Zo volgt het doek je rood, oranje en groen.</p>`;
+}
+function trail(){
+  const cw=curWeek(),xs=[60,153,247,340],pts=[];
+  for(let w=1;w<=20;w++){const r=Math.floor((w-1)/4),i=(w-1)%4;pts.push([r%2?xs[3-i]:xs[i],56+r*104])}
+  let d='M'+pts[0].join(' ');
+  for(let i=1;i<20;i++){const a=pts[i-1],b=pts[i];if(a[1]===b[1])d+=' L'+b.join(' ');else{const sd=a[0]>200?392:8;d+=` L${a[0]} ${a[1]} C${sd} ${a[1]} ${sd} ${b[1]} ${b[0]} ${b[1]}`}}
+  let sv=`<path d="${d}" fill="none" stroke="rgba(255,248,236,.25)" stroke-width="10" stroke-linecap="round" stroke-dasharray="1 16"/>`;
+  pts.forEach((p,i)=>{const w=i+1,n=weekCount(w),cur=w===cw,fut=cw&&w>cw;
+    const fill=n>=2?'#3EE6B0':n===1?'#FFD23F':'#1E4D2B';
+    sv+=`<g class="wkn" data-act="wk" data-w="${w}" tabindex="0" role="button" aria-label="Week ${w}: ${n} datapunt${n===1?'':'en'}">`;
+    if(cur)sv+=`<circle class="pulse" cx="${p[0]}" cy="${p[1]}" r="26" fill="none" stroke="#FFF8EC" stroke-width="3"/>`;
+    sv+=`<circle class="nd" cx="${p[0]}" cy="${p[1]}" r="26" fill="${fill}" stroke="${cur?'#FFF8EC':'rgba(255,248,236,.4)'}" stroke-width="${cur?4:2}" ${fut&&!n?'opacity=".6"':''}/>`;
+    sv+=`<text x="${p[0]}" y="${p[1]+8}" text-anchor="middle" font-size="22" fill="${n?'#0E1163':'#FFF8EC'}">${w}</text>`;
+    sv+=`<text class="lb" x="${p[0]}" y="${p[1]+44}" text-anchor="middle" fill="#FFF8EC" opacity=".8">${n?n+' punt'+(n>1?'en':''):(fut?'':'leeg')}</text>`;
+    if(cur)sv+=`<text class="lb" x="${p[0]}" y="${p[1]+58}" text-anchor="middle" fill="#FFD23F" font-size="11">▲ JIJ BENT HIER</text>`;
+    sv+='</g>'});
+  return `<div class="trailwrap"><svg class="trail" viewBox="0 0 400 560" role="group" aria-label="Pad met 20 studieweken">${sv}</svg></div><div class="wk-l"><span>Tik op een week voor de planning</span><span>doel: 2 per week</span></div>`;
+}
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cv=document.getElementById('fx'),x=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#FFD23F','#3EE6B0','#FF7EB6','#FF7A3D','#FFF8EC'];
+  const ps=Array.from({length:90},()=>({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*14,vy:-Math.random()*16-4,r:Math.random()*6+3,c:cols[Math.random()*5|0],a:Math.random()*6}));
+  let f=0;(function go(){x.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore()});
+    if(++f<110)requestAnimationFrame(go);else x.clearRect(0,0,cv.width,cv.height)})();
+}
+
+/* ---------- weken: opgevouwen strip en uitgevouwen pad ---------- */
+let wkOpen=false;
+function weekBox(){
+  const cw=curWeek();
+  const head=`<div class="wh"><h2>Weken</h2><div class="r"><span class="lbl">1–2 per week</span><button type="button" class="btn sm" data-act="wktoggle" aria-expanded="${wkOpen}">${wkOpen?'Vouw in':'Klap uit'}</button></div></div>`;
+  if(wkOpen)return `<section class="wkbox" aria-label="Weken">${head}${trail()}</section>`;
+  const nodes=WEEKS.map(w=>{const n=weekCount(w),f=cw&&w>cw;
+    return `<button type="button" class="wkn2${n>=2?' f2':n===1?' f1':''}${cw===w?' now':''}${f?' fut':''}" data-act="wk" data-w="${w}" aria-label="Week ${w}: ${n} datapunt${n===1?'':'en'}. Open de planning van deze week"><span class="nd">${w}</span><span class="lb">${n?n+' punt'+(n>1?'en':''):(f?'':'leeg')}${cw===w?' · nu':''}</span></button>`}).join('');
+  return `<section class="wkbox" aria-label="Weken">${head}<div class="wkstrip"><button type="button" class="wkarrow" data-act="wkscroll" data-dir="-1" aria-label="Eerdere weken">‹</button><div class="wkscroll" id="wkscroll">${nodes}</div><button type="button" class="wkarrow" data-act="wkscroll" data-dir="1" aria-label="Latere weken">›</button></div><div class="doeknote" style="margin-top:4px">Veeg of gebruik de pijltjes. Tik op een week voor de planning.</div></section>`;
+}
+function centerWeek(){
+  const sc=document.getElementById('wkscroll');if(!sc)return;
+  const el=sc.querySelector('.now')||sc.querySelector('.wkn2');if(!el)return;
+  sc.scrollLeft=el.offsetLeft-sc.clientWidth/2+el.offsetWidth/2-sc.offsetLeft;
+}
+
+/* ---------- leerdoel-suggesties ---------- */
+const GKW={
+ '1.1':['onderzoeksvraag','hoofdvraag','deelvraag','onderzoeksopzet','methode','plan van aanpak','vraagstelling','ontwerpvraag','probleemstelling','literatuur','bronnen'],
+ '1.2':['data','dataset','analyse','analyser','gis','meting','meten','enquete','interview','puntenwolk','point cloud','lidar','scan','statistiek','grafiek','vergelijk','kaart','qgis'],
+ '1.3':['prototype','prototyp','grasshopper','rhino','python','script','code','coder','cobot','robot','3d-print','3d print','print','revit','dynamo','bonsai','bim','vr','ar','unity','twinmotion','ollama','laser','frees','fabricage','fabrication','model','workshop','demo','parametri','tool','bouwen','gebouwd','software'],
+ '1.4':['reflect','feedback','stakeholder','opdrachtgever','valideer','validatie','getest','testen','test','evaluatie','evalueer','impact','gebruiker','terugkoppeling'],
+ '2.1':['groep','team','samen','samenwerk','groepje','overleg','taakverdeling','rollen','meeting','vergadering','standup','teamgenoot','klasgenoot','project'],
+ '2.2':['presentatie','presenteer','pitch','poster','visualis','render','communic','tussenpresentatie','eindpresentatie','verslag','infographic','uitgelegd','uitleg','filmpje','video','beeld'],
+ '2.3':['netwerk','speeddate','bedrijf','bedrijven','bezoek','bezocht','museum','beurs','lezing','meetup','linkedin','leerplek','kennisdeling','gastles','excursie','kennismaking','contact','locatie','nxt','newmakers'],
+ '3.1':['leerdoel','zelfscan','persoonlijk','bijsturen','bijgestuurd','doelen','voortgang','planning','portfolio','bewijslast'],
+ '3.2':['geleerd','leren','oefen','cursus','tutorial','datacamp','zelfstandig','softskill','houding','doorzett','fout','opnieuw','verbeterd'],
+ '3.3':['innovatie','nieuwe tool','trend','ontdekt','verken','digital twin','machine learning','technologie','ai','nieuw','toekomst','werkveld','digitalisering'],
+ '4.1':['professioneel','afspraak','deadline','op tijd','mail','verantwoordelijk','hbo','beroeps','ethiek','planning gehaald','voorbereid','voorbereiden']
+};
+const STOPW=new Set('voor met maar niet naar over door deze die dat wat werd hebben heeft heb zijn waren nog ook wel veel meer waar toen omdat eerste verder vandaag gisteren morgen gedaan doen deed gemaakt maken'.split(' '));
+const norm_=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const toks=s=>norm_(s).match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[];
+function suggestGoals(text){
+  const t=' '+norm_(text)+' ',ws=toks(text),sc={},why={};
+  LD.forEach(l=>{sc[l.c]=0;why[l.c]=[]});
+  for(const [c,kws] of Object.entries(GKW))for(const k of kws){
+    const hit=k.includes(' ')||k.length<=3?new RegExp('(^|[^a-z0-9])'+k.replace(/[-\/]/g,'.')+'([^a-z0-9]|$)').test(t):ws.some(w=>k.length>=5?w.includes(k):w.startsWith(k));
+    if(hit){sc[c]+=2;if(why[c].length<2)why[c].push(k)}
+  }
+  // leer van eerdere datapunten met een gekoppeld leerdoel
+  const mine=new Set(ws.filter(w=>w.length>=5&&!STOPW.has(w)));
+  if(mine.size)S.entries.forEach(e=>{if(!(e.goals||[]).length)return;const ew=new Set(toks(e.text+' '+(e.title||'')).filter(w=>w.length>=5));let n=0;mine.forEach(w=>{if(ew.has(w))n++});if(n)e.goals.forEach(g=>{if(g in sc){sc[g]+=Math.min(n,2)*.75;if(!why[g].includes('eerder')&&why[g].length<2)why[g].push('eerder')}})});
+  return LD.map(l=>({c:l.c,k:l.k,s:sc[l.c],w:why[l.c]})).filter(x=>x.s>=1.5).sort((a,b)=>b.s-a.s).slice(0,3);
+}
+let SAMPLE=null;(async()=>{try{if(window.claude&&window.claude.use)SAMPLE=await window.claude.use('sample')}catch(e){}})();
+const aiRes={q:null,f:null};
+function sugCtx(w){
+  if(w==='q'){const i=document.getElementById('q-what');return {el:document.getElementById('q-sugg'),text:i?i.value:'',picked:[...qPicked],act:'qsg'}}
+  const i=document.getElementById('f-text');return {el:document.getElementById('f-sugg'),text:i?i.value:'',picked:sel('goals'),act:'fsg'};
+}
+const shortT=c=>{const t=LDM[c].t;return t.length>34?t.slice(0,32).replace(/\s+\S*$/,'')+'…':t};
+function renderSugg(w){
+  const x=sugCtx(w);if(!x.el)return;
+  if(x.text.trim().length<6){x.el.innerHTML='';aiRes[w]=null;return}
+  const list=suggestGoals(x.text);
+  const ai=aiRes[w]&&aiRes[w].text===x.text.trim()?aiRes[w]:null;
+  const btn=(c,small)=>`<button type="button" class="sg${x.picked.includes(c)?' on':''}" data-act="${x.act}" data-c="${c}" aria-pressed="${x.picked.includes(c)}" title="${esc(LDM[c].t)}" style="--cc:${COLH[LDM[c].k]}"><b>${c}</b> ${esc(shortT(c))}${small?` <small>${esc(small)}</small>`:''}</button>`;
+  let h='';
+  if(ai&&ai.list)h+=`<span class="lbl">Claude denkt</span>`+ai.list.map(r=>btn(r.code,r.reden)).join('');
+  else if(list.length)h+=`<span class="lbl">Past misschien bij</span>`+list.map(s=>btn(s.c,s.w.length?'('+s.w.join(', ')+')':'')).join('');
+  else h+=`<span class="lbl">Nog geen idee welk leerdoel</span>`;
+  if(SAMPLE&&!ai)h+=`<button type="button" class="sgai" data-act="sgai" data-w="${w}"${aiRes[w]&&aiRes[w].busy?' disabled':''}>${aiRes[w]&&aiRes[w].busy?'Claude denkt na…':'✦ Vraag Claude'}</button>`;
+  if(aiRes[w]&&aiRes[w].err&&!ai)h+=`<span class="sgnote">${esc(aiRes[w].err)}</span>`;
+  if(ai)h+=`<span class="sgnote">Tik om te kiezen. Typ verder voor nieuwe suggesties.</span>`;
+  x.el.innerHTML=h;
+}
+function pickGoal(w,c){
+  if(w==='q'){if(qPicked.has(c))qPicked.delete(c);else qPicked.add(c);document.querySelectorAll(`.qc[data-c="${c}"]`).forEach(b=>b.setAttribute('aria-pressed',qPicked.has(c)));const h=document.getElementById('qhint');if(h)h.textContent=qPicked.has(c)?c+': '+LDM[c].t:''}
+  else{const ch=document.querySelector(`[data-grp="goals"] .chip[data-v="${c}"]`);if(ch)ch.setAttribute('aria-pressed',ch.getAttribute('aria-pressed')!=='true');meter()}
+  renderSugg(w);
+}
+function sugClick(ev,w){
+  const b=ev.target.closest('.sg');if(b){pickGoal(w,b.dataset.c);return true}
+  const a=ev.target.closest('.sgai');if(a){askClaude(a.dataset.w||w);return true}
+  return false;
+}
+async function askClaude(w){
+  const x=sugCtx(w),text=x.text.trim();if(!SAMPLE||text.length<6||(aiRes[w]&&aiRes[w].busy))return;
+  aiRes[w]={busy:true,text};renderSugg(w);
+  const prompt=`Je helpt een hbo-student van de minor Digital Skills Built Environment (Hogeschool Rotterdam) om een datapunt aan minor-leerdoelen te koppelen.\n\nLeerdoelen:\n${LD.map(l=>l.c+' ('+COMP[l.k].n+'): '+l.t).join('\n')}\n\nDatapunt van de student:\n"""${text}"""\n\nKies de 1 tot 3 leerdoelen die het best passen, de beste eerst. Geef per leerdoel een korte reden in het Nederlands van hoogstens 8 woorden. Antwoord alleen met JSON in deze vorm: {"suggesties":[{"code":"1.3","reden":"bouwt een prototype in Grasshopper"}]}`;
+  try{
+    const v=await SAMPLE.json(prompt,{modelTier:'quick'});
+    const arr=(v&&(v.suggesties||v.suggestions))||[];
+    const list=arr.filter(r=>r&&LDM[String(r.code)]).slice(0,3).map(r=>({code:String(r.code),reden:String(r.reden||r.reason||'').slice(0,80)}));
+    aiRes[w]=list.length?{text,list}:{text,err:'Claude vond geen passend leerdoel. Kies er zelf een.'};
+  }catch(e){
+    const c=e&&e.code;
+    if(c==='not_granted'||c==='capability_disabled'||c==='unavailable'){SAMPLE=null;aiRes[w]={text,err:'Vragen aan Claude kan hier niet. Gebruik de suggesties of kies zelf.'}}
+    else if(c==='rate_limited')aiRes[w]={text,err:'Even te veel vragen achter elkaar. Probeer het zo opnieuw.'};
+    else aiRes[w]={text,err:'Dat lukte niet. Probeer het nog eens.'};
+  }
+  const now=sugCtx(w);if(now.text.trim()!==text&&aiRes[w].list){/* tekst veranderd: toon toch het antwoord niet meer */aiRes[w]=null}
+  renderSugg(w);
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',ev=>{
+  const a=ev.target.closest('[data-act]');if(!a)return;
+  const act=a.dataset.act;
+  if(act==='qtimer'){qToggle();return}
+  if(act==='qsg'||act==='sgai'){sugClick(ev,'q');return}
+  if(act==='wktoggle'){wkOpen=!wkOpen;render();return}
+  if(act==='tutoggle'){tuOpen=!tuOpen;render();return}
+  if(act==='wkscroll'){const sc=document.getElementById(a.dataset.t||'wkscroll');if(sc)sc.scrollBy({left:+a.dataset.dir*sc.clientWidth*.7,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});return}
+  if(act==='qstep'){const i=document.getElementById('q-what');i.value=a.dataset.s;i.focus();return}
+  if(act==='qchip'){const c=a.dataset.c;if(qPicked.has(c))qPicked.delete(c);else qPicked.add(c);a.setAttribute('aria-pressed',qPicked.has(c));document.getElementById('qhint').textContent=qPicked.has(c)?c+': '+LDM[c].t:'';return}
+  if(act==='wk'){openWeeks.add(+a.dataset.w);openWeeks.delete(-a.dataset.w);tab='planning';render();window.scrollTo({top:0});return}
+  if(act==='ovclose'){if(ev.target===a)closeModal();return}
+  if(act==='close'){closeModal();return}
+  if(act==='tab'){tab=a.dataset.tab;render();window.scrollTo({top:0});return}
+  if(act==='new'){openCapture({});return}
+  if(act==='newgoal'){const l=LDM[a.dataset.ld];openCapture({goals:[a.dataset.ld],track:l&&l.tr[0]||'Project'});return}
+  if(act==='goal'){flt={track:'',status:'',goal:a.dataset.ld,miss:'',stake:''};tab='log';render();window.scrollTo({top:0});return}
+  if(act==='logplan'){const p=PLAN[+a.dataset.i];openCapture({date:p.d,track:TRACKS.includes(p.t)?p.t:'K&V',hint:p.x,goals:[],stake:p.s});return}
+  if(act==='gaps'){showAllGaps=!showAllGaps;render();return}
+  if(act==='status'){const e=S.entries.find(x=>x.id===a.dataset.id);if(e&&e.status!==a.dataset.s){e.status=a.dataset.s;persist();render()}return}
+  if(act==='edit'){const e=S.entries.find(x=>x.id===a.dataset.id);if(e)openCapture({entry:e});return}
+  if(act==='ftrack'){flt.track=a.dataset.v;render();return}
+  if(act==='fmiss'){flt.miss=flt.miss===a.dataset.v?'':a.dataset.v;render();return}
+  if(act==='copy'){copyTable();return}
+  if(act==='newpd'){openPd();return}
+  if(act==='editpd'){openPd(a.dataset.id);return}
+  if(act==='logtech'){const x=S.tech.find(q=>q.id===a.dataset.id);if(x){const tl=toolList();openCapture({tools:tl.includes(x.name)?[x.name]:(x.name.split('/').map(s=>s.trim()).filter(s=>tl.includes(s)).slice(0,1))});}return}
+  if(act==='rmtech'){S.tech=S.tech.filter(q=>q.id!==a.dataset.id);persist();render();return}
+  if(act==='logpd'){openCapture({pds:[a.dataset.id],goals:(S.pds.find(p=>p.id===a.dataset.id)||{goals:[]}).goals.slice(0,1)});return}
+});
+document.addEventListener('submit',ev=>{
+  if(ev.target.id==='qform'){ev.preventDefault();quickSave();return}
+  if(ev.target.id!=='techf')return;
+  ev.preventDefault();
+  const i=document.getElementById('t-new'),n=i.value.trim();
+  if(!n)return;
+  if(S.tech.some(x=>x.name.toLowerCase()===n.toLowerCase())){toast('Deze technologie staat er al.');return}
+  S.tech.push({id:'t'+Date.now().toString(36),name:n});persist();render();toast(n+' toegevoegd.');
+});
+document.addEventListener('change',ev=>{
+  if(ev.target.id==='fgoal'){flt.goal=ev.target.value;render()}
+  if(ev.target.id==='fstatus'){flt.status=ev.target.value;render()}
+  if(ev.target.id==='fstake'){flt.stake=ev.target.value;render()}
+});
+document.addEventListener('keydown',ev=>{
+  if((ev.key==='Enter'||ev.key===' ')&&ev.target.classList&&(ev.target.classList.contains('petal')||ev.target.classList.contains('wkn'))){ev.preventDefault();ev.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
+});
+document.addEventListener('toggle',ev=>{
+  const d=ev.target;if(!d.classList||!d.classList.contains('wkc'))return;
+  const w=+d.dataset.w;
+  if(d.open){openWeeks.add(w);openWeeks.delete(-w)}else{openWeeks.delete(w);openWeeks.add(-w)}
+},true);
+
+
+/* ---------- uitbreidingen ---------- */
+let ASSETS=null;
+(async()=>{try{if(window.claude&&window.claude.use)ASSETS=await window.claude.use('assets')}catch(e){}})();
+const COMPS=[1,2,3,4];
+const COMPDESC={1:'Je onderzoekt en vergelijkt digitale technieken en tools en zet ze om naar een praktische casus.',2:'Je werkt samen in een digitale context en gebruikt de verschillen in expertise binnen het team.',3:'Je bepaalt je eigen positie, stuurt je leerproces bij en deelt kennis.',4:'Je handelt professioneel als HBO-er en werkt oplossingsgericht aan het vraagstuk.'};
+const PROMPTS={
+ 1:['Welke digitale tool of techniek heb je onderzocht of toegepast, en waarom koos je die boven een alternatief?','Hoe heb je data of resultaten kritisch beoordeeld?','Wat zou je nu anders aanpakken?'],
+ 2:['Hoe gebruikte je in je team de verschillen in expertise?','Wat deed jij om samenwerking en overdracht beter te maken?','Welke feedback kreeg je van teamgenoten of opdrachtgever?'],
+ 3:['Welke persoonlijke leerdoelen heb je bijgestuurd, en op basis waarvan?','Welke nieuwe tool of werkwijze heb je zelfstandig eigen gemaakt?','Waar sta je nu in de digitalisering van de gebouwde omgeving?'],
+ 4:['Hoe heb je professioneel gehandeld (afspraken, communicatie, kwaliteit)?','Welk moment liet het best zien hoe jij werkt als HBO-er?']
+};
+const words=s=>(String(s||'').trim().match(/\S+/g)||[]).length;
+const refl=k=>(S.reflections||{})[k]||'';
+const CHECKS=[
+ {id:'goals',t:'Persoonlijke leerdoelen opgesteld en door een docent gevalideerd',d:'week 3'},
+ {id:'cover1',t:'Elk minor-leerdoel heeft minimaal 1 datapunt',auto:()=>{const c=counts();return LD.every(l=>c[l.c].total>0)}},
+ {id:'cover2',t:'Elk minor-leerdoel heeft minimaal 2 uitgewerkte bewijsstukken',auto:()=>{const c=counts();return LD.every(l=>c[l.c].done>=TARGET)}},
+ {id:'refl2',t:'Reflectie geschreven op minimaal 2 competenties',d:'vr 30 okt',auto:()=>COMPS.filter(k=>words(refl(k))>=40).length>=2},
+ {id:'consult',t:'Verplicht 1-op-1 consult met een docent over je datalogboek',d:'6 en 13 nov'},
+ {id:'matrix',t:'Dekkingsmatrix ingevuld',d:'20 nov'},
+ {id:'formatief',t:'Formatief portfolio ingeleverd',d:'20 nov'},
+ {id:'feedback',t:'Feedback van het formatief assessment verwerkt',d:'25 en 27 nov'},
+ {id:'draad',t:'Rode draad tussen alle tracks opgeschreven',d:'11 dec'},
+ {id:'bedrijf',t:'Bedrijfsbeoordeling en presentatie bij je leerplek',d:'4 en 11 jan'},
+ {id:'train',t:'Assessment geoefend met vragen aan elkaar',d:'8 jan'},
+ {id:'final',t:'Portfolio ingeleverd, maandag voor 9:00',d:'18 jan'}
+];
+const DEADS=[{d:'2026-11-20',t:'Formatief portfolio inleveren'},{d:'2027-01-18',t:'Portfolio inleveren, 9:00'},{d:'2027-01-21',t:'Portfolio-assessment (21 en 22 jan)'},{d:'2027-02-01',t:'Herkansing portfolio, alleen indien nodig'}];
+const chkDone=c=>c.auto?c.auto():!!S.checks[c.id];
+function xp(){
+  let x=0;
+  S.entries.forEach(e=>{x+=10;if((e.goals||[]).length)x+=5;if((e.why||'').trim().length>=10)x+=5;if(hasEv(e))x+=5;if((e.reflection||'').trim().length>=15)x+=10;if(e.status==='Uitgewerkt')x+=15;if(e.status==='In portfolio')x+=25});
+  COMPS.forEach(k=>{if(words(refl(k))>=40)x+=25});
+  CHECKS.forEach(c=>{if(!c.auto&&S.checks[c.id])x+=10});
+  return x;
+}
+function xpBlock(){const x=xp(),l=Math.floor(x/100)+1;return `<div class="xp"><div class="xl"><span>Niveau ${l}</span><span>${x} XP</span></div><div class="pbar" role="progressbar" aria-valuenow="${x%100}" aria-valuemin="0" aria-valuemax="100" aria-label="Voortgang naar niveau ${l+1}"><i style="width:${x%100}%"></i></div></div>`}
+function nextStep(t,gaps){
+  if(VIEW)return '';
+  const cnt=counts();let o=null;
+  const ti=byDate.get(t)||[];
+  const snip=e=>(e.title||e.text||'').slice(0,60);
+  if(ti.length&&!S.entries.some(e=>e.date===t))o={m:2,h:'Log wat je vandaag deed',p:'Het staat nog vers in je hoofd. Eén of twee zinnen is genoeg.',b:'Start met vastleggen',a:`data-act="logplan" data-i="${ti[0].i}"`};
+  else if(gaps.length){const its=byDate.get(gaps[0]);o={m:2,h:'Vul '+fmtD(gaps[0])+' in',p:(its.find(p=>p.x)||{x:'Er stond iets in je planning.'}).x.slice(0,110),b:'Invullen',a:`data-act="logplan" data-i="${its[0].i}"`}}
+  else{
+    const nr=[...S.entries].sort((a,b)=>a.date<b.date?1:-1).find(e=>!(e.reflection||'').trim());
+    const zero=LD.find(l=>cnt[l.c].total===0);
+    const uw=[...S.entries].find(e=>e.status==='Genoteerd'&&(e.goals||[]).length);
+    if(nr)o={m:3,h:'Voeg een reflectie toe',p:`Bij "${snip(nr)}". Wat leerde je, en wat doe je een volgende keer anders?`,b:'Reflectie schrijven',a:`data-act="edit" data-id="${esc(nr.id)}"`};
+    else if(zero)o={m:5,h:`Zoek bewijs voor ${zero.c}`,p:zero.t,b:'Datapunt toevoegen',a:`data-act="newgoal" data-ld="${zero.c}"`};
+    else if(uw)o={m:15,h:'Werk een datapunt uit',p:`Maak "${snip(uw)}" een volwaardig bewijsstuk met reflectie.`,b:'Openen',a:`data-act="edit" data-id="${esc(uw.id)}"`};
+  }
+  if(!o)return `<section class="card next"><span class="lbl">Volgende kleine stap</span><h3>Alles is bijgewerkt</h3><p>Je hoeft nu niets te doen. Kijk bij Portfolio wat er nog op je lijst staat.</p><div class="next-f">${xpBlock()}</div></section>`;
+  return `<section class="card next"><span class="lbl">Volgende kleine stap · ± ${o.m} min</span><h3>${esc(o.h)}</h3><p>${esc(o.p)}</p><div class="next-f"><button class="btn pri" ${o.a}>${esc(o.b)} →</button>${xpBlock()}</div></section>`;
+}
+function portfolio(){
+  const t=today(),done=CHECKS.filter(chkDone).length;
+  const days=d=>Math.round((pd_(d)-pd_(t))/864e5);
+  const dl=DEADS.filter(x=>x.d>=t);
+  const cnt=counts();
+  return `<div class="sec-h"><h2>Portfolio in beeld</h2><span class="lbl">${done} van ${CHECKS.length} klaar</span></div>
+  <div class="pbar g" style="margin:-4px 0 18px"><i style="width:${done/CHECKS.length*100}%"></i></div>
+  <div class="grid"><div class="col">
+   ${dl.length?`<section><div class="sec-h"><h2>Deadlines</h2></div><div class="card">${dl.map(x=>{const n=days(x.d);return `<div class="gap-row"><span class="d">${esc(fmtD(x.d,{day:'numeric',month:'short',year:'numeric'}))}</span><span class="t">${esc(x.t)}</span><span class="mono" style="font-size:12px;color:var(--ink-2)">${n===0?'vandaag':n===1?'morgen':'over '+n+' d'}</span></div>`}).join('')}</div></section>`:''}
+   <section><div class="sec-h"><h2>Checklist</h2><span class="lbl">automatisch of zelf afvinken</span></div><div class="card">${CHECKS.map(c=>{const d=chkDone(c);return `<label class="ck ${d?'done':''}"><input type="checkbox" ${d?'checked':''} ${c.auto?'disabled':''} ${c.auto?'':`data-act="chk" data-id="${c.id}"`}><span class="ct">${esc(c.t)}${c.auto?'<span class="au">automatisch</span>':''}</span><span class="cd">${esc(c.d||'')}</span></label>`}).join('')}</div></section>
+  </div><div class="col">
+   <section><div class="sec-h"><h2>Reflectie per competentie</h2><span class="lbl">40 woorden telt als klaar</span></div><div class="stack">
+   ${COMPS.map(k=>{const n=words(refl(k));const lds=LD.filter(l=>l.k===k).map(l=>l.c);const ev=S.entries.filter(e=>(e.goals||[]).some(g=>lds.includes(g))).sort((a,b)=>a.date<b.date?1:-1).slice(0,3);
+    return `<article class="card refl" style="--cc:var(${COMP[k].v})"><div class="comp-h"><h3>Competentie ${k} · ${esc(COMP[k].n)}</h3></div><p class="why" style="margin:0;font-size:14px;color:var(--ink-2)">${esc(COMPDESC[k])}</p><ul>${PROMPTS[k].map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+    <textarea id="refl-${k}" data-k="${k}" rows="6" aria-label="Reflectie competentie ${k}" placeholder="Schrijf je reflectie…">${esc(refl(k))}</textarea>
+    <div class="rf"><span class="mono ${n>=40?'ok':''}" id="wc-${k}">${n} woorden</span><span>${lds.join(', ')}: ${lds.reduce((a,c)=>a+cnt[c].total,0)} datapunten</span></div>
+    ${ev.length?`<details><summary>Bewijs uit je log</summary><div>${ev.map(e=>`${esc(fmtD(e.date))}: ${esc((e.title||e.text).slice(0,90))}`).join('<br>')}</div></details>`:''}</article>`}).join('')}
+   </div></section>
+  </div></div>`;
+}
+let rt=null;
+document.addEventListener('input',ev=>{
+  if(ev.target.id==='q-what'){renderSugg('q');return}
+  if(ev.target.id==='f-text'){renderSugg('f')}
+  const k=ev.target.dataset&&ev.target.dataset.k;if(!k)return;
+  S.reflections[k]=ev.target.value;const n=words(ev.target.value);
+  const el=document.getElementById('wc-'+k);if(el){el.textContent=n+' woorden';el.classList.toggle('ok',n>=40)}
+  clearTimeout(rt);rt=setTimeout(persist,700);
+});
+async function exportData(){
+  const data=JSON.stringify({app:'datapuntenlog-dgo',exported:new Date().toISOString(),...clone(S)},null,2);
+  let dl=null;try{dl=await window.claude.use('downloads')}catch(e){}
+  if(dl){try{await dl.save({filename:'datapuntenlog-dgo-'+today()+'.json',data});toast('Back-up aangeboden om op te slaan.');return}catch(e){if(e&&e.code==='declined')return}}
+  document.getElementById('modal').innerHTML=`<div class="ov" data-act="ovclose"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="xt"><h2 id="xt">Exporteer mijn gegevens</h2><p class="sub">Kopieer deze tekst en bewaar hem in een bestand met de naam datapuntenlog.json. Importeren werkt met dat bestand.</p><textarea class="copy" id="cp" readonly>${esc(data)}</textarea><div class="acts"><span></span><button class="btn pri" data-act="close">Sluiten</button></div></div></div>`;
+  const c=document.getElementById('cp');c.addEventListener('click',e=>e.stopPropagation());c.focus();c.select();document.addEventListener('keydown',escClose);
+}
+const safeName=s=>String(s||'bestand').replace(/[\\/:*?"<>|\u0000-\u001f]+/g,'_').slice(0,80)||'bestand';
+async function exportZip(){
+  if(!window.JSZip){toast('Zip maken lukt hier niet. Gebruik "Exporteer mijn gegevens" voor de gewone back-up.');return}
+  let dl=null;try{dl=await window.claude.use('downloads')}catch(e){}
+  if(!dl){toast('Opslaan van een zipbestand kan in deze weergave niet. Open de pagina in de Claude-app of browser.');return}
+  const n=S.entries.reduce((a,e)=>a+(e.files||[]).length,0);
+  toast(n?'Bijlagen ophalen…':'Back-up maken…');
+  const zip=new JSZip(),used=new Set();let missing=0,added=0;
+  const copy=clone(S);
+  for(const e of copy.entries){
+    for(const f of (e.files||[])){
+      try{
+        const r=await fetch('/_blob/'+encodeURIComponent(f.id));
+        if(!r.ok)throw 0;
+        const buf=await r.arrayBuffer();
+        let p='bijlagen/'+f.id+'_'+safeName(f.name);
+        while(used.has(p))p+='_';used.add(p);
+        zip.file(p,buf);f.path=p;added++;
+      }catch(err){missing++;f.missing=true}
+    }
+  }
+  zip.file('datapuntenlog.json',JSON.stringify({app:'datapuntenlog-dgo',exported:new Date().toISOString(),...copy},null,2));
+  try{
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});
+    await dl.save({filename:'datapuntenlog-dgo-'+today()+'.zip',data:blob});
+    toast(missing?`Zip aangeboden. ${missing} bijlage${missing===1?'':'n'} kon${missing===1?'':'den'} niet worden opgehaald.`:`Zip aangeboden met ${added} bijlage${added===1?'':'n'}.`);
+  }catch(err){
+    if(err&&err.code==='declined')return;
+    toast(err&&err.code==='rejected_extension'||err&&err.code==='extension_not_enabled'?'Een zipbestand opslaan kan hier niet. Gebruik "Exporteer mijn gegevens".':'De zip kon niet worden opgeslagen.');
+  }
+}
+let importZip=null;
+function askImport(obj,name){
+  document.getElementById('modal').innerHTML=`<div class="ov" data-act="ovclose"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="it"><h2 id="it">Back-up importeren</h2><p class="sub">${esc(name)} bevat ${obj.entries.length} datapunten en ${(obj.pds||[]).length} persoonlijke leerdoelen. Dit vervangt je huidige gegevens.</p><div class="acts"><span></span><div class="r"><button class="btn" data-act="close">Annuleer</button><button class="btn pri" id="doimp">Vervang mijn gegevens</button></div></div></div></div>`;
+  document.getElementById('doimp').onclick=async()=>{
+    const zip=importZip;importZip=null;
+    let lost=0;
+    if(zip){
+      const btn=document.getElementById('doimp');btn.disabled=true;btn.textContent='Bijlagen terugzetten…';
+      for(const e of obj.entries){
+        const keep=[];
+        for(const f of (e.files||[])){
+          const zf=f.path&&zip.file(f.path);
+          if(zf&&ASSETS){
+            try{const data=await zf.async('arraybuffer');const r=await ASSETS.upload(new Blob([data],{type:f.type||'application/octet-stream'}));keep.push({id:r.id,name:f.name,type:r.contentType});continue}catch(err){}
+          }
+          lost++;
+        }
+        e.files=keep;
+      }
+    }
+    S=norm({v:1,rev:S.rev,pdv:obj.pdv,entries:obj.entries,pds:obj.pds||[],tech:obj.tech,reflections:obj.reflections||{},checks:obj.checks||{}});persist();closeModal();render();
+    toast(lost?`Back-up geïmporteerd. ${lost} bijlage${lost===1?'':'n'} kon${lost===1?'':'den'} niet worden teruggezet.`:'Back-up geïmporteerd.');
+  };
+  document.addEventListener('keydown',escClose);
+}
+document.addEventListener('change',ev=>{
+  if(ev.target.id!=='imp')return;
+  const f=ev.target.files[0];ev.target.value='';if(!f)return;
+  const r=new FileReader();
+  if(/\.zip$/i.test(f.name)){
+    (async()=>{try{
+      if(!window.JSZip)throw 0;
+      const zip=await JSZip.loadAsync(f);const j=zip.file('datapuntenlog.json');if(!j)throw 0;
+      const o=JSON.parse(await j.async('string'));if(!o||!Array.isArray(o.entries))throw 0;
+      importZip=zip;askImport(o,f.name);
+    }catch(e){toast('Dit zipbestand is geen geldige back-up van het datapuntenlog.')}})();
+    return;
+  }
+  importZip=null;
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.entries))throw 0;askImport(o,f.name)}catch(e){toast('Dit bestand is geen geldige back-up van het datapuntenlog.')}};
+  r.readAsText(f);
+});
+let wipeT=null;
+document.addEventListener('click',ev=>{
+  const a=ev.target.closest('[data-act]');if(!a)return;
+  const act=a.dataset.act;
+  if(act==='export'){exportData();return}
+  if(act==='exportzip'){exportZip();return}
+  if(act==='import'){document.getElementById('imp').click();return}
+  if(act==='chk'){S.checks[a.dataset.id]=!S.checks[a.dataset.id];persist();render();return}
+  if(act==='wipe'){
+    if(a.dataset.sure){clearTimeout(wipeT);S.entries.forEach(e=>(e.files||[]).forEach(f=>{if(ASSETS)ASSETS.delete(f.id).catch(()=>{})}));S.entries=[];S.reflections={};S.checks={};persist();a.dataset.sure='';a.textContent='Wis datapunten en reflecties';render();toast('Alle datapunten en reflecties zijn gewist.')}
+    else{a.dataset.sure='1';a.textContent='Zeker weten? Dit kan niet ongedaan worden';wipeT=setTimeout(()=>{a.dataset.sure='';a.textContent='Wis datapunten en reflecties'},6000)}
+  }
+});
+
+document.body.classList.add('view');
+const VBLOCK=new Set(['new','newgoal','logplan','edit','status','newpd','editpd','logtech','rmtech','logpd','copy','gaps','export','exportzip','import','wipe','check']);
+document.addEventListener('click',ev=>{const a=ev.target.closest('[data-act]');if(a&&VBLOCK.has(a.dataset.act)){ev.stopImmediatePropagation();ev.preventDefault()}},true);
+const _render=render;render=function(){_render();document.querySelectorAll('#app textarea,#app input').forEach(el=>{if(el.type==='checkbox'||el.type==='radio')el.disabled=true;else{el.readOnly=true;el.removeAttribute('placeholder')}});document.querySelectorAll('#app textarea').forEach(el=>{if(!el.value.trim()){const p=document.createElement('p');p.className='empty';p.textContent='Nog geen reflectie geschreven.';el.replaceWith(p)}})};
+render();
+initDb();
+</script>
