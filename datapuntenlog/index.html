@@ -158,6 +158,7 @@ main{padding-block:20px}
 .comp-h::before{content:"";width:12px;height:12px;background:var(--cc);align-self:center}
 
 /* logboek */
+.logcomp{margin-bottom:10px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:4px 16px}.logcomp[open]{padding-bottom:16px}.logcomp>summary{cursor:pointer;list-style:none;margin:0;padding:14px 0;flex-wrap:wrap}.logcomp>summary::-webkit-details-marker{display:none}.logcomp>summary::after{content:'▾';margin-left:auto;color:var(--ink-2);transition:transform .2s}.logcomp[open]>summary::after{transform:rotate(180deg)}.logcomp .comp-h{flex-wrap:wrap}.logcomp .comp-h .lbl{color:var(--ink-2)}
 .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .seg{display:inline-flex;border:1px solid var(--ink)}
 .seg button{background:var(--surface);border:0;border-left:1px solid var(--ink);padding:6px 11px;font-size:13px;font-weight:600}
@@ -777,13 +778,27 @@ function log(){
   if(flt.miss)list=list.filter(MISS[flt.miss]);
   return `<div class="sec-h"><h2>Logboek</h2><button class="btn sm" data-act="copy">Kopieer voor Excel</button></div>
    <div class="filters">
+    <span class="seg" role="group" aria-label="Weergave"><button data-act="logview" data-v="comp" aria-pressed="${logView==='comp'}">Per competentie</button><button data-act="logview" data-v="date" aria-pressed="${logView==='date'}">Op datum</button></span>
     <span class="seg" role="group" aria-label="Track">${[['','Alle'],...TRACKS.map(t=>[t,t])].map(([v,l])=>`<button data-act="ftrack" data-v="${esc(v)}" aria-pressed="${flt.track===v}">${esc(l)}</button>`).join('')}</span>
     <select class="f" id="fgoal" aria-label="Leerdoel"><option value="">Alle leerdoelen</option>${LD.map(l=>`<option value="${l.c}" ${flt.goal===l.c?'selected':''}>${l.c}</option>`).join('')}</select>
     <select class="f" id="fstatus" aria-label="Status"><option value="">Alle statussen</option>${STATUS.map(s=>`<option ${flt.status===s?'selected':''}>${s}</option>`).join('')}</select>
     <select class="f" id="fstake" aria-label="Stake"><option value="">Alle stakes</option>${Object.keys(STAKE).map(s=>`<option value="${s}" ${flt.stake===s?'selected':''}>${STAKE[s]}</option>`).join('')}</select>
    </div>
    <div class="filters">${Object.keys(MISS).map(k=>`<button class="chip" style="padding:5px 10px;font-size:13px" data-act="fmiss" data-v="${k}" aria-pressed="${flt.miss===k}">${MISSL[k]} (${S.entries.filter(MISS[k]).length})</button>`).join('')}</div>
-   <div class="stack">${list.length?list.map(entryHTML).join(''):'<div class="card empty">Geen datapunten met deze filters.</div>'}</div>`;
+   ${logView==='comp'?logByComp(list):`<div class="stack">${list.length?list.map(entryHTML).join(''):'<div class="card empty">Geen datapunten met deze filters.</div>'}</div>`}`;
+}
+/* Logboek per competentie: een datapunt staat bij elke competentie waar een van zijn leerdoelen bij hoort */
+let logView='comp',openComps=new Set();
+document.addEventListener('toggle',e=>{const d=e.target;if(d.classList&&d.classList.contains('logcomp')){const k=+d.dataset.k;d.open?openComps.add(k):openComps.delete(k);}},true);
+function logByComp(list){
+  if(!list.length)return '<div class="card empty">Geen datapunten met deze filters.</div>';
+  const out=[1,2,3,4].map(k=>{
+    const its=list.filter(e=>(e.goals||[]).some(g=>(LDM[g]||{}).k===k));
+    const goals=LD.filter(l=>l.k===k).map(l=>l.c).join(' · ');
+    return `<details class="logcomp" data-k="${k}" style="--cc:var(${COMP[k].v})" ${openComps.has(k)?'open':''}><summary class="comp-h"><h3>Competentie ${k} · ${esc(COMP[k].n)}</h3><span class="lbl">${its.length} datapunt${its.length===1?'':'en'} · ${goals}</span></summary>
+     <div class="stack">${its.length?its.map(entryHTML).join(''):'<div class="card empty">Nog geen datapunten bij deze competentie.</div>'}</div></details>`;}).join('');
+  const none=list.filter(e=>!(e.goals||[]).some(g=>LDM[g]));
+  return out+(none.length?`<details class="logcomp" data-k="0" style="--cc:var(--ink-3)" ${openComps.has(0)?'open':''}><summary class="comp-h"><h3>Nog niet gekoppeld aan een leerdoel</h3><span class="lbl">${none.length} datapunt${none.length===1?'':'en'}</span></summary><div class="stack">${none.map(entryHTML).join('')}</div></details>`:'');
 }
 
 function planning(){
@@ -1268,6 +1283,7 @@ document.addEventListener('click',ev=>{
   if(act==='status'){const e=S.entries.find(x=>x.id===a.dataset.id);if(e&&e.status!==a.dataset.s){e.status=a.dataset.s;persist();render()}return}
   if(act==='edit'){const e=S.entries.find(x=>x.id===a.dataset.id);if(e)openCapture({entry:e});return}
   if(act==='ftrack'){flt.track=a.dataset.v;render();return}
+  if(act==='logview'){logView=a.dataset.v;render();return}
   if(act==='fmiss'){flt.miss=flt.miss===a.dataset.v?'':a.dataset.v;render();return}
   if(act==='copy'){copyTable();return}
   if(act==='newpd'){openPd();return}
