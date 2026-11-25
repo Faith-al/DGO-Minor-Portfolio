@@ -1530,7 +1530,7 @@ initDb();
       go(1500);
     },700);
   });
-  function go(ms){setTimeout(()=>{document.getElementById('pveil').classList.add('on');setTimeout(()=>{location.href='oordeel/';},RM?0:1250);},ms);}
+  function go(ms){setTimeout(()=>{document.getElementById('pveil').classList.add('on');setTimeout(()=>{location.href='oordeel/?t='+Date.now();},RM?0:1250);},ms);}
   function puff(r){for(let i=0;i<8;i++){const d=document.createElement('div');d.className='pdust';document.body.appendChild(d);
     Object.assign(d.style,{left:(r.left+Math.random()*r.width)+'px',top:(r.top+r.height)+'px'});
     d.animate([{transform:'translate(0,0) scale(1)',opacity:.8},{transform:`translate(${(Math.random()-.5)*120}px,${-40-Math.random()*80}px) scale(${2+Math.random()*3})`,opacity:0}],{duration:1200+Math.random()*600,easing:'ease-out'}).onfinish=()=>d.remove();}}
