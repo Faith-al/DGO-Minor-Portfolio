@@ -258,8 +258,8 @@ ladyLoad.catch(()=>{});
 /* =========================================================
    SCÈNE 1 → instorting
    ========================================================= */
-setTimeout(()=>$('#pbtn').classList.add('show'),1800);
-$('#pbtn').addEventListener('click',collapse);
+/* Op de website komt de speler hier via de Portfolio-knop van de datapuntenlog: die is al ingestort, dus meteen de tempel. */
+$('#pbtn').style.display='none';$('#site').style.display='none';document.body.classList.add('night');setTimeout(init3D,0);
 
 function collapse(){
   const btn=$('#pbtn');btn.style.transition='opacity .3s';btn.style.opacity=0;btn.style.pointerEvents='none';
@@ -861,7 +861,7 @@ function initControls(){
     const on=e=>{e.preventDefault();keys[k]=1;b.classList.add('on');},off=()=>{keys[k]=0;b.classList.remove('on');};
     b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off);});
 }
-$('#home').addEventListener('click',()=>{const v=$('#veil');v.style.transition='opacity .9s';v.classList.remove('off');hideDlg();$('#panel').classList.remove('on');setTimeout(()=>location.reload(),950);});
+$('#home').addEventListener('click',()=>{const v=$('#veil');v.style.transition='opacity .9s';v.classList.remove('off');hideDlg();$('#panel').classList.remove('on');setTimeout(()=>{location.href='../';},950);});
 const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
 let blindOff=0,glowT=-1;const v3=new THREE.Vector3();
 
@@ -994,7 +994,7 @@ function finalPanel(){
   $('#again').addEventListener('click',()=>{verdicts.length=0;p.classList.remove('on');
     [panL,panR].forEach(pn=>pn.userData.coins.clear());COMPS.forEach((c,i)=>setPlaque(i,null));
     if(blindfold){blindOff=0;blindfold.position.y=6.6;blindfold.rotation.x=0;blindfold.material.opacity=1;}glowT=-1;statueSpot.intensity=120;animScale(0);storyCam(HOME.pos,HOME.tgt,1.5);setTimeout(()=>pillar(0),900);});
-  $('#back').addEventListener('click',()=>location.reload());
+  $('#back').addEventListener('click',()=>{location.href='../';});
 }
 
 </script>

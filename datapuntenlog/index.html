@@ -4,7 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}.jurybtn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:11px 20px;border-radius:999px;background:linear-gradient(180deg,#fbe7a8,#d7ad52 55%,#b98a2f);color:#2a1d05;font-family:Georgia,serif;font-weight:700;letter-spacing:.06em;text-decoration:none;box-shadow:0 6px 18px #b98a2f55}.jurybtn:hover{filter:brightness(1.06)}.jurybtn:focus-visible{outline:2px solid #2a1d05;outline-offset:3px}
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}#pbtn{position:fixed;left:50%;bottom:28px;transform:translate(-50%,180%);z-index:50;border:0;border-radius:999px;padding:16px 30px 16px 24px;font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:18px;letter-spacing:.14em;color:#2a1d05;background:linear-gradient(180deg,#fbe7a8,#d7ad52 55%,#b98a2f);box-shadow:0 10px 30px #b98a2f66,inset 0 1px 0 #fff8;display:flex;align-items:center;gap:12px;transition:transform .9s cubic-bezier(.2,1.4,.4,1)}
+#pbtn.show{transform:translate(-50%,0);animation:pglow 2.2s ease-in-out infinite 1s}
+#pbtn svg{width:26px;height:26px}
+#pbtn small{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font-family:var(--f-body);font-size:11px;letter-spacing:.04em;color:#1C2A0E;background:#F7F3E3;padding:5px 10px;border-radius:99px;box-shadow:0 4px 14px #0003}
+@keyframes pglow{50%{box-shadow:0 10px 50px #f2c76acc,0 0 0 8px #f2c76a22,inset 0 1px 0 #fff8}}
+.pshake{animation:pshake .7s linear}
+@keyframes pshake{10%,50%,90%{transform:translate(-4px,2px) rotate(-.3deg)}30%,70%{transform:translate(5px,-3px) rotate(.4deg)}}
+#pcracks{position:fixed;inset:0;pointer-events:none;z-index:45}
+#pcracks path{fill:none;stroke:#0a1a0e;stroke-width:2.5;stroke-linecap:round}
+.pdust{position:fixed;width:6px;height:6px;border-radius:50%;background:#c9c2b2;pointer-events:none;z-index:46}
+#pveil{position:fixed;inset:0;background:#05070e;opacity:0;pointer-events:none;z-index:60;transition:opacity 1.2s ease}
+#pveil.on{opacity:1}
+@media (prefers-reduced-motion:reduce){#pbtn,#pbtn.show{transition:none;animation:none}}
 </style>
 <title>Datapuntenlog Minor DGO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1031,7 +1043,7 @@ const COLH={1:'#FFD23F',2:'#3EE6B0',3:'#FF7EB6',4:'#FF9D5C'};
 const qPicked=new Set();let qLeft=120,qTm=null;const QC=2*Math.PI*44;
 const QSTEPS=[['Project','Ik werkte aan mijn project en '],['Iets geleerd','Ik heb iets nieuws geleerd over '],['Bezoek','Ik bezocht '],['Oefenen','Ik oefende met ']];
 function hero(){
-  if(VIEW)return `<div class="vhead"><span class="lbl">Alleen-lezen weergave · stand van ${SNAPDATE}</span><h2>Mijn datapuntenlog</h2><p>Een overzicht van wat ik tijdens de minor Digital Skills Built Environment heb vastgelegd: per studieweek, per leerdoel en als logboek. De schildpadden onderaan laten per minor-leerdoel zien hoe ver mijn bewijs is.</p><a class="jurybtn" href="oordeel/">⚖ Het oordeel van de jury</a></div>`;
+  if(VIEW)return `<div class="vhead"><span class="lbl">Alleen-lezen weergave · stand van ${SNAPDATE}</span><h2>Mijn datapuntenlog</h2><p>Een overzicht van wat ik tijdens de minor Digital Skills Built Environment heb vastgelegd: per studieweek, per leerdoel en als logboek. De schildpadden onderaan laten per minor-leerdoel zien hoe ver mijn bewijs is.</p></div>`;
   const t=today(),w=curWeek(),st=streak(),has=S.entries.some(e=>e.date===t);
   const lead=has?'Vandaag staat er al een datapunt. Alles wat je nu nog toevoegt is bonus.':(st===0?'Een nieuwe reeks begint met één zin. Schrijf er nu één.':'Je zit op '+st+' '+(st===1?'week':'weken')+' op rij. Houd de reeks levend met één zin.');
   const dl=fmtD(t,{weekday:'long',day:'numeric',month:'long'});
@@ -1472,4 +1484,57 @@ document.addEventListener('click',ev=>{const a=ev.target.closest('[data-act]');i
 const _render=render;render=function(){_render();document.querySelectorAll('#app textarea,#app input').forEach(el=>{if(el.type==='checkbox'||el.type==='radio')el.disabled=true;else{el.readOnly=true;el.removeAttribute('placeholder')}});document.querySelectorAll('#app textarea').forEach(el=>{if(!el.value.trim()){const p=document.createElement('p');p.className='empty';p.textContent='Nog geen reflectie geschreven.';el.replaceWith(p)}})};
 render();
 initDb();
+</script>
+
+<button id="pbtn" type="button" aria-label="Open het portfolio: Het oordeel van de jury">
+  <small>Klaar voor het oordeel?</small>
+  <svg viewBox="0 0 32 32" fill="none" stroke="#2a1d05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v24M9 28h14M6 9h20"/><path d="M6 9l-4 9h8zM26 9l-4 9h8z"/><path d="M2 18a4 2.4 0 0 0 8 0M22 18a4 2.4 0 0 0 8 0"/></svg>
+  Portfolio
+</button>
+<svg id="pcracks" aria-hidden="true"></svg><div id="pveil"></div>
+<script>
+/* De gouden Portfolio-knop: de datapuntenlog stort in en daarna begint Het oordeel van de jury */
+(function(){
+  const btn=document.getElementById('pbtn');
+  setTimeout(()=>btn.classList.add('show'),1800);
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  btn.addEventListener('click',()=>{
+    btn.style.transition='opacity .3s';btn.style.opacity=0;btn.style.pointerEvents='none';
+    if(RM){go(0);return}
+    const H=innerHeight,W=innerWidth;
+    // scheuren
+    const svg=document.getElementById('pcracks');let html='';
+    for(let k=0;k<7;k++){let x=W/2+(Math.random()-.5)*W*.2,y=H-40,d=`M${x} ${y}`;
+      for(let s=0;s<9;s++){x+=(Math.random()-.5)*W*.12;y-=H*.08+Math.random()*H*.05;d+=` L${x} ${y}`;}
+      html+=`<path d="${d}" stroke-dasharray="3000" stroke-dashoffset="3000"><animate attributeName="stroke-dashoffset" to="0" dur=".7s" fill="freeze"/></path>`;}
+    svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=html;
+    document.body.classList.add('pshake');
+    setTimeout(()=>{
+      document.body.classList.remove('pshake');
+      // brokstukken: zichtbare blokken van de pagina
+      const pieces=[];const root=document.querySelector('.wrap')||document.body;
+      (function walk(el,depth){for(const c of el.children){if(c.id==='pbtn')continue;const r=c.getBoundingClientRect();
+        if(r.bottom<0||r.top>H||r.width<30||r.height<14)continue;
+        if((r.height<H*.42&&r.width<W*.96)||depth>5||!c.children.length)pieces.push(c);else walk(c,depth+1);}})(root,0);
+      const rects=pieces.map(p=>p.getBoundingClientRect());
+      pieces.forEach((p,i)=>{const r=rects[i];Object.assign(p.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',margin:0,zIndex:40,willChange:'transform',boxSizing:'border-box'});document.body.appendChild(p);});
+      const bodies=pieces.map((p,i)=>({el:p,x:0,y:0,vx:(Math.random()-.5)*5,vy:-Math.random()*3,r:0,vr:(Math.random()-.5)*6,delay:(rects[i].top/H)*-200+Math.random()*450+250,bounced:false,floor:H-rects[i].top-rects[i].height}));
+      bodies.forEach(b=>setTimeout(()=>puff(b.el.getBoundingClientRect()),Math.max(0,b.delay)));
+      const t0=performance.now();
+      (function step(t){const el=t-t0;let alive=false;
+        bodies.forEach(b=>{if(el<b.delay){alive=true;return}
+          b.vy+=.55;b.x+=b.vx;b.y+=b.vy;b.r+=b.vr;
+          if(!b.bounced&&b.y>b.floor){b.y=b.floor;b.vy*=-.35;b.vr*=1.6;b.bounced=true;b.floor=1e9;}
+          b.el.style.transform=`translate(${b.x}px,${b.y}px) rotate(${b.r}deg)`;if(b.y<H+600)alive=true;});
+        if(alive&&el<4000)requestAnimationFrame(step);})(t0);
+      go(1500);
+    },700);
+  });
+  function go(ms){setTimeout(()=>{document.getElementById('pveil').classList.add('on');setTimeout(()=>{location.href='oordeel/';},RM?0:1250);},ms);}
+  function puff(r){for(let i=0;i<8;i++){const d=document.createElement('div');d.className='pdust';document.body.appendChild(d);
+    Object.assign(d.style,{left:(r.left+Math.random()*r.width)+'px',top:(r.top+r.height)+'px'});
+    d.animate([{transform:'translate(0,0) scale(1)',opacity:.8},{transform:`translate(${(Math.random()-.5)*120}px,${-40-Math.random()*80}px) scale(${2+Math.random()*3})`,opacity:0}],{duration:1200+Math.random()*600,easing:'ease-out'}).onfinish=()=>d.remove();}}
+  // terugkomen met de knop 'vorige' herstelt de pagina
+  addEventListener('pageshow',e=>{if(e.persisted)location.reload();});
+})();
 </script>
