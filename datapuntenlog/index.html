@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}.jurybtn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:11px 20px;border-radius:999px;background:linear-gradient(180deg,#fbe7a8,#d7ad52 55%,#b98a2f);color:#2a1d05;font-family:Georgia,serif;font-weight:700;letter-spacing:.06em;text-decoration:none;box-shadow:0 6px 18px #b98a2f55}.jurybtn:hover{filter:brightness(1.06)}.jurybtn:focus-visible{outline:2px solid #2a1d05;outline-offset:3px}
+</style>
 <title>Datapuntenlog Minor DGO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
@@ -1030,7 +1031,7 @@ const COLH={1:'#FFD23F',2:'#3EE6B0',3:'#FF7EB6',4:'#FF9D5C'};
 const qPicked=new Set();let qLeft=120,qTm=null;const QC=2*Math.PI*44;
 const QSTEPS=[['Project','Ik werkte aan mijn project en '],['Iets geleerd','Ik heb iets nieuws geleerd over '],['Bezoek','Ik bezocht '],['Oefenen','Ik oefende met ']];
 function hero(){
-  if(VIEW)return `<div class="vhead"><span class="lbl">Alleen-lezen weergave · stand van ${SNAPDATE}</span><h2>Mijn datapuntenlog</h2><p>Een overzicht van wat ik tijdens de minor Digital Skills Built Environment heb vastgelegd: per studieweek, per leerdoel en als logboek. De schildpadden onderaan laten per minor-leerdoel zien hoe ver mijn bewijs is.</p></div>`;
+  if(VIEW)return `<div class="vhead"><span class="lbl">Alleen-lezen weergave · stand van ${SNAPDATE}</span><h2>Mijn datapuntenlog</h2><p>Een overzicht van wat ik tijdens de minor Digital Skills Built Environment heb vastgelegd: per studieweek, per leerdoel en als logboek. De schildpadden onderaan laten per minor-leerdoel zien hoe ver mijn bewijs is.</p><a class="jurybtn" href="oordeel/">⚖ Het oordeel van de jury</a></div>`;
   const t=today(),w=curWeek(),st=streak(),has=S.entries.some(e=>e.date===t);
   const lead=has?'Vandaag staat er al een datapunt. Alles wat je nu nog toevoegt is bonus.':(st===0?'Een nieuwe reeks begint met één zin. Schrijf er nu één.':'Je zit op '+st+' '+(st===1?'week':'weken')+' op rij. Houd de reeks levend met één zin.');
   const dl=fmtD(t,{weekday:'long',day:'numeric',month:'long'});

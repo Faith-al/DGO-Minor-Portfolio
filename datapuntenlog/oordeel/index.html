@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Het Oordeel van de Jury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Portfolio (dag): bosgroen leerreis. Tempel (nacht): marmer en goud in maanlicht. */
+  --paper:#f1f4ee; --ink:#1d2b25; --muted:#69776e; --line:#e2e8df; --forest:#20382e; --sage:#dcefe0;
+  --night:#070b16; --night2:#111a2e; --marble:#efe9dd; --gold:#d8b25c; --gold-hi:#f6dc96; --moon:#cfd9f2;
+  --display:"Cinzel",Georgia,serif; --serif:"Cormorant Garamond",Georgia,serif; --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* Layout: scène 1 is een normale pagina; scène 2 is een schermvullend toneel met dialoog onderaan en een bewijskaart in het midden. */
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);overflow-x:hidden;transition:background 1.6s ease}
+body.night{background:var(--night);color:var(--marble);overflow:hidden}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---------- Scène 1: het huidige portfolio ---------- */
+#site{max-width:1120px;margin:auto;padding:24px 24px 120px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.brand{font-weight:800;letter-spacing:-.04em;font-size:15px}.brand i{font-style:normal;color:#7fac7d}
+.who{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#dce9d7;color:#42644b;font-weight:800}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;color:#698171}
+h1.h{font-size:clamp(30px,4.4vw,46px);line-height:1.05;letter-spacing:-.05em;margin:8px 0 6px;text-wrap:balance}
+.lead{margin:0 0 26px;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}
+.col{display:grid;gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 36px #20382e0a}
+.card h2{font-size:15px;margin:0 0 14px;letter-spacing:-.02em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{padding:13px;border:1px solid #edf0e9;border-radius:13px;background:#fbfcf9}
+.stat b{font-size:22px;display:block;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.stat span{font-size:11px;color:var(--muted)}
+.comp{display:grid;gap:10px}
+.comp div{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;font-size:12.5px}
+.bar{height:8px;border-radius:9px;background:#edf1ea;overflow:hidden}.bar i{display:block;height:100%;background:#7fac7d;border-radius:9px}
+.entry{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid #eef2eb;font-size:12.5px}
+.entry:first-of-type{border-top:0}.entry time{color:var(--muted);font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--sage);color:#355c43;margin-right:4px}
+.check{display:grid;gap:8px;font-size:12.5px}.check span::before{content:"✓";color:#7fac7d;font-weight:800;margin-right:8px}
+.focus{background:var(--forest);color:#eef4ea;border:0}.focus p{margin:0;font-size:13px;color:#c5d6c8}.focus h2{color:#fff}
+
+/* De gouden knop */
+#pbtn{position:fixed;left:50%;bottom:28px;transform:translate(-50%,160%);z-index:20;border:0;border-radius:999px;padding:16px 30px 16px 24px;
+  font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.14em;color:#2a1d05;
+  background:linear-gradient(180deg,#fbe7a8,#d7ad52 55%,#b98a2f);box-shadow:0 10px 30px #b98a2f66,inset 0 1px 0 #fff8;
+  display:flex;align-items:center;gap:12px;transition:transform .9s cubic-bezier(.2,1.4,.4,1)}
+#pbtn.show{transform:translate(-50%,0);animation:glow 2.2s ease-in-out infinite 1s}
+#pbtn svg{width:26px;height:26px}
+#pbtn small{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font-family:var(--body);font-size:11px;letter-spacing:.04em;font-weight:700;color:var(--forest);background:#fff;padding:5px 10px;border-radius:99px;box-shadow:0 4px 14px #0001}
+@keyframes glow{50%{box-shadow:0 10px 50px #f2c76acc,0 0 0 8px #f2c76a22,inset 0 1px 0 #fff8}}
+
+/* Instorting */
+.shake{animation:shake .7s linear}
+@keyframes shake{10%,50%,90%{transform:translate(-4px,2px) rotate(-.3deg)}30%,70%{transform:translate(5px,-3px) rotate(.4deg)}}
+#cracks{position:fixed;inset:0;pointer-events:none;z-index:15}
+#cracks path{fill:none;stroke:#1d2b25;stroke-width:2;stroke-linecap:round}
+.dust{position:fixed;width:6px;height:6px;border-radius:50%;background:#c9c2b2;pointer-events:none;z-index:16}
+
+/* ---------- Scène 2: de tempel (3D) ---------- */
+#stage{position:fixed;inset:0;z-index:2;display:none;background:#05070e}
+body.night #stage{display:block}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+#veil{position:absolute;inset:0;background:#05070e;transition:opacity 2.4s ease;pointer-events:none}
+#veil.off{opacity:0}
+#labels{position:absolute;inset:0;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-50%);font-family:var(--display);font-weight:700;letter-spacing:.12em;text-align:center;line-height:1.15;
+  color:var(--gold-hi);font-size:clamp(10px,1.05vw,15px);text-shadow:0 0 10px #000,0 0 24px #000,0 1px 0 #000;opacity:0;transition:opacity 1.2s,color .4s;white-space:nowrap}
+.lbl.on{opacity:1}.lbl.lit{color:#fff3c8;text-shadow:0 0 12px #f3c96a,0 0 30px #000}
+.lbl small{display:block;font-size:.8em;letter-spacing:.2em;color:#e9c46a;margin-top:2px}
+#jury{position:absolute;left:50%;bottom:-6px;width:min(34vw,300px);transform:translate(-50%,40%);transition:transform 2.5s cubic-bezier(.2,.9,.25,1);filter:drop-shadow(0 -6px 22px #0008)}
+#stage.risen #jury{transform:translate(-50%,0)}
+#jury.hide{transform:translate(-50%,110%)!important}
+/* Dialoog */
+#dlg{position:fixed;left:50%;bottom:18px;transform:translate(-50%,30px);width:min(760px,calc(100vw - 32px));z-index:10;opacity:0;pointer-events:none;
+  background:linear-gradient(180deg,#141d33f2,#0b1122f5);border:1px solid #d8b25c88;border-radius:16px;padding:16px 20px 14px;
+  box-shadow:0 20px 60px #000a,inset 0 0 0 1px #ffffff08;transition:opacity .5s,transform .5s}
+#dlg.on{opacity:1;transform:translate(-50%,0);pointer-events:auto;cursor:pointer}
+#dlg .nm{font-family:var(--display);font-size:12px;letter-spacing:.24em;color:var(--gold);margin-bottom:6px}
+#dlg .tx{font-family:var(--serif);font-size:clamp(19px,2.2vw,23px);line-height:1.35;min-height:2.7em;color:#f4efe4}
+#dlg .nx{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:11px;color:#8e9ab8}
+#dlg .nx b{color:var(--gold-hi);font-weight:700;letter-spacing:.06em;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.35}}
+#skip{position:fixed;top:14px;right:16px;z-index:12;background:none;border:1px solid #ffffff2a;color:#aeb8d2;border-radius:99px;padding:7px 14px;font-size:12px;display:none}
+body.night #skip{display:block}
+#home{position:fixed;top:14px;left:16px;z-index:12;display:none;align-items:center;gap:8px;background:#0b1122cc;border:1px solid #d8b25c88;color:var(--gold-hi);border-radius:99px;padding:8px 16px 8px 12px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.1em;backdrop-filter:blur(6px)}
+#home:hover{background:#1a2440;border-color:var(--gold)}
+body.night #home{display:flex}
+#pad{position:fixed;right:22px;bottom:24px;z-index:9;display:none;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(2,46px);gap:6px;touch-action:none}
+body.explore #pad{display:grid}
+#pad button{border:1px solid #d8b25c66;background:#0b1122b3;color:var(--gold-hi);border-radius:10px;font-size:18px;backdrop-filter:blur(6px);user-select:none;-webkit-user-select:none;touch-action:none}
+#pad button:active,#pad button.on{background:#d8b25c55}
+#pad .up{grid-column:2}#pad .lt{grid-column:1;grid-row:2}#pad .dn{grid-column:2;grid-row:2}#pad .rt{grid-column:3;grid-row:2}
+#hint{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9;color:#c9d2ea;font-size:12px;background:#0b1122aa;border:1px solid #ffffff1f;padding:7px 14px;border-radius:99px;opacity:0;transition:opacity 1s;pointer-events:none;white-space:nowrap}
+#hint.on{opacity:1}
+#gl{cursor:grab}#gl.drag{cursor:grabbing}
+@media (max-width:1100px){#pad{bottom:auto;top:50%;transform:translateY(-50%)}}
+@media (max-width:640px){#hint{white-space:normal;width:86vw;text-align:center}}
+
+/* Bewijskaart */
+#panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);width:min(600px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;z-index:11;
+  background:linear-gradient(180deg,#f7f2e7,#ece3d0);color:#2a2418;border-radius:6px;padding:28px 28px 22px;opacity:0;pointer-events:none;
+  box-shadow:0 30px 90px #000c,0 0 0 1px #d8b25c,0 0 0 7px #f7f2e7,0 0 0 8px #d8b25c;transition:opacity .45s,transform .45s}
+#panel.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+#panel .num{font-family:var(--display);font-size:12px;letter-spacing:.3em;color:#9a7426;text-align:center}
+#panel h3{font-family:var(--display);font-weight:900;font-size:clamp(22px,3.2vw,30px);text-align:center;margin:6px 0 4px;letter-spacing:.04em;text-wrap:balance}
+#panel .def{font-family:var(--serif);font-style:italic;font-size:18px;text-align:center;color:#5b4f3a;margin:0 auto 18px;max-width:46ch}
+#panel ol{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:10px}
+#panel li{display:grid;grid-template-columns:86px 1fr;gap:12px;padding:11px 12px;border-left:3px solid var(--gold);background:#fffaf0aa;font-size:13.5px;line-height:1.45}
+#panel li time{font-family:var(--display);font-size:11px;letter-spacing:.08em;color:#9a7426;padding-top:2px}
+#panel .ask{font-family:var(--display);text-align:center;font-size:13px;letter-spacing:.2em;color:#6b5a39;margin-bottom:10px}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.choices button{border:1px solid #b98a2f;background:#fffdf7;border-radius:4px;padding:12px 6px;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;color:#3a2c10;transition:background .2s,transform .2s}
+.choices button:hover{background:#f6e3b0;transform:translateY(-2px)}
+.choices button[data-v="goed"]{background:linear-gradient(180deg,#fbe7a8,#e2bd66)}
+#panel .fine{margin:14px 0 0;font-size:11px;color:#7d7259;text-align:center}
+
+@media (min-width:1000px){#panel.sideR{left:71%}#panel.sideL{left:29%}#panel.sideR,#panel.sideL{width:min(600px,46vw)}}
+#panel .refl{font-size:14px;line-height:1.55;color:#2a2418;margin-bottom:16px}
+#panel .refl p{margin:0 0 10px}
+#panel .refl .lead{font-family:var(--serif);font-size:17.5px;font-style:italic;color:#4d4230}
+#panel .refl b{font-weight:700;color:#5d4512}
+#panel .refl ul{margin:-4px 0 10px;padding-left:20px}#panel .refl ul li{display:list-item;padding:0;border:0;background:none;margin:3px 0;font-size:13.5px}
+#panel .refl .better{border-left:3px solid var(--gold);padding:8px 12px;background:#fffaf0aa}
+.gal{position:relative;margin:4px 0 18px;border-radius:4px;background:#1a160f;box-shadow:0 0 0 1px #d8b25c}
+.gal-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:4px}
+.gal-track::-webkit-scrollbar{display:none}
+.gal figure{flex:0 0 100%;scroll-snap-align:center;margin:0;display:flex;flex-direction:column}
+.gal img{width:100%;height:min(300px,38vh);object-fit:contain;background:#0f0c08;display:block}
+.gal figcaption{font-size:12px;line-height:1.4;color:#efe6d2;padding:8px 12px 26px;background:#1a160f}
+.gal figcaption span{font-family:var(--display);color:var(--gold);margin-right:6px}
+.gal-btn{position:absolute;top:calc(min(300px,38vh)/2);transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:1px solid #d8b25c;background:#1a160fcc;color:var(--gold-hi);font-size:22px;line-height:1}
+.gal-btn.prev{left:8px}.gal-btn.next{right:8px}
+.gal-dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.gal-dots i{width:7px;height:7px;border-radius:50%;background:#d8b25c55;cursor:pointer}.gal-dots i.on{background:var(--gold-hi)}
+/* Eindoordeel */
+#final ol li{grid-template-columns:1fr auto;align-items:center}
+#final ol li b{font-family:var(--display);letter-spacing:.1em;font-size:13px}
+.v-goed{color:#8a6410}.v-voldoende{color:#3f5d46}.v-onvoldoende{color:#9a3b2a}
+.finalbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.finalbtns button{border:1px solid #b98a2f;background:#fffdf7;border-radius:4px;padding:11px 18px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.1em;color:#3a2c10}
+
+@media (max-width:760px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}#panel{padding:22px 16px 18px}#panel li{grid-template-columns:1fr;gap:2px}.choices button{font-size:11px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ SCÈNE 1 · HUIDIG PORTFOLIO ============ -->
+<main id="site">
+  <div class="top piece"><div class="brand">dgo / leerreis <i>✳</i></div><div class="who">Minor Digitalisering · 2026 <span class="av">F</span></div></div>
+  <div class="piece"><div class="eyebrow">Jouw ontwikkeling, stap voor stap</div></div>
+  <h1 class="h piece">Goed bezig, Faith.</h1>
+  <p class="lead piece">Je portfolio groeit mee met wat je leert.</p>
+  <div class="grid">
+    <div class="col">
+      <section class="card piece"><h2>Jouw voortgang</h2>
+        <div class="stats"><div class="stat"><b>42</b><span>datapunten</span></div><div class="stat"><b>20</b><span>weken minor</span></div><div class="stat"><b>3</b><span>tracks</span></div></div>
+      </section>
+      <section class="card piece"><h2>Laatste datapunten</h2>
+        <div class="entry"><time>19 nov</time><div><span class="chip">Project</span>Sculptuur opgehangen, mijn knooppunt is af.</div></div>
+        <div class="entry"><time>17 nov</time><div><span class="chip">Leerplek</span>Test gevels v9: binnenmuren en kozijnen schuiven mee.</div></div>
+        <div class="entry"><time>13 nov</time><div><span class="chip">Project</span>Grasshopper-script dat klemringen automatisch plaatst.</div></div>
+        <div class="entry"><time>27 okt</time><div><span class="chip">Leerplek</span>pyRevit-knop stuurt de gevel aan via Grasshopper.</div></div>
+      </section>
+    </div>
+    <div class="col">
+      <section class="card focus piece"><h2>Volgende kleine stap</h2><p>Koppel je bewijs aan je competenties en schrijf per competentie een korte reflectie.</p></section>
+      <section class="card piece"><h2>Competenties</h2>
+        <div class="comp">
+          <div>De digitale expert<span class="bar"><i style="width:88%"></i></span></div>
+          <div>De teamspeler<span class="bar"><i style="width:70%"></i></span></div>
+          <div>De zelfsturende professional<span class="bar"><i style="width:76%"></i></span></div>
+          <div>Professioneel handelen HBO<span class="bar"><i style="width:45%"></i></span></div>
+        </div>
+      </section>
+      <section class="card piece"><h2>Portfolio-checklist</h2>
+        <div class="check"><span>Datapunten bijgehouden</span><span>Bewijs per leerdoel</span><span>Reflectie per competentie</span></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<button id="pbtn" type="button" aria-label="Open het portfolio">
+  <small>Klaar voor het oordeel?</small>
+  <svg viewBox="0 0 32 32" fill="none" stroke="#2a1d05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v24M9 28h14M6 9h20"/><path d="M6 9l-4 9h8zM26 9l-4 9h8z"/><path d="M2 18a4 2.4 0 0 0 8 0M22 18a4 2.4 0 0 0 8 0"/></svg>
+  Portfolio
+</button>
+<svg id="cracks" aria-hidden="true"></svg>
+
+<!-- ============ SCÈNE 2 · DE TEMPEL (3D) ============ -->
+<div id="stage"><canvas id="gl"></canvas><div id="labels"></div><div id="veil"></div></div>
+<button id="skip" type="button">Sla de intro over</button>
+<button id="home" type="button" aria-label="Terug naar het portfolio"><span aria-hidden="true">←</span> Terug naar portfolio</button>
+<div id="pad" aria-label="Lopen"><button class="up" type="button" data-k="f" aria-label="Vooruit">▲</button><button class="lt" type="button" data-k="l" aria-label="Naar links">◀</button><button class="dn" type="button" data-k="b" aria-label="Achteruit">▼</button><button class="rt" type="button" data-k="r" aria-label="Naar rechts">▶</button></div>
+<div id="hint">Sleep om rond te kijken · lopen met W A S D, de pijltjes of de knoppen</div>
+
+<div id="dlg" role="dialog" aria-live="polite">
+  <div class="nm">LADY JUSTICE</div>
+  <div class="tx" id="dlgTx"></div>
+  <div class="nx"><span id="dlgStep"></span><b>Klik om verder te gaan ▸</b></div>
+</div>
+
+<section id="panel" aria-live="polite"></section>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const COMPS=[
+ {n:"I",t:"De digitale expert",
+  d:"Ik zet digitale technologie doelgericht in: parametrisch ontwerpen, AI en digital fabrication.",
+  ev:[["10–17 nov","Gevelscript in Grasshopper, Test gevels v6 t/m v9. Met een pyRevit-knop schuift een gevel 1,5 m en schuiven de zijgevels, binnenmuren en kozijnen mee."],
+      ["16 okt","ParkHaven: ons Grasshopper-script vond een combinatie van 8 gebouwen die aan alle eisen voldeed."],
+      ["13 nov","Een Grasshopper-script dat klemringen automatisch op een ontwerp plaatst, daarna zelf 3D-geprint."]]},
+ {n:"II",t:"De teamspeler",
+  d:"Ik werk samen in een team, deel wat ik weet en neem mijn rol.",
+  ev:[["30 okt","Een planningswebsite gemaakt voor het team van de hangende sculptuur, en de 3D-printer uitgelegd aan de groep."],
+      ["18 nov","Teamgenoten geholpen met hun verbindingstuk en het ophangen, en een verbindingstuk voor een teamgenoot geprint."],
+      ["2 nov","Twinmotion-opdracht op de leerplek: door goed te overleggen met collega's lukte het synchroniseren met Revit."]]},
+ {n:"III",t:"De zelfsturende professional",
+  d:"Ik stuur mijn eigen leerproces: ik stel leerdoelen, vraag feedback en reflecteer eerlijk.",
+  ev:[["4 & 11 sep","Zelfscan, eerste leerdoelen en kritische feedback op elkaars leerdoelen."],
+      ["13 okt – 17 nov","Zelfstandig nieuwe tools onderzocht en ingezet: Claude, Rhino.Inside.Revit, pyRevit en de RhinoMCP."],
+      ["18 nov","Eerlijke reflectie: ik begon te laat met mijn verbindingstuk. Volgende keer plan ik eerder."]]},
+ {n:"IV",t:"Professioneel handelen HBO",
+  d:"Ik werk onderzoekend en onderbouwd, en ik ga zorgvuldig om met afspraken en kwaliteit.",
+  ev:[["13 okt","Een onderzoeksplan geschreven voor een technisch parametrisch Revit-model."],
+      ["20 okt","Feedback op het onderzoeksplan verwerkt en mijn vuistregels laten nakijken door de constructeur."],
+      ["27 okt","Klantwensen opgehaald in een vergadering om de tool goed af te bakenen."]]}
+];
+/* Reflecties per competentie (uit het document 'Reflectie per competentie') */
+const REFL=[{"intro": "Ik begon de minor met basiservaring in Rhino en Grasshopper. Nu bouw ik zelfstandig een parametrisch Revit-model dat werkt met Grasshopper, Python en pyRevit. Dit is de competentie waarin ik het meest ben gegroeid.", "p": [["Parametrisch ontwerpen in een team.", "In ons eerste project schreven we een Grasshopper-script dat zichtlijnen en eisen controleerde. Het script vond een combinatie van 8 gebouwen die aan alle eisen voldeed. Dat resultaat presenteerde ik op 16 oktober (bewijs: presentatie ParkHaven en foto's). Achteraf had ik eerder Claude willen gebruiken. Bij projecten en code werkt Claude sneller en directer dan ChatGPT."], ["Een parametrisch Revit-model op mijn leerplek.", "Op 13 oktober schreef ik een onderzoeksplan voor een technisch parametrisch Revit-model. Daarna leerde ik Rhino.Inside.Revit. Mijn eerste test was simpel: als een muur 10 m uitsteekt, verschijnen er 4 stoelen (20 oktober). Daarna maakte ik een pyRevit-knop met een schuifregelaar die een waarde naar Grasshopper stuurt (27 oktober). Ik heb bewust gekozen voor een vaste opbouw in Grasshopper: Inlezen, Invoer, Constructieregels, Bouwkunderegels, Terugschrijven en Controle (26 oktober)."], ["Fouten vinden en oplossen.", "Het model is gegroeid van Test gevels v6 naar v14 (10–24 november). Elke versie loste een concreet probleem op:", ["Muren van dezelfde gevel lagen niet op één lijn en werden als losse gevels gezien. In v6 mag een gevel uit meerdere muurstukken bestaan.", "In v8 vond ik twee fouten: de muren gebruikten de binnenkant in plaats van het midden, en er vielen muurpunten weg.", "In v11 schuiven de daken mee en past de helling zich aan, van 50° naar 47°. Daarvoor schreef ik één klein script, omdat gewone componenten de helling kwijtraakten.", "In v14 schuiven ook de dakconstructie, de PV-panelen, de veranda en de hoogtelijnen in de plattegrond mee. Na \"terug naar 0\" staat alles weer op de beginplek."]], ["", "Ik heb geleerd dat Revit niet alles toelaat. Muren kun je niet via code aan een dak vastmaken. Ik moest dus zelf een omweg bouwen, waarbij het script de muren zelf aanpast (bewijs: Revit-schermafbeeldingen 24 november)."], ["AI als gereedschap.", "Ik heb Claude gebruikt om scripts en websites te maken. Ook installeerde ik de RhinoMCP en de Revit-MCP, zodat Claude direct in Rhino en Revit kan werken (17 en 23 november). Wat ik maak, test ik zelf in Revit. In v7 vond ik zo twee fouten, die ik in v8 oploste."], ["Digital fabrication.", "Voor de hangende sculptuur ontwierp ik een klemring en een verbindingsstuk en printte ik die met de Bambu Lab-printer (6–19 november). De eerste klemring was te groot. Ik paste het bestand aan en printte opnieuw. Ook schreef ik een Grasshopper-script dat klemringen automatisch op een ontwerp plaatst (13 november)."]], "better": "Mijn scripts werken, maar ik documenteer ze nog te weinig. De volgende stap is een handleiding bij het model, zodat collega's ermee verder kunnen. Ook wil ik de vuistregels laten controleren door de constructeur.", "img": [["db534e0709d28930b271d127827f29c8", "20 oktober · Mijn eerste Rhino.Inside.Revit-test: steekt de muur 10 m uit, dan verschijnen er vier stoelen."], ["83cc72196ee730e23725a48de0adf324", "24 november · Test gevels v14: het 3D-model en de plattegrond schuiven samen mee met de gevel."], ["3581c85923c4662128ce9732cbba5e01", "18 november · Mijn 3D-geprinte klemring en verbindingsstuk voor de hangende sculptuur."]]}, {"intro": "In de minor werkte ik in twee teams: een projectgroep op school en een team van ingenieurs en architecten op mijn leerplek. Ik heb geleerd dat ik goed ben in het delen van kennis. Ik heb ook geleerd dat het in een team snel onduidelijk wordt wie wat doet, als we de planning niet samen bijhouden.", "p": [["Kennis delen.", "Bij de hangende sculptuur zat ik in de bouwersgroep. We moesten uitzoeken hoe we de knopen in Grasshopper konden zetten. Ik deed testprints om onze vaste maten te bepalen (23 oktober). Daarna legde ik de rest van de groep uit hoe de 3D-printer ongeveer werkt (30 oktober)."], ["Anderen helpen.", "In de laatste week hielp ik een teamgenoot met zijn verbindingsstuk en een andere teamgenoot met het ophangen van de touwen. Voor een derde teamgenoot printte ik het verbindingsstuk (18 november). Op 19 november hing het kunstwerk. Alle knooppunten en de presentatie waren op tijd af (bewijs: foto's van het opgehangen kunstwerk en de teamfoto)."], ["Overzicht geven.", "Ik maakte een website voor ons team om informatie te bewaren, werk te laten zien en de planning bij te houden (30 oktober, hangende-sculptuur). Het idee was goed, maar het werkte niet zoals ik hoopte. De website raakte op de achtergrond. Op 18 november hoorde ik pas dat de presentatie de volgende dag ingeleverd moest worden. We kregen uitstel, maar het had beter gekund. Ik heb daarvan geleerd dat een tool alleen helpt als het team het samen gebruikt. Volgende keer spreek ik aan het begin af wie de planning bijhoudt en wanneer we die samen bekijken."], ["Samenwerken op de leerplek.", "Op mijn leerplek moest ik een Revit-bestand in Twinmotion zetten (2 november). Het synchroniseren met de nieuwe Revit-versie duurde heel lang. Door met collega's te overleggen, lukte het. Later hielp ik een collega met een opdracht in Twinmotion, en zij maakten het met AI nog realistischer (9 november). In een vergadering hoorde ik welke wensen klanten vaak hebben voor hun woning (27 oktober). Dat gebruik ik nu voor de regels in mijn model."], ["Mijn rol in een groep.", "Ik zie mezelf als iemand die anderen helpt en techniek uitlegt. Maar ik neem minder snel de leiding als het gaat om planning en afspraken. Bij de sculptuur begon ik ook zelf te laat aan mijn eigen verbindingsstuk."]], "better": "Ik wil duidelijker communiceren wat ik die dag heb gedaan, zodat het team weet waar we staan. Ook wil ik eerst mijn eigen taak op orde hebben voordat ik anderen help. En ik wil een korte check-in aan het eind van de dag voorstellen, in plaats van alleen een website.", "img": [["f6b729ca13bf020a79332f1a6427bfa7", "19 november · Ons team onder de opgehangen sculptuur: alle knooppunten waren op tijd af."], ["56bc0459fbe49d6222c9d039a0b68ac1", "19 november · Mijn knooppunt in de opgehangen constructie."], ["14f67776af3e586c8dc80cdd4969114b", "2 november · Het Revit-model in Twinmotion, gelukt na overleg met collega's."]]}, {"intro": "Ik weet van mezelf dat ik vaak uitstel en dat beginnen aan een project moeilijk voor me is. In deze minor heb ik manieren gevonden om daar zelf iets aan te doen. Dat is voor mij de belangrijkste groei in deze competentie.", "p": [["Leerdoelen stellen en scherp maken.", "Op 4 september deed ik een zelfscan en schreef ik mijn eerste ruwe leerdoelen. Op 11 september bekeken een klasgenoot en ik elkaars leerdoelen kritisch en gaven we elkaar feedback. Daarna heb ik mijn leerdoelen uitgewerkt in zes persoonlijke doelen, van parametrisch ontwerpen tot AI en digital fabrication. Elk doel heeft een startpunt, een eerste actie en een einddoel (bewijs: persoonlijke doelen in mijn datapuntenlog)."], ["Mijn eigen hulpmiddel bouwen.", "Omdat ik uitstel, heb ik met Claude een datapuntenlog gebouwd die mij motiveert. Er zit een knop in voor \"twee minuten beginnen\", een pad met de weken van de minor en een schilderij dat steeds verder af raakt als ik meer bewijs verzamel. Daardoor heb ik nu 44 datapunten met foto's, scripts en reflecties."], ["Zelfstandig nieuwe tools leren.", "Op mijn leerplek zocht ik zelf uit welke tools ik nodig had. Ik leerde Rhino.Inside.Revit (19 oktober), pyRevit (26 oktober) en de RhinoMCP en Revit-MCP (17 en 23 november). Bij pyRevit merkte ik dat het vooral coderen is. Ik koos er toen bewust voor om de regels in Grasshopper te houden, zodat het model parametrisch blijft (26 oktober). Dat was een keuze die ik zelf maakte en kon uitleggen."], ["Reflecteren en bijsturen.", "Na veel werkdagen schreef ik op wat lukte, wat niet lukte en wat de volgende stap was. Op 10 november noteerde ik bijvoorbeeld dat de zijgevels nog niet werkten, en precies welke toleranties ik de week erna wilde testen. Op 23 november schreef ik op dat Revit \"nok vast\" en \"muren vast\" niet tegelijk kan. Daaruit kwam het plan voor een schakelaar, die ik op 24 november heb gebouwd. Zo werkte ik van versie naar versie."], ["Waar het misging.", "Bij de hangende sculptuur begon ik te laat aan mijn eigen verbindingsstuk (18 november). Ik heb het wel afgemaakt met ChatGPT, Claude en de Bambu Lab-printer, maar het was krap. Ook merkte ik dat ik bij een nieuw project steun nodig heb om te beginnen. Mijn begeleider stelde het onderzoeksplan voor, en daar was ik blij mee (13 oktober)."]], "better": "Ik wil grote taken eerder opdelen in kleine stappen met een eigen deadline, zodat ik niet pas aan het eind ga versnellen. Ook wil ik mijn onderzoeksplan bijwerken met wat ik nu weet, en vaker zelf om feedback vragen in plaats van te wachten tot een vergadering.", "img": [["35781f204b646a9cf1d0dd3d74a21c09", "26 oktober · Zelf pyRevit geleerd: een test die de lengte en het middelpunt van een muur controleert."], ["7120990ad258e54fe0d8dbf4c5655bf8", "18 november · Mijn verbindingsstukken in de printer: af, maar later begonnen dan gepland."]]}, {"intro": "Dit is mijn zwakste competentie. Ik werk wel zorgvuldig, maar ik leg mijn keuzes nog niet altijd onderbouwd vast. Hieronder laat ik zien wat al goed gaat en waar ik nog moet groeien.", "p": [["Onderzoeksmatig beginnen.", "Op 13 oktober schreef ik een onderzoeksplan voor een technisch parametrisch Revit-model (bewijs: Onderzoeksplan technisch parametrisch Revit-model, pdf). Daarin staat wat ik wil onderzoeken en hoe. Op 20 oktober liet ik het plan beoordelen en kreeg ik feedback. Die feedback maakte het project groter dan ik dacht: het model moest niet alleen constructief, maar ook bouwkundig parametrisch worden. Ik heb toen het einddoel scherper gemaakt: een werkende tool plus een handleiding met doel, aannames, wat werkt en het resultaat, zodat anderen ermee verder kunnen."], ["Rekening houden met de opdrachtgever.", "Op 27 oktober was ik bij een vergadering waarin werd besproken wat klanten vaak aan een woning willen veranderen. Ik wil die wensen opschrijven om mijn bouwkunderegels af te bakenen. Bij ons eerste schoolproject merkte ik dat ik dat nog te weinig deed. In mijn reflectie van 16 oktober schreef ik dat ik vaker had moeten onderzoeken hoe de opdrachtgever ons resultaat zou gebruiken."], ["Grenzen van mijn kennis erkennen.", "Ik reken in mijn model met vuistregels. Ik weet dat ik geen constructeur ben. Daarom heb ik als stap opgenomen dat de constructeur mijn vuistregels nakijkt (20 oktober). Zo laat ik het oordeel over veiligheid bij de juiste persoon."], ["Zorgvuldig testen en vastleggen.", "Bij elke versie van het gevelscript testte ik of alles na \"terug naar 0\" weer op de beginplek stond (24 november). Na het verschuiven zag ik dat bij 18 muren de joins verdwenen waren. Daarom plande ik om de joins voortaan te vergelijken met een nulmeting (23 november). Afwijkingen schreef ik op, bijvoorbeeld dat het binnenblad na terugzetten 104 mm langer was. Ik heb toen bewust besloten dat dat zo mag blijven, en dat ook genoteerd."], ["Professioneel omgaan met informatie.", "Mijn datapuntenlog staat als website online voor mijn docent. Ik heb bewust namen van collega's en teamgenoten weggelaten. Werk van het bureau en foto's van mensen zette ik pas online nadat ik toestemming had van mijn begeleider en van de mensen zelf."]], "better": "Mijn onderzoeksplan is sinds oktober niet bijgewerkt, terwijl het project veel is veranderd. Dat ga ik nu doen, met mijn keuzes en de redenen erachter. Ook wil ik de handleiding bij het model schrijven die ik heb beloofd. Daarnaast wil ik bij mijn keuzes vaker bronnen gebruiken, zoals documentatie van Revit en Grasshopper, in plaats van alleen uitproberen.", "img": [["onderzoeksplan-1", "13 oktober · Onderzoeksplan, pagina 1: doel, onderzoeksvraag, deelvragen en afbakening."], ["onderzoeksplan-4", "13 oktober · Onderzoeksplan, pagina 4: planning van 15 weken en mijn vragen voor de bespreking met het bureau."]]}];
+const LABEL={onvoldoende:"ONVOLDOENDE",voldoende:"VOLDOENDE",goed:"GOED"};
+const verdicts=[];
+const $=s=>document.querySelector(s);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Het 3D-beeld van Lady Justice (gemaakt in ComfyUI) wordt al geladen terwijl de docent het portfolio bekijkt. */
+const ladyLoad=Promise.all(['lady-1.json','lady-2.json'].map(f=>fetch(f).then(r=>{if(!r.ok)throw new Error(f+' '+r.status);return r.json();})))
+  .then(parts=>{const bin=atob(parts.join(''));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    return new GLTFLoader().parseAsync(u.buffer,'');});
+ladyLoad.catch(()=>{});
+
+/* =========================================================
+   SCÈNE 1 → instorting
+   ========================================================= */
+setTimeout(()=>$('#pbtn').classList.add('show'),1800);
+$('#pbtn').addEventListener('click',collapse);
+
+function collapse(){
+  const btn=$('#pbtn');btn.style.transition='opacity .3s';btn.style.opacity=0;btn.style.pointerEvents='none';
+  window.scrollTo(0,0);
+  document.body.classList.add('shake');
+  drawCracks();
+  setTimeout(()=>{
+    document.body.classList.remove('shake');
+    const pieces=[...document.querySelectorAll('.piece')];
+    const rects=pieces.map(p=>p.getBoundingClientRect());
+    pieces.forEach((p,i)=>{const r=rects[i];Object.assign(p.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',margin:0,zIndex:14,willChange:'transform'});});
+    const H=innerHeight, bodies=pieces.map((p,i)=>({el:p,x:0,y:0,vx:(Math.random()-.5)*5,vy:-Math.random()*3,r:0,vr:(Math.random()-.5)*6,delay:(rects[i].top/H)*-200+Math.random()*450+250,bounced:false,floor:H-rects[i].top-rects[i].height}));
+    bodies.forEach(b=>setTimeout(()=>puff(b.el.getBoundingClientRect()),Math.max(0,b.delay)));
+    const t0=performance.now();
+    (function step(t){
+      const el=t-t0;let alive=false;
+      bodies.forEach(b=>{
+        if(el<b.delay){alive=true;return}
+        b.vy+=0.55;b.x+=b.vx;b.y+=b.vy;b.r+=b.vr;
+        if(!b.bounced&&b.y>b.floor){b.y=b.floor;b.vy*=-0.35;b.vr*=1.6;b.bounced=true;b.floor=1e9;}
+        b.el.style.transform=`translate(${b.x}px,${b.y}px) rotate(${b.r}deg)`;
+        if(b.y<H+600)alive=true;
+      });
+      if(alive&&el<5200)requestAnimationFrame(step);
+    })(t0);
+    setTimeout(()=>{document.body.classList.add('night');$('#cracks').innerHTML='';init3D();},1300);
+    setTimeout(()=>{$('#site').style.display='none';},2400);
+  },700);
+}
+function drawCracks(){
+  const svg=$('#cracks'),W=innerWidth,H=innerHeight;let html='';
+  for(let k=0;k<7;k++){let x=W/2+(Math.random()-.5)*W*.2,y=H-40,d=`M${x} ${y}`;
+    for(let s=0;s<9;s++){x+=(Math.random()-.5)*W*.12;y-=H*.08+Math.random()*H*.05;d+=` L${x} ${y}`;}
+    html+=`<path d="${d}" stroke-dasharray="3000" stroke-dashoffset="3000"><animate attributeName="stroke-dashoffset" to="0" dur=".7s" fill="freeze"/></path>`;}
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=html;
+}
+function puff(r){
+  for(let i=0;i<8;i++){const d=document.createElement('div');d.className='dust';document.body.appendChild(d);
+    Object.assign(d.style,{left:(r.left+Math.random()*r.width)+'px',top:(r.top+r.height)+'px'});
+    d.animate([{transform:'translate(0,0) scale(1)',opacity:.8},{transform:`translate(${(Math.random()-.5)*120}px,${-40-Math.random()*80}px) scale(${2+Math.random()*3})`,opacity:0}],{duration:1200+Math.random()*600,easing:'ease-out'}).onfinish=()=>d.remove();}
+}
+
+/* =========================================================
+   TEXTUREN (canvas)
+   ========================================================= */
+function cnv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return [c,c.getContext('2d')];}
+function tex(c,{srgb=true,rep}={}){const t=new THREE.CanvasTexture(c);if(srgb)t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}return t;}
+function rnd(a,b){return a+Math.random()*(b-a)}
+function marbleCanvas(base='#e7e1d5',vein='rgba(120,112,100,',size=512){
+  const [c,x]=cnv(size,size);x.fillStyle=base;x.fillRect(0,0,size,size);
+  const id=x.getImageData(0,0,size,size),d=id.data;
+  for(let i=0;i<d.length;i+=4){const n=(Math.random()-.5)*18;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}
+  x.putImageData(id,0,0);
+  for(let k=0;k<26;k++){x.strokeStyle=vein+rnd(.05,.22)+')';x.lineWidth=rnd(.6,2.4);x.beginPath();let px=rnd(0,size),py=rnd(0,size);x.moveTo(px,py);
+    for(let s=0;s<6;s++){const nx=px+rnd(-120,120),ny=py+rnd(-120,120);x.quadraticCurveTo(px+rnd(-60,60),py+rnd(-60,60),nx,ny);px=nx;py=ny;}x.stroke();}
+  for(let k=0;k<1400;k++){x.fillStyle=`rgba(60,55,50,${rnd(.02,.08)})`;x.fillRect(rnd(0,size),rnd(0,size),rnd(1,3),rnd(1,3));}
+  return c;
+}
+function tilesCanvas(){
+  const S=1024,N=8,[c,x]=cnv(S,S),t=S/N;
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const v=rnd(58,88);x.fillStyle=`rgb(${v},${v*0.97},${v*0.95})`;x.fillRect(i*t,j*t,t,t);
+    for(let k=0;k<60;k++){x.fillStyle=`rgba(0,0,0,${rnd(.03,.1)})`;x.fillRect(i*t+rnd(0,t),j*t+rnd(0,t),rnd(2,14),rnd(1,4));}}
+  x.strokeStyle='#1d1b1a';x.lineWidth=5;
+  for(let i=0;i<=N;i++){x.beginPath();x.moveTo(i*t,0);x.lineTo(i*t,S);x.stroke();x.beginPath();x.moveTo(0,i*t);x.lineTo(S,i*t);x.stroke();}
+  return c;
+}
+function ringCanvas(){
+  const S=1024,[c,x]=cnv(S,S),m=S/2;x.translate(m,m);
+  x.strokeStyle='#e3b860';x.shadowColor='#f3c96a';x.shadowBlur=8;
+  [[480,7],[455,3],[300,4],[285,2],[140,3]].forEach(([r,w])=>{x.lineWidth=w;x.beginPath();x.arc(0,0,r,0,7);x.stroke();});
+  x.lineWidth=2.5;
+  for(let k=0;k<72;k++){const a=k/72*Math.PI*2;x.save();x.rotate(a);x.beginPath();
+    if(k%6===0){x.moveTo(0,-455);x.lineTo(0,-300);}else{x.moveTo(0,-455);x.lineTo(0,-430);
+      x.moveTo(-6,-400);x.quadraticCurveTo(0,-388-(k%3)*6,6,-400);}
+    x.stroke();x.restore();}
+  for(let k=0;k<12;k++){const a=k/12*Math.PI*2;x.save();x.rotate(a);x.beginPath();x.moveTo(0,-285);x.lineTo(0,-140);x.stroke();
+    x.beginPath();x.arc(0,-215,16,0,7);x.stroke();x.restore();}
+  return c;
+}
+function glowCanvas(stops,S=128){const [c,x]=cnv(S,S);const g=x.createRadialGradient(S/2,S/2,0,S/2,S/2,S/2);stops.forEach(([o,col])=>g.addColorStop(o,col));x.fillStyle=g;x.fillRect(0,0,S,S);return c;}
+function cloudCanvas(){const S=256,[c,x]=cnv(S,S);for(let k=0;k<26;k++){const r=rnd(30,70),px=rnd(60,196),py=rnd(100,170);const g=x.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,'rgba(150,165,205,.18)');g.addColorStop(1,'rgba(150,165,205,0)');x.fillStyle=g;x.fillRect(0,0,S,S);}return c;}
+function plaqueCanvas(num,verdict,lit){
+  const W=256,H=330,[c,x]=cnv(W,H);
+  x.fillStyle='#3b3833';x.fillRect(0,0,W,H);
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#fbe7a8');g.addColorStop(.5,'#d3a64f');g.addColorStop(1,'#8f6620');
+  x.strokeStyle=g;x.lineWidth=10;x.strokeRect(12,12,W-24,H-24);x.lineWidth=3;x.strokeRect(28,28,W-56,H-56);
+  x.fillStyle=lit?'#2a2418':'#26231f';x.fillRect(31,31,W-62,H-62);
+  x.fillStyle=g;x.font='900 120px Cinzel';x.textAlign='center';x.textBaseline='middle';x.shadowColor=lit?'#f6dc96':'transparent';x.shadowBlur=lit?24:0;
+  x.fillText(num,W/2,verdict?138:H/2-8);x.shadowBlur=0;
+  // lauweren
+  x.strokeStyle=g;x.lineWidth=4;
+  for(const sd of[-1,1]){x.beginPath();x.arc(W/2,verdict?160:H/2+10,92,Math.PI/2+sd*0.25,Math.PI/2+sd*1.2,sd<0);x.stroke();
+    for(let k=0;k<6;k++){const a=Math.PI/2+sd*(0.35+k*0.15),px=W/2+Math.cos(a)*92,py=(verdict?160:H/2+10)+Math.sin(a)*92;x.save();x.translate(px,py);x.rotate(a+sd*0.9);x.beginPath();x.ellipse(0,0,11,5,0,0,7);x.fillStyle=g;x.fill();x.restore();}}
+  if(verdict){x.fillStyle='#f6dc96';x.font=`700 ${verdict.length>9?26:32}px Cinzel`;x.fillText(verdict,W/2,262);}
+  return c;
+}
+function bannerCanvas(){
+  const W=256,H=640,[c,x]=cnv(W,H);
+  x.beginPath();x.moveTo(0,0);x.lineTo(W,0);x.lineTo(W,H-90);x.lineTo(W/2,H);x.lineTo(0,H-90);x.closePath();
+  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'#3d0d10');g.addColorStop(.5,'#7a1a1f');g.addColorStop(1,'#3d0d10');x.fillStyle=g;x.fill();
+  x.save();x.clip();for(let y=0;y<H;y+=4){x.fillStyle=`rgba(0,0,0,${rnd(0,.08)})`;x.fillRect(0,y,W,2);}x.restore();
+  const gd=x.createLinearGradient(0,0,0,H);gd.addColorStop(0,'#f6dc96');gd.addColorStop(1,'#a77b2a');
+  x.strokeStyle=gd;x.lineWidth=8;x.beginPath();x.moveTo(14,14);x.lineTo(W-14,14);x.lineTo(W-14,H-96);x.lineTo(W/2,H-16);x.lineTo(14,H-96);x.closePath();x.stroke();
+  // weegschaal-embleem
+  x.save();x.translate(W/2,250);x.strokeStyle=gd;x.fillStyle=gd;x.lineWidth=6;x.lineCap='round';
+  x.beginPath();x.moveTo(0,-70);x.lineTo(0,70);x.moveTo(-40,70);x.lineTo(40,70);x.moveTo(-70,-40);x.lineTo(70,-40);x.stroke();
+  x.beginPath();x.arc(0,-74,8,0,7);x.fill();
+  for(const sd of[-1,1]){x.beginPath();x.moveTo(sd*70,-40);x.lineTo(sd*70-28,20);x.moveTo(sd*70,-40);x.lineTo(sd*70+28,20);x.stroke();x.beginPath();x.arc(sd*70,20,30,0,Math.PI);x.closePath();x.fill();}
+  x.restore();
+  return c;
+}
+function hash2(x,z){const s=Math.sin(x*127.1+z*311.7)*43758.5453;return s-Math.floor(s);}
+function vnoise(x,z){const xi=Math.floor(x),zi=Math.floor(z),xf=x-xi,zf=z-zi,u=xf*xf*(3-2*xf),v=zf*zf*(3-2*zf);const a=hash2(xi,zi),b=hash2(xi+1,zi),c=hash2(xi,zi+1),d=hash2(xi+1,zi+1);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+function fbm(x,z){let s=0,a=.5,f=1;for(let i=0;i<5;i++){s+=a*(1-Math.abs(vnoise(x*f,z*f)*2-1));a*=.5;f*=2.03;}return s;}
+/* Vloer naar de referentie: gepolijste marmeren tegels, gouden ringen, stralen en een lauwerkrans-medaillon */
+function floorCanvases(RT,CTZ){
+  const S=3072,k=S/(2*RT);const W=(x,z)=>[S/2+x*k,S/2+(z-CTZ)*k];
+  const [bc,b]=cnv(S,S),[gc,g]=cnv(S,S);
+  b.fillStyle='#b9b2a7';b.fillRect(0,0,S,S);
+  const T=1.3*k;
+  for(let i=0;i*T<S;i++)for(let j=0;j*T<S;j++){const v=rnd(-14,12);b.fillStyle=`rgb(${190+v},${183+v},${172+v})`;b.fillRect(i*T,j*T,T,T);
+    for(let q=0;q<5;q++){b.strokeStyle=`rgba(120,112,100,${rnd(.08,.2)})`;b.lineWidth=rnd(1,2.4);b.beginPath();let px=i*T+rnd(0,T),py=j*T+rnd(0,T);b.moveTo(px,py);for(let s=0;s<3;s++){px+=rnd(-40,40);py+=rnd(-40,40);b.lineTo(px,py);}b.stroke();}}
+  b.strokeStyle='rgba(60,52,44,.75)';b.lineWidth=3;for(let i=0;i*T<=S;i++){b.beginPath();b.moveTo(i*T,0);b.lineTo(i*T,S);b.stroke();b.beginPath();b.moveTo(0,i*T);b.lineTo(S,i*T);b.stroke();}
+  for(let c=0;c<40;c++){b.strokeStyle='rgba(40,34,30,.35)';b.lineWidth=1.6;b.beginPath();let px=rnd(0,S),py=rnd(0,S);b.moveTo(px,py);for(let s=0;s<6;s++){px+=rnd(-60,60);py+=rnd(-60,60);b.lineTo(px,py);}b.stroke();}
+  // goud
+  const M=[0,2.5];const [mx,my]=W(M[0],M[1]);const [cx,cy]=W(0,CTZ);
+  g.strokeStyle='#e6bd63';g.fillStyle='#e6bd63';g.lineCap='round';
+  const circle=(x,y,r,w)=>{g.lineWidth=w*k;g.beginPath();g.arc(x,y,r*k,0,Math.PI*2);g.stroke();};
+  circle(cx,cy,RT-1.95,.07);circle(cx,cy,RT-2.2,.035);circle(cx,cy,RT-4.6,.05);circle(cx,cy,RT-4.8,.03);
+  circle(mx,my,4.35,.07);circle(mx,my,3.62,.05);circle(mx,my,3.35,.03);circle(mx,my,1.6,.025);
+  // meanderband tussen 3.62 en 4.35
+  const R1=3.72,R2=4.25,n=56;g.lineWidth=.045*k;
+  for(let s=0;s<n;s++){const a0=s/n*Math.PI*2,a1=(s+.78)/n*Math.PI*2,am=(s+.45)/n*Math.PI*2;
+    const P=(a,r)=>[mx+Math.cos(a)*r*k,my+Math.sin(a)*r*k];
+    const pts=[P(a0,R1),P(a0,R2),P(a1,R2),P(a1,R1+.2),P(am,R1+.2),P(am,R2-.17)];
+    g.beginPath();g.moveTo(...pts[0]);pts.slice(1).forEach(p=>g.lineTo(...p));g.stroke();}
+  // stralen vanuit het medaillon
+  g.lineWidth=.05*k;
+  for(let s=0;s<8;s++){const a=s/8*Math.PI*2+Math.PI/8;if(Math.abs(Math.sin(a))>.9&&Math.sin(a)<0)continue;
+    for(const off of[-.12,.12]){const ox=Math.cos(a+Math.PI/2)*off,oy=Math.sin(a+Math.PI/2)*off;g.beginPath();g.moveTo(mx+(Math.cos(a)*4.4+ox)*k,my+(Math.sin(a)*4.4+oy)*k);g.lineTo(mx+(Math.cos(a)*(RT-2)+ox)*k,my+(Math.sin(a)*(RT-2)+oy)*k);g.stroke();}}
+  // lauwerkrans
+  const LR=2.25;g.lineWidth=.06*k;
+  for(const sd of[-1,1]){const a0=Math.PI/2+sd*.32,a1=Math.PI/2+sd*2.75;g.beginPath();g.arc(mx,my,LR*k,Math.min(a0,a1),Math.max(a0,a1));g.stroke();
+    for(let q=0;q<13;q++){const a=a0+(a1-a0)*(q/12);const px=mx+Math.cos(a)*LR*k,py=my+Math.sin(a)*LR*k;for(const io of[-1,1]){g.save();g.translate(px+Math.cos(a)*io*.2*k,py+Math.sin(a)*io*.2*k);g.rotate(a+sd*(Math.PI/2)+io*.5*sd);g.beginPath();g.ellipse(0,0,.27*k,.1*k,0,0,Math.PI*2);g.fill();g.restore();}}}
+  g.beginPath();g.moveTo(mx-.5*k,my+LR*k+.15*k);g.lineTo(mx+.5*k,my+LR*k-.25*k);g.moveTo(mx+.5*k,my+LR*k+.15*k);g.lineTo(mx-.5*k,my+LR*k-.25*k);g.stroke();
+  // goud ook op de basis tekenen
+  b.globalAlpha=.95;b.drawImage(gc,0,0);b.globalAlpha=1;
+  return {base:bc,gold:gc};
+}
+
+function coffersCanvas(){const S=256,[c,x]=cnv(S,S);x.fillStyle='#d9d1c3';x.fillRect(0,0,S,S);
+  const id=x.getImageData(0,0,S,S),d=id.data;for(let i=0;i<d.length;i+=4){const n=(Math.random()-.5)*14;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}x.putImageData(id,0,0);
+  for(let k=0;k<4;k++){const m=18+k*14;x.fillStyle=`rgba(70,60,50,${.12+k*.05})`;x.fillRect(m,m,S-2*m,S-2*m);}
+  x.fillStyle='rgba(255,244,220,.25)';x.fillRect(18,18,S-36,6);x.fillRect(18,18,6,S-36);
+  x.fillStyle='#d6a84f';x.beginPath();x.arc(S/2,S/2,10,0,7);x.fill();return c;}
+function vaseCanvas(){const W=1024,H=512,[c,x]=cnv(W,H);
+  x.fillStyle='#b4582a';x.fillRect(0,0,W,H);
+  const band=(y,h)=>{x.fillStyle='#1c120c';x.fillRect(0,y,W,h);};
+  // UV v=0 onder, v=1 boven (canvas y omgekeerd)
+  band(H-70,70);band(0,95);band(H*.36,14);band(H*.17,10);
+  // meanderband
+  x.strokeStyle='#1c120c';x.lineWidth=7;for(let i=0;i<W;i+=48){const y=H*.24;x.beginPath();x.moveTo(i,y+22);x.lineTo(i,y-14);x.lineTo(i+34,y-14);x.lineTo(i+34,y+12);x.lineTo(i+14,y+12);x.lineTo(i+14,y-2);x.stroke();}
+  // zwarte figuren: lauwer en weegschaal
+  x.fillStyle='#1c120c';
+  for(let k=0;k<4;k++){const cx=k*W/4+W/8,cy=H*.6;
+    if(k%2===0){x.lineWidth=8;x.beginPath();x.moveTo(cx,cy-80);x.lineTo(cx,cy+60);x.moveTo(cx-60,cy-60);x.lineTo(cx+60,cy-60);x.stroke();
+      for(const sd of[-1,1]){x.beginPath();x.moveTo(cx+sd*60,cy-60);x.lineTo(cx+sd*60-24,cy);x.lineTo(cx+sd*60+24,cy);x.closePath();x.stroke();x.beginPath();x.arc(cx+sd*60,cy,26,0,Math.PI);x.fill();}
+      x.fillRect(cx-30,cy+56,60,10);}
+    else{for(const sd of[-1,1])for(let q=0;q<7;q++){const a=Math.PI/2+sd*(.4+q*.32);x.save();x.translate(cx+Math.cos(a)*70,cy+Math.sin(a)*70);x.rotate(a+sd*1.2);x.beginPath();x.ellipse(0,0,20,8,0,0,7);x.fill();x.restore();}}}
+  return c;}
+function aequitasCanvas(){
+  const W=1024,H=300,[c,x]=cnv(W,H);
+  x.drawImage(marbleCanvas('#a49d92','rgba(60,55,50,',1024),0,0,W,H);
+  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(0,0,W,H);
+  const g=x.createLinearGradient(0,60,0,240);g.addColorStop(0,'#fbe7a8');g.addColorStop(.6,'#d3a64f');g.addColorStop(1,'#8f6620');
+  x.strokeStyle=g;x.lineWidth=6;x.strokeRect(40,30,W-80,H-60);
+  x.fillStyle=g;x.font='700 120px Cinzel';x.textAlign='center';x.textBaseline='middle';x.shadowColor='#000';x.shadowBlur=8;x.fillText('AEQUITAS',W/2,H/2+6);x.shadowBlur=0;
+  x.lineWidth=5;for(const sd of[-1,1]){x.beginPath();x.arc(W/2+sd*360,H/2,90,sd<0?2.3:-0.8,sd<0?4.0:0.8);x.stroke();
+    for(let k=0;k<7;k++){const a=(sd<0?2.4:-0.7)+k*0.22,px=W/2+sd*360+Math.cos(a)*90,py=H/2+Math.sin(a)*90;x.save();x.translate(px,py);x.rotate(a+1.2);x.beginPath();x.ellipse(0,0,15,6,0,0,7);x.fill();x.restore();}}
+  return c;
+}
+
+/* =========================================================
+   3D-SCÈNE
+   ========================================================= */
+let renderer,scene,camera,composer,clock,started=false;
+const camPos=new THREE.Vector3(),camTgt=new THREE.Vector3();
+const HOME={pos:new THREE.Vector3(0,1.9,15.5),tgt:new THREE.Vector3(0,7.2,-6)};
+const pillars=[];const smallFlames=[];let beam,panL,panR,blindfold,statue,statueSpot,ladyModel=false,coinsL=[],coinsR=[],flames=[],motes,banners=[];
+let tween=null;
+
+async function init3D(){
+  if(started)return;started=true;
+  try{await document.fonts.load('900 120px Cinzel');await document.fonts.load('700 60px Cinzel');}catch(e){}
+  const cv=$('#gl');
+  renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.setSize(innerWidth,innerHeight,false);
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x101a38,0.011);
+  camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,0.1,400);
+  const env=new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(),0.04).texture;
+
+  /* lucht */
+  const sky=new THREE.Mesh(new THREE.SphereGeometry(200,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,
+    uniforms:{},vertexShader:`varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader:`varying vec3 vP;void main(){float h=clamp(vP.y,0.,1.);vec3 top=vec3(.012,.02,.05),mid=vec3(.04,.06,.14),hor=vec3(.11,.14,.26);vec3 c=mix(hor,mid,smoothstep(0.,.25,h));c=mix(c,top,smoothstep(.25,.9,h));gl_FragColor=vec4(c,1.);}`}));
+  scene.add(sky);
+  const sg=new THREE.BufferGeometry(),sp=[];for(let i=0;i<2600;i++){const th=Math.random()*Math.PI*2,ph=Math.acos(rnd(0.02,1));sp.push(180*Math.sin(ph)*Math.cos(th),180*Math.cos(ph),180*Math.sin(ph)*Math.sin(th));}
+  sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));
+  const stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0xe9eefb,size:0.55,sizeAttenuation:true,fog:false,transparent:true,opacity:.9}));scene.add(stars);
+  // maan
+  const moonPos=new THREE.Vector3(0,1,-.35).normalize().multiplyScalar(150);   // hoog aan de hemel, zichtbaar door het gat in de koepel
+  const moon=new THREE.Sprite(new THREE.SpriteMaterial({map:tex(glowCanvas([[0,'#ffffff'],[.16,'#f2f5ff'],[.2,'rgba(220,230,255,.55)'],[.45,'rgba(160,180,240,.12)'],[1,'rgba(0,0,0,0)']],256)),fog:false,depthWrite:false,transparent:true}));
+  moon.position.copy(moonPos);moon.scale.set(48,48,1);scene.add(moon);
+  // wolken
+  const cloudT=tex(cloudCanvas());
+  for(let i=0;i<26;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:cloudT,transparent:true,depthWrite:false,opacity:rnd(.5,1)}));
+    const a=rnd(-Math.PI*0.95,-Math.PI*0.05),r=rnd(55,95);s.position.set(Math.cos(a)*r,rnd(2,22),Math.sin(a)*r);s.scale.set(rnd(30,60),rnd(12,22),1);scene.add(s);}
+
+  /* licht */
+  scene.add(new THREE.HemisphereLight(0x4a5c9a,0x1a1208,0.55));
+  const moonL=new THREE.DirectionalLight(0xa9bcff,1.25);moonL.position.copy(moonPos).multiplyScalar(.3);moonL.target.position.set(0,0,0);scene.add(moonL.target);moonL.castShadow=true;
+  moonL.shadow.mapSize.set(2048,2048);Object.assign(moonL.shadow.camera,{left:-25,right:25,top:25,bottom:-25,near:1,far:90});moonL.shadow.bias=-0.0008;scene.add(moonL);
+  statueSpot=new THREE.SpotLight(0xff9445,170,36,0.5,0.7,1.6);statueSpot.position.set(0,0.6,1.5);statueSpot.target.position.set(0,8.5,-8);scene.add(statueSpot,statueSpot.target);
+  const fill=new THREE.PointLight(0x8aa0ff,30,30,1.6);fill.position.set(0,6,6);scene.add(fill);
+
+  /* materialen */
+  const marbleT=tex(marbleCanvas(),{rep:[1,3]});
+  const mMarble=new THREE.MeshStandardMaterial({map:marbleT,color:0xf1ebdf,roughness:.48,metalness:0});
+  const mMarble2=new THREE.MeshStandardMaterial({map:tex(marbleCanvas()),color:0xf1ebdf,roughness:.5});
+  const mStone=new THREE.MeshStandardMaterial({map:tex(marbleCanvas('#b3ab9e','rgba(70,64,58,')),color:0xb8b0a4,roughness:.85});
+  const mDark=new THREE.MeshStandardMaterial({color:0x6d675f,roughness:.9,map:tex(marbleCanvas('#8f887d','rgba(40,36,32,'))});
+  const mGold=new THREE.MeshStandardMaterial({color:0xd7ac52,metalness:1,roughness:.26,envMap:env,envMapIntensity:1.1,emissive:0x2a1a04});
+  const mStatue=new THREE.MeshStandardMaterial({map:tex(marbleCanvas('#dcd6cc')),color:0xe6e0d6,roughness:.42});
+
+  /* sokkel + trappen + beeld */
+  const ped=new THREE.Group();scene.add(ped);
+  const box=(w,h,d,m,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;ped.add(o);return o;};
+  box(7.6,2.0,7.6,mStone,0,1.0,-8.0);
+  box(8.1,0.25,8.1,mMarble2,0,2.12,-8.0);
+  let ladyBuf=null;try{ladyBuf=await Promise.race([ladyLoad,new Promise((_,rej)=>setTimeout(()=>rej('timeout'),12000))]);}catch(e){ladyBuf=null;}
+  if(!ladyBuf){box(4.4,0.9,3.6,mStone,0,2.7,-6.6);box(4.8,0.22,4.0,mMarble2,0,3.26,-6.6);}
+  const plaque=new THREE.Mesh(new THREE.PlaneGeometry(3.6,1.05),new THREE.MeshStandardMaterial({map:tex(aequitasCanvas()),roughness:.6,emissive:0x2a1d06,emissiveIntensity:.6}));
+  plaque.position.set(0,1.05,-4.19+0);ped.add(plaque);
+  // halfronde trap zoals in de referentie
+  for(let k=0;k<5;k++){const h=.4*(k+1),r=4.2-k*.62;const st=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,64,1,false,-Math.PI/2,Math.PI),mMarble2);st.position.set(0,h/2,-4.2);st.castShadow=st.receiveShadow=true;ped.add(st);
+    const edge=new THREE.Mesh(new THREE.TorusGeometry(r-.02,.018,6,64,Math.PI),mGold);edge.rotation.set(-Math.PI/2,0,0);edge.position.set(0,h+.005,-4.2);ped.add(edge);}
+
+  if(ladyBuf){statue=buildLady(ladyBuf,env,mGold);ladyModel=true;statue.position.set(0,STATUE_Y,-8.0);}
+  else{statue=buildStatue(mStatue,mGold);STATUE_Y=3.37;statue.position.set(0,3.37,-6.6);statue.scale.setScalar(1.12);}
+  scene.add(statue);
+
+  /* pilaren */
+  const P=[[-12.4,-11.2],[-5.6,-5.0],[5.6,-5.0],[12.4,-11.2]];
+  const bannerT=tex(bannerCanvas());
+  const flameT=tex(glowCanvas([[0,'rgba(255,250,220,1)'],[.25,'rgba(255,190,80,.9)'],[.6,'rgba(255,110,20,.35)'],[1,'rgba(255,80,0,0)']]));
+  P.forEach(([x,z],i)=>{
+    const g=buildPillar(i,mMarble,mStone,mGold,bannerT);g.position.set(x,0,z);g.scale.set(1.4,1,1.4);
+    g.rotation.y=Math.atan2(0-x,11.5-z);
+    scene.add(g);
+    // vuurschaal
+    const side=x<0?-1:1;const bx=x+side*0.0,bz=z+1.55;
+    const fd=Math.hypot(0-x,11.5-z),bx2=x+(0-x)/fd*2.7,bz2=z+(11.5-z)/fd*2.7;   // recht voor de pilaar
+    const bowl=new THREE.Group();bowl.position.set(bx2,0,bz2);scene.add(bowl);
+    const plinth=new THREE.Mesh(new THREE.BoxGeometry(1.05,1.35,1.05),mStone);plinth.position.y=.675;plinth.castShadow=plinth.receiveShadow=true;bowl.add(plinth);
+    const ptop=new THREE.Mesh(new THREE.BoxGeometry(1.2,.12,1.2),mMarble2);ptop.position.y=1.41;bowl.add(ptop);
+    for(const [fx,fz,ry] of [[0,.53,0],[0,-.53,0],[.53,0,Math.PI/2],[-.53,0,Math.PI/2]]){const fr=new THREE.Mesh(new THREE.BoxGeometry(.7,.75,.02),new THREE.MeshStandardMaterial({color:0x000000,transparent:true,opacity:0}));fr.position.set(fx,.68,fz);fr.rotation.y=ry;
+      const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(.66,.7)),new THREE.LineBasicMaterial({color:0xe6bd63}));edges.position.set(fx*1.005,.68,fz*1.005);edges.rotation.y=ry;bowl.add(edges);}
+    const cup=new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0,0),new THREE.Vector2(.25,.05),new THREE.Vector2(.45,.28),new THREE.Vector2(.5,.37)],24),mGold);cup.position.y=1.47;cup.castShadow=true;bowl.add(cup);
+    const light=new THREE.PointLight(0xff9a40,11,13,1.7);light.position.set(0,2.4,0);bowl.add(light);
+    const fl=[];for(let k=0;k<9;k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:flameT,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,fog:false}));bowl.add(s);fl.push({s,t:Math.random()});}
+    flames.push({fl,light,base:11});
+    pillars[i].bowl=bowl;pillars[i].light=light;
+  });
+  // bogen tussen de pilaren
+  const archMat=mMarble2;
+  const arch=(x1,z1,x2,z2,y)=>{const mx=(x1+x2)/2,mz=(z1+z2)/2,len=Math.hypot(x2-x1,z2-z1),R=len/2;
+    const sh=new THREE.Shape();sh.absarc(0,0,R+0.75,0,Math.PI,false);sh.lineTo(-R,0);sh.absarc(0,0,R,Math.PI,0,true);sh.lineTo(R+0.75,0);
+    const geo=new THREE.ExtrudeGeometry(sh,{depth:1.6,bevelEnabled:false,curveSegments:40});geo.translate(0,0,-.8);
+    const m=new THREE.Mesh(geo,archMat);m.position.set(mx,y,mz);m.rotation.y=-Math.atan2(z2-z1,x2-x1);m.castShadow=m.receiveShadow=true;scene.add(m);};
+  // Griekse vazen (amforen) boven op de vier pilaren
+  const vaseT=tex(vaseCanvas());
+  const vaseM=new THREE.MeshStandardMaterial({map:vaseT,roughness:.45,metalness:.05});
+  const prof=[[0,0],[.34,0],[.36,.08],[.22,.18],[.2,.3],[.42,.55],[.62,.85],[.7,1.1],[.66,1.35],[.5,1.6],[.3,1.78],[.24,1.92],[.26,2.1],[.4,2.22],[.42,2.3],[.3,2.3]].map(([r,y])=>new THREE.Vector2(r,y));
+  const vaseG=new THREE.LatheGeometry(prof,48);
+  P.forEach(([x,z])=>{const v=new THREE.Group();v.position.set(x,12.92,z);v.rotation.y=Math.atan2(0-x,11.5-z);
+    const body=new THREE.Mesh(vaseG,vaseM);body.castShadow=true;v.add(body);
+    for(const sd of[-1,1]){const h=new THREE.Mesh(new THREE.TorusGeometry(.26,.055,10,24,Math.PI*1.15),vaseM);h.position.set(sd*.52,1.82,0);h.rotation.set(0,0,sd>0?-0.35:Math.PI+0.35);h.castShadow=true;v.add(h);}
+    const foot=new THREE.Mesh(new THREE.CylinderGeometry(.42,.48,.14,32),mGold);foot.position.y=-.05;v.add(foot);
+    v.scale.setScalar(1.05);scene.add(v);});
+
+  /* ===== TERRAS (vloer, rand, klif) — naar de referentiebeelden ===== */
+  const CTZ=-1,RT=20.6;
+  const fl2=floorCanvases(RT,CTZ);
+  const floor=new THREE.Mesh(new THREE.CircleGeometry(RT,128),new THREE.MeshStandardMaterial({map:tex(fl2.base),emissiveMap:tex(fl2.gold),emissive:0xffc46a,emissiveIntensity:.32,roughness:.16,metalness:.08,envMap:env,envMapIntensity:.35,color:0xd8d2c8}));
+  floor.rotation.x=-Math.PI/2;floor.position.z=CTZ;floor.receiveShadow=true;scene.add(floor);
+  const rim=new THREE.Mesh(new THREE.CylinderGeometry(RT+.25,RT+.1,.7,96,1,true),mMarble2);rim.position.set(0,-.35,CTZ);scene.add(rim);
+  // rotsklif onder het terras
+  const cliffG=new THREE.CylinderGeometry(RT+.1,7,30,48,10,true),cp=cliffG.attributes.position;
+  for(let k=0;k<cp.count;k++){const x=cp.getX(k),y=cp.getY(k),z=cp.getZ(k),a=Math.atan2(z,x),r=Math.hypot(x,z);const n=1+(fbm(a*3+5,y*.15)-.5)*.35*Math.min(1,(15-y)/4);cp.setXYZ(k,Math.cos(a)*r*n,y,Math.sin(a)*r*n);}
+  cliffG.computeVertexNormals();
+  const mRock=new THREE.MeshStandardMaterial({color:0x2e2f3a,roughness:.95,flatShading:true});
+  const cliff=new THREE.Mesh(cliffG,mRock);cliff.position.set(0,-15.7,CTZ);scene.add(cliff);
+  for(let k=0;k<34;k++){const a=rnd(0,Math.PI*2),r=rnd(RT-1,RT+1.6);const b=new THREE.Mesh(new THREE.IcosahedronGeometry(rnd(.8,2.2),0),mRock);b.position.set(Math.sin(a)*r,rnd(-2.6,-1),CTZ-Math.cos(a)*r);b.rotation.set(rnd(0,3),rnd(0,3),rnd(0,3));scene.add(b);}
+
+  /* ===== ZUILENGANG rondom (bogen, balustrade, banieren, lampjes) ===== */
+  const RA=19.4,pos=(phi,r)=>[Math.sin(phi)*r,CTZ-Math.cos(phi)*r];
+  const deg=Math.PI/180,step=15*deg,phis=[];for(let d=-127.5;d<=127.5;d+=15)phis.push(d*deg);
+  const gap=phi=>Math.abs(phi)<45*deg;   // midden achter Lady Justice blijft open
+  const baseH=.9,colH=12.0-baseH,capY=baseH+colH;   // even hoog als de vier grote pilaren
+  const shaftG=(()=>{const g=new THREE.CylinderGeometry(.42,.48,colH,56,12,true),p=g.attributes.position;for(let k=0;k<p.count;k++){const x=p.getX(k),y=p.getY(k),z=p.getZ(k),th=Math.atan2(z,x),r=Math.hypot(x,z),f=1-.08*Math.pow(Math.max(0,Math.cos(th*16)),.5);p.setXYZ(k,Math.cos(th)*r*f,y,Math.sin(th)*r*f);}g.computeVertexNormals();return g;})();
+  const parts=[
+    [new THREE.BoxGeometry(1.3,baseH,1.3),mStone,baseH/2],
+    [new THREE.TorusGeometry(.52,.09,8,32).rotateX(Math.PI/2),mMarble,baseH+.06],
+    [shaftG,mMarble,baseH+colH/2],
+    [new THREE.LatheGeometry([new THREE.Vector2(.42,0),new THREE.Vector2(.5,.14),new THREE.Vector2(.64,.38),new THREE.Vector2(.76,.48)],32),mMarble,capY],
+    [new THREE.BoxGeometry(1.45,.24,1.45),mMarble,capY+.6],
+    [new THREE.TorusGeometry(.45,.04,8,32).rotateX(Math.PI/2),mGold,capY-.3]];
+  const dm2=new THREE.Object3D();
+  const allCols=phis.filter(p=>!gap(p));
+  parts.forEach(([g,m,y])=>{const im=new THREE.InstancedMesh(g,m,allCols.length);allCols.forEach((phi,i)=>{const[x,z]=pos(phi,RA);dm2.position.set(x,y,z);dm2.rotation.set(0,-phi,0);dm2.updateMatrix();im.setMatrixAt(i,dm2.matrix);});im.castShadow=true;im.receiveShadow=true;scene.add(im);});
+  const L=2*RA*Math.sin(step/2),rIn=L/2-.5,springY=capY+.72,topY=springY+rIn+.6;
+  const archShape=new THREE.Shape();archShape.moveTo(-L/2,0);archShape.lineTo(-rIn,0);archShape.absarc(0,0,rIn,Math.PI,0,true);archShape.lineTo(L/2,0);archShape.lineTo(L/2,rIn+.6);archShape.lineTo(-L/2,rIn+.6);archShape.lineTo(-L/2,0);
+  const archG=new THREE.ExtrudeGeometry(archShape,{depth:1.1,bevelEnabled:false,curveSegments:32});archG.translate(0,0,-.55);
+  const balG=new THREE.LatheGeometry([new THREE.Vector2(.0,0),new THREE.Vector2(.07,0),new THREE.Vector2(.07,.08),new THREE.Vector2(.045,.14),new THREE.Vector2(.075,.4),new THREE.Vector2(.04,.62),new THREE.Vector2(.06,.7),new THREE.Vector2(.0,.72)],10);
+  const balIM=new THREE.InstancedMesh(balG,mMarble,400);let bi=0;
+  const bannerT2=tex(bannerCanvas());
+  const addBalustrade=(phiA,phiB,r,postsAt)=>{const[xa,za]=pos(phiA,r),[xb,zb]=pos(phiB,r),mx=(xa+xb)/2,mz=(za+zb)/2,len=Math.hypot(xb-xa,zb-za)-(postsAt?.8:.7),rot=-(phiA+phiB)/2;
+    const plinth=new THREE.Mesh(new THREE.BoxGeometry(len,.18,.5),mStone);plinth.position.set(mx,.09,mz);plinth.rotation.y=rot;scene.add(plinth);
+    const rail=new THREE.Mesh(new THREE.BoxGeometry(len,.14,.46),mMarble2);rail.position.set(mx,.95,mz);rail.rotation.y=rot;rail.castShadow=true;scene.add(rail);
+    const n=Math.max(3,Math.round(len/.28));for(let k=0;k<n&&bi<400;k++){const t=(k+.5)/n-.5;dm2.position.set(mx+Math.cos(rot)*t*len,.18,mz-Math.sin(rot)*t*len);dm2.rotation.set(0,0,0);dm2.scale.setScalar(1);dm2.updateMatrix();balIM.setMatrixAt(bi++,dm2.matrix);}};
+  const glowT=tex(glowCanvas([[0,'rgba(255,214,140,.9)'],[.35,'rgba(255,170,70,.35)'],[1,'rgba(255,120,20,0)']]));
+  for(let k=0;k<phis.length-1;k++){
+    const pm=phis[k]+step/2,[x,z]=pos(pm,RA*Math.cos(step/2));
+    if(gap(phis[k])||gap(phis[k+1])){addBalustrade(phis[k],phis[k+1],RA,false);continue;}
+    const a=new THREE.Mesh(archG,mMarble2);a.position.set(x,springY,z);a.rotation.y=-pm;a.castShadow=a.receiveShadow=true;scene.add(a);
+    const ent=new THREE.Mesh(new THREE.BoxGeometry(L+.06,.7,1.3),mMarble2);ent.position.set(x,topY+.35,z);ent.rotation.y=-pm;ent.castShadow=true;scene.add(ent);
+    const cap=new THREE.Mesh(new THREE.BoxGeometry(L+.12,.2,1.5),mStone);cap.position.set(x,topY+.8,z);cap.rotation.y=-pm;scene.add(cap);
+    const band=new THREE.Mesh(new THREE.BoxGeometry(L+.07,.06,1.32),mGold);band.position.set(x,topY+.04,z);band.rotation.y=-pm;scene.add(band);
+    addBalustrade(phis[k],phis[k+1],RA,false);
+    if(k%3===1){const b=new THREE.Mesh(new THREE.PlaneGeometry(1.15,3.4,1,8),new THREE.MeshStandardMaterial({map:bannerT2,transparent:true,alphaTest:.3,side:THREE.DoubleSide,roughness:.85}));
+      const[bx,bz]=pos(pm,RA*Math.cos(step/2)-.05);b.position.set(bx,springY-2.3,bz);b.rotation.y=-pm;scene.add(b);banners.push(b);const rod=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,1.35,8).rotateZ(Math.PI/2),mGold);rod.position.set(bx,springY-.58,bz);rod.rotation.y=-pm;scene.add(rod);}
+  }
+  // lampjes aan de voet van de zuilen
+  allCols.forEach((phi,i)=>{const[x,z]=pos(phi,RA-.8);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowT,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false}));s.position.set(x,1.1,z);s.scale.set(1.1,1.1,1);scene.add(s);
+    if(i%4===1){const l=new THREE.PointLight(0xffb060,9,10,1.6);l.position.set(x,1.2,z);scene.add(l);}});
+  // open kant aan de voorzijde: balustrade met posten en vuurschaaltjes
+  const fr=[];for(let d=127.5;d<=232.5;d+=10.5)fr.push(d*deg);
+  fr.forEach((phi,i)=>{const[x,z]=pos(phi,RA);const post=new THREE.Mesh(new THREE.BoxGeometry(.6,1.25,.6),mStone);post.position.set(x,.62,z);post.rotation.y=-phi;post.castShadow=true;scene.add(post);
+    const top=new THREE.Mesh(new THREE.BoxGeometry(.72,.12,.72),mMarble2);top.position.set(x,1.3,z);top.rotation.y=-phi;scene.add(top);
+    if(i<fr.length-1)addBalustrade(phi,fr[i+1],RA,true);
+    if(i%2===1){const cup=new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0,0),new THREE.Vector2(.14,.03),new THREE.Vector2(.25,.17),new THREE.Vector2(.27,.22)],18),mGold);cup.position.set(x,1.36,z);scene.add(cup);
+      const fls=[];for(let k=0;k<5;k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:flameT,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,fog:false}));s.position.set(x,1.6,z);scene.add(s);fls.push({s,t:Math.random(),x,z});}
+      smallFlames.push(...fls);if(i===3||i===7){const l=new THREE.PointLight(0xff9a40,8,9,1.7);l.position.set(x,2,z);scene.add(l);}}});
+  balIM.count=bi;balIM.castShadow=true;scene.add(balIM);
+
+  /* ===== GROTE BOGEN over de open stukken + KOEPEL met oculus ===== */
+  const ringTop=topY+.9;
+  function bigArch(pA,pB,yS){const N=80,ri=RA-.65,ro=RA+.65,pts=[],idx=[];
+    const P=(phi,r,y)=>{const[x,z]=pos(phi,r);return[x,y,z];};
+    for(let i=0;i<=N;i++){const t=i/N,phi=pA+(pB-pA)*t,yb=yS+(ringTop-.9-yS)*Math.sqrt(Math.max(0,1-Math.pow(2*t-1,2)));
+      pts.push(...P(phi,ri,yb),...P(phi,ri,ringTop),...P(phi,ro,yb),...P(phi,ro,ringTop));}
+    for(let i=0;i<N;i++){const a=i*4,b=(i+1)*4;
+      idx.push(a,b,a+1, b,b+1,a+1);            // binnenkant
+      idx.push(a+2,a+3,b+2, b+2,a+3,b+3);      // buitenkant
+      idx.push(a,a+2,b, b,a+2,b+2);            // onderkant (de boog)
+      idx.push(a+1,b+1,a+3, b+1,b+3,a+3);}     // bovenkant
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));g.setIndex(idx);g.computeVertexNormals();
+    const m=new THREE.Mesh(g,mMarble2);m.castShadow=m.receiveShadow=true;scene.add(m);
+    // gouden rand langs de boog
+    const cp=[];for(let i=0;i<=N;i++){const t=i/N,phi=pA+(pB-pA)*t,yb=yS+(ringTop-.9-yS)*Math.sqrt(Math.max(0,1-Math.pow(2*t-1,2)));const[x,y,z]=P(phi,ri-.02,yb-.02);cp.push(new THREE.Vector3(x,y,z));}
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cp),160,.06,6),mGold));}
+  // doorlopende ring waar de koepel op rust
+  const ringMat=mMarble2.clone();ringMat.side=THREE.DoubleSide;
+  for(const r of[RA+.75,RA-.7]){const rm=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.62,160,1,true),ringMat);rm.position.set(0,ringTop+.3,CTZ);scene.add(rm);}
+  for(const y of[ringTop+.005,ringTop+.61]){const an=new THREE.Mesh(new THREE.RingGeometry(RA-.7,RA+.75,160,1).rotateX(-Math.PI/2),ringMat);an.position.set(0,y,CTZ);scene.add(an);}
+  const ringGold=new THREE.Mesh(new THREE.TorusGeometry(RA-.62,.06,8,160).rotateX(Math.PI/2),mGold);ringGold.position.set(0,ringTop-.85,CTZ);scene.add(ringGold);
+  // stroken die van de ene naar de andere kant van de open stukken lopen
+  const stripM=mMarble2.clone();stripM.side=THREE.DoubleSide;
+  function strip(pA,pB,y,h,r,col){const g=new THREE.CylinderGeometry(r,r,h,96,1,true,Math.PI-pB,pB-pA);const m=new THREE.Mesh(g,col||stripM);m.position.set(0,y+h/2,CTZ);m.castShadow=true;m.receiveShadow=true;scene.add(m);}
+  // dichte balk over de open stukken (zelfde hoogte en dikte als de balk boven de bogen)
+  for(const[pA,pB] of [[-52.5*deg,52.5*deg],[127.5*deg,232.5*deg]])bigArch(pA,pB,ringTop-.9);
+  // koepel
+  const DR=RA+.7,DH=.62,ocu=.33;   // ocu = hoek van het gat bovenin
+  const domeM=new THREE.MeshStandardMaterial({map:tex(coffersCanvas(),{rep:[16,6]}),color:0xe9e2d6,roughness:.6,side:THREE.DoubleSide,emissive:0x2a2236,emissiveIntensity:.6});
+  const dome=new THREE.Mesh(new THREE.SphereGeometry(DR,128,48,0,Math.PI*2,ocu,Math.PI/2-ocu),domeM);
+  dome.scale.y=DH;dome.position.set(0,ringTop+.6,CTZ);dome.castShadow=true;dome.receiveShadow=true;scene.add(dome);
+  const ocR=DR*Math.sin(ocu),ocY=ringTop+.6+DR*Math.cos(ocu)*DH;
+  const ocRing=new THREE.Mesh(new THREE.TorusGeometry(ocR,.22,12,96).rotateX(Math.PI/2),mGold);ocRing.position.set(0,ocY,CTZ);scene.add(ocRing);
+  for(let k=0;k<16;k++){const a=k/16*Math.PI*2,cp=[];for(let j=0;j<=24;j++){const th=ocu+(Math.PI/2-ocu)*j/24;cp.push(new THREE.Vector3(Math.sin(th)*Math.cos(a)*(DR-.08),Math.cos(th)*DH*(DR-.08)+ringTop+.6,Math.sin(th)*Math.sin(a)*(DR-.08)+CTZ));}
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cp),48,.07,5),mGold));}
+  // maanlicht valt door het gat op de vloer, en warm licht van onderen op de koepel
+  const mdir=moonPos.clone().normalize();
+  const moonSpot=new THREE.SpotLight(0xc4d4ff,260,60,.2,.45,1.2);moonSpot.position.set(0,ocY,CTZ).addScaledVector(mdir,4);moonSpot.target.position.set(0,0,CTZ).addScaledVector(mdir,-ocY/mdir.y*0+0);moonSpot.target.position.set(0,0,CTZ-mdir.z/mdir.y*ocY);scene.add(moonSpot,moonSpot.target);
+  for(const [x,z] of [[-12,CTZ+2],[12,CTZ+2],[0,CTZ-12],[0,CTZ+13]]){const l=new THREE.PointLight(0xff9a50,14,22,1.5);l.position.set(x,ringTop-1.5,z);scene.add(l);}
+
+  /* ===== DAL, BERGEN, MIST EN DORPSLICHTJES ===== */
+  const terr=new THREE.PlaneGeometry(560,560,220,220);terr.rotateX(-Math.PI/2);const tp=terr.attributes.position;
+  const H=(x,z)=>{const d=Math.hypot(x,z-CTZ);const t=Math.min(1,Math.max(0,(d-30)/120));const ridge=fbm(x*.016+3,z*.016-7);return -34+t*t*(10+70*ridge)+(fbm(x*.06,z*.06)-.5)*5*Math.min(1,d/40);};
+  for(let k=0;k<tp.count;k++)tp.setY(k,H(tp.getX(k),tp.getZ(k)));terr.computeVertexNormals();
+  const terrain=new THREE.Mesh(terr,new THREE.MeshStandardMaterial({color:0x1d2848,roughness:1,flatShading:true}));scene.add(terrain);
+  const vg=new THREE.BufferGeometry(),vp=[];for(let i=0;i<260;i++){const a=rnd(0,Math.PI*2),r=rnd(45,150);const x=Math.sin(a)*r,z=CTZ-Math.cos(a)*r,y=H(x,z);if(y>-31&&y<6)vp.push(x,y+.4,z);}
+  vg.setAttribute('position',new THREE.Float32BufferAttribute(vp,3));
+  scene.add(new THREE.Points(vg,new THREE.PointsMaterial({color:0xffc070,size:.75,transparent:true,opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false})));
+  const mistT=tex(cloudCanvas());
+  for(let i=0;i<60;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:mistT,transparent:true,depthWrite:false,opacity:rnd(.35,.8),color:0xaab6dd}));const a=rnd(0,Math.PI*2),r=rnd(22,110);s.position.set(Math.sin(a)*r,rnd(-26,-8),CTZ-Math.cos(a)*r);s.scale.set(rnd(40,80),rnd(10,20),1);scene.add(s);}
+
+  /* klimop */
+  const leafG=new THREE.PlaneGeometry(.22,.16);const leafM=new THREE.MeshStandardMaterial({color:0x6f8a2a,emissive:0x1c2408,side:THREE.DoubleSide,roughness:.7});
+  const vineM=new THREE.MeshStandardMaterial({color:0x3b4a1c,roughness:.9});
+  const leaves=new THREE.InstancedMesh(leafG,leafM,1400);let li=0;const dm=new THREE.Object3D();
+  P.forEach(([px,pz],i)=>{for(let v=0;v<4;v++){const ox=rnd(-1.25,1.25),oz=rnd(.3,1.25);const top=new THREE.Vector3(px+ox,12.4,pz+oz);
+    const pts=[top];let p=top.clone();const L=rnd(2.5,6.5);for(let s=1;s<=6;s++){p=p.clone().add(new THREE.Vector3(rnd(-.2,.2),-L/6,rnd(-.05,.12)));pts.push(p);}
+    const curve=new THREE.CatmullRomCurve3(pts);const tb=new THREE.Mesh(new THREE.TubeGeometry(curve,30,.025,5),vineM);scene.add(tb);
+    for(let k=0;k<55&&li<1400;k++){const q=curve.getPoint(Math.random());dm.position.copy(q).add(new THREE.Vector3(rnd(-.15,.15),rnd(-.1,.1),rnd(-.05,.15)));dm.rotation.set(rnd(-1,1),rnd(0,6),rnd(-1,1));dm.scale.setScalar(rnd(.6,1.3));dm.updateMatrix();leaves.setMatrixAt(li++,dm.matrix);}}});
+  leaves.count=li;scene.add(leaves);
+
+  /* zwevende vonkjes */
+  const mg=new THREE.BufferGeometry(),mp=[];for(let i=0;i<160;i++)mp.push(rnd(-12,12),rnd(0.3,9),rnd(-10,8));
+  mg.setAttribute('position',new THREE.Float32BufferAttribute(mp,3));
+  motes=new THREE.Points(mg,new THREE.PointsMaterial({color:0xffd58a,size:.07,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(motes);
+
+  /* post-processing */
+  composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));
+  composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),0.55,0.5,0.86));
+  composer.addPass(new OutputPass());
+
+  /* labels */
+  $('#labels').innerHTML=COMPS.map((c,i)=>`<div class="lbl" id="lbl${i}">${c.t.length>22?c.t.replace(/ (\S+( HBO)?)$/,'<br>$1'):c.t}<small>PILAAR ${c.n}</small></div>`).join('');
+
+  addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);composer.setSize(innerWidth,innerHeight);});
+
+  // opkomst: camera daalt uit de lucht, pilaren rijzen op
+  camPos.set(0,26,30);camTgt.set(0,3,-6);
+  pillars.forEach((p,i)=>{p.group.position.y=-14;p.riseAt=0.6+i*0.25;});
+  statue.position.y=-6;
+  clock=new THREE.Clock();
+  camTo(HOME.pos,HOME.tgt,RM?.1:5.2);
+  requestAnimationFrame(()=>{$('#veil').classList.add('off');$('#stage').classList.add('risen');});
+  setTimeout(()=>document.querySelectorAll('.lbl').forEach(l=>l.classList.add('on')),4200);
+  setTimeout(startStory,RM?800:5600);
+  initControls();setTimeout(()=>{freeReady=true;document.body.classList.add('explore');$('#hint').classList.add('on');setTimeout(()=>$('#hint').classList.remove('on'),9000);},RM?800:5400);
+  renderer.setAnimationLoop(frame);
+}
+
+function buildPillar(i,mMarble,mStone,mGold,bannerT){
+  const g=new THREE.Group();
+  const add=(geo,m,y,opts={})=>{const o=new THREE.Mesh(geo,m);o.position.y=y;if(opts.z)o.position.z=opts.z;if(opts.x)o.position.x=opts.x;o.castShadow=true;o.receiveShadow=true;g.add(o);return o;};
+  const mPed=mStone.clone();const mShaft=mMarble.clone();
+  add(new THREE.BoxGeometry(2.3,1.9,2.3),mPed,.95);
+  add(new THREE.BoxGeometry(2.55,.22,2.55),mShaft,2.0);
+  add(new THREE.BoxGeometry(1.75,.3,1.75),mShaft,2.26);
+  add(new THREE.TorusGeometry(.7,.13,12,40).rotateX(Math.PI/2),mShaft,2.5);
+  add(new THREE.TorusGeometry(.64,.09,12,40).rotateX(Math.PI/2),mShaft,2.72);
+  // schacht met groeven
+  const H=9.2,geo=new THREE.CylinderGeometry(.56,.64,H,128,30,true),pos=geo.attributes.position;
+  for(let k=0;k<pos.count;k++){const x=pos.getX(k),y=pos.getY(k),z=pos.getZ(k);const th=Math.atan2(z,x),r=Math.hypot(x,z);
+    const f=1-0.07*Math.pow(Math.max(0,Math.cos(th*20)),.5);const ent=1-0.04*Math.pow((y/H+.5),2);pos.setXYZ(k,Math.cos(th)*r*f*ent,y,Math.sin(th)*r*f*ent);}
+  geo.computeVertexNormals();add(geo,mShaft,2.8+H/2);
+  const topY=2.8+H;
+  add(new THREE.TorusGeometry(.56,.08,10,40).rotateX(Math.PI/2),mShaft,topY+.04);
+  add(new THREE.LatheGeometry([new THREE.Vector2(.55,0),new THREE.Vector2(.62,.15),new THREE.Vector2(.78,.42),new THREE.Vector2(.95,.55)],40),mShaft,topY+.05);
+  add(new THREE.BoxGeometry(2.05,.32,2.05),mShaft,topY+.76);
+  for(const sx of[-1,1])for(const sz of[-1,1]){const v=add(new THREE.TorusGeometry(.2,.075,10,24),mShaft,topY+.46);v.position.x=sx*.86;v.position.z=sz*.7;}
+  // goud bandje + plaquette
+  add(new THREE.TorusGeometry(.65,.045,10,48).rotateX(Math.PI/2),mGold,topY-.35);
+  const plMat=new THREE.MeshStandardMaterial({map:tex(plaqueCanvas(COMPS[i].n)),roughness:.5,metalness:.2,emissive:0xffffff,emissiveIntensity:.0,emissiveMap:null});
+  const pl=add(new THREE.BoxGeometry(.98,1.26,.1),[mGold,mGold,mGold,mGold,plMat,mGold],7.4,{z:.68});
+  // banier
+  const ban=new THREE.Mesh(new THREE.PlaneGeometry(.95,2.4,1,8),new THREE.MeshStandardMaterial({map:bannerT,transparent:true,alphaTest:.3,side:THREE.DoubleSide,roughness:.85}));
+  ban.position.set(0,5.25,.74);ban.castShadow=true;g.add(ban);banners.push(ban);
+  const rod=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,1.15,8).rotateZ(Math.PI/2),mGold);rod.position.set(0,6.47,.74);g.add(rod);
+  pillars[i]={group:g,shaft:mShaft,ped:mPed,plMat,lit:0,target:0};
+  return g;
+}
+
+let STATUE_Y=2.245;
+function buildLady(buf,env,gold){
+  const S=12.6;   // even hoog als de vier pilaren
+  const grp=new THREE.Group();grp.scale.setScalar(S);
+  const mesh=buf.scene;mesh.traverse(o=>{if(o.isMesh){o.geometry.computeBoundingBox();o.geometry.computeBoundingSphere();o.castShadow=true;o.receiveShadow=true;o.material.envMap=env;o.material.envMapIntensity=.9;}});grp.add(mesh);
+  // eigen bewegende weegschaal in haar hand (de vaste weegschaal van het model is eruit geknipt)
+  const sc=new THREE.Group();sc.position.set(.181,.757,.212);grp.add(sc);
+  
+  beam=new THREE.Group();beam.position.y=-.004;sc.add(beam);
+  const bar=new THREE.Mesh(new THREE.CylinderGeometry(.0032,.0032,.1,10).rotateZ(Math.PI/2),gold);bar.castShadow=true;beam.add(bar);
+  const knob=new THREE.Mesh(new THREE.SphereGeometry(.0065,12,8),gold);beam.add(knob);
+  for(const sd of[-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.0045,10,8),gold);e.position.x=sd*.05;beam.add(e);}
+  const mkPan=()=>{const p=new THREE.Group();const lm=new THREE.LineBasicMaterial({color:0xd9b15a});
+    for(let k=0;k<3;k++){const a=k/3*Math.PI*2+.5;p.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(Math.cos(a)*.026,-.115,Math.sin(a)*.026)]),lm));}
+    const bowl=new THREE.Mesh(new THREE.SphereGeometry(.033,28,10,0,Math.PI*2,Math.PI*.62,Math.PI*.38),gold);bowl.position.y=-.087;bowl.castShadow=true;p.add(bowl);
+    const cn=new THREE.Group();cn.position.y=-.122;cn.scale.setScalar(.11);p.add(cn);p.userData.coins=cn;sc.add(p);return p;};
+  panL=mkPan();panR=mkPan();
+  SCALE_L=.05;SCALE_Y=-.004;setScale(0);
+  return grp;
+}
+let SCALE_L=1.0,SCALE_Y=.38;
+function buildStatue(m,gold){
+  const s=new THREE.Group();
+  const add=o=>{o.castShadow=true;o.receiveShadow=true;s.add(o);return o;};
+  // gewaad (lathe met plooien)
+  const prof=[[1.2,0],[1.18,.15],[1.08,.7],[.95,1.6],[.8,2.6],[.62,3.5],[.48,4.15],[.44,4.45],[.52,4.9],[.58,5.35],[.6,5.6],[.42,5.82],[.16,5.92],[0,5.94]].map(([r,y])=>new THREE.Vector2(r,y));
+  const robe=new THREE.LatheGeometry(prof,96),rp=robe.attributes.position;
+  for(let k=0;k<rp.count;k++){const x=rp.getX(k),y=rp.getY(k),z=rp.getZ(k),th=Math.atan2(z,x),r=Math.hypot(x,z);
+    const fold=1+(0.07*Math.max(0,1-y/4.4))*Math.sin(th*11+y*.6)+0.02*Math.sin(th*23);const sq=z<0?0.82:1;pos(k,Math.cos(th)*r*fold,y,Math.sin(th)*r*fold*sq);}
+  function pos(k,x,y,z){rp.setXYZ(k,x,y,z);}
+  robe.computeVertexNormals();add(new THREE.Mesh(robe,m));
+  // overkleed / sjerp
+  const sash=new THREE.Mesh(new THREE.TorusGeometry(.62,.07,10,48,Math.PI*1.1),m);sash.position.set(0,4.85,.05);sash.rotation.set(Math.PI/2.4,0,.5);add(sash);
+  const belt=new THREE.Mesh(new THREE.TorusGeometry(.47,.06,10,48).rotateX(Math.PI/2),gold);belt.position.y=4.42;add(belt);
+  // hals + hoofd
+  const neck=new THREE.Mesh(new THREE.CylinderGeometry(.15,.19,.42,16),m);neck.position.y=6.05;add(neck);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.34,32,24),m);head.scale.set(.92,1.12,1);head.position.y=6.55;add(head);
+  const hair=new THREE.Mesh(new THREE.SphereGeometry(.36,24,16,0,Math.PI*2,0,Math.PI*.62),m);hair.position.set(0,6.6,-.04);hair.scale.set(1,1.05,1.02);add(hair);
+  const bun=new THREE.Mesh(new THREE.SphereGeometry(.2,16,12),m);bun.position.set(0,6.62,-.38);add(bun);
+  const crown=new THREE.Mesh(new THREE.TorusGeometry(.355,.035,8,40).rotateX(Math.PI/2),gold);crown.position.y=6.78;crown.rotation.x=-.12;add(crown);
+  blindfold=new THREE.Mesh(new THREE.CylinderGeometry(.345,.345,.13,32,1,true),gold);blindfold.position.set(0,6.6,.02);blindfold.material=gold.clone();blindfold.material.side=THREE.DoubleSide;blindfold.material.transparent=true;add(blindfold);
+  // armen
+  const limb=(a,b,r1,r2)=>{const v=new THREE.Vector3().subVectors(b,a),L=v.length();const o=new THREE.Mesh(new THREE.CylinderGeometry(r2,r1,L,16),m);o.position.copy(a).addScaledVector(v,.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());add(o);
+    const j=new THREE.Mesh(new THREE.SphereGeometry(r1,14,10),m);j.position.copy(a);add(j);return o;};
+  const shR=new THREE.Vector3(.55,5.62,0),elR=new THREE.Vector3(.95,6.55,.1),haR=new THREE.Vector3(1.18,7.55,.12);
+  limb(shR,elR,.17,.14);limb(elR,haR,.13,.1);
+  const fistR=new THREE.Mesh(new THREE.SphereGeometry(.13,14,10),m);fistR.position.copy(haR);add(fistR);
+  const shL=new THREE.Vector3(-.55,5.62,0),elL=new THREE.Vector3(-.88,4.75,.2),haL=new THREE.Vector3(-1.02,3.95,.34);
+  limb(shL,elL,.17,.14);limb(elL,haL,.13,.1);
+  const fistL=new THREE.Mesh(new THREE.SphereGeometry(.13,14,10),m);fistL.position.copy(haL);add(fistL);
+  // zwaard
+  const sw=new THREE.Group();sw.position.copy(haL);s.add(sw);
+  const blade=new THREE.Mesh(new THREE.BoxGeometry(.11,3.0,.03),gold);blade.position.y=-1.72;sw.add(blade);
+  const tip=new THREE.Mesh(new THREE.ConeGeometry(.078,.25,4),gold);tip.rotation.z=Math.PI;tip.rotation.y=Math.PI/4;tip.position.y=-3.35;tip.scale.z=.3;sw.add(tip);
+  const guard=new THREE.Mesh(new THREE.BoxGeometry(.62,.07,.09),gold);guard.position.y=-.2;sw.add(guard);
+  const grip=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.38,8),gold);grip.position.y=.02;sw.add(grip);
+  const pommel=new THREE.Mesh(new THREE.SphereGeometry(.07,10,8),gold);pommel.position.y=.24;sw.add(pommel);
+  sw.rotation.z=-.06;sw.children.forEach(c=>c.castShadow=true);
+  // weegschaal
+  const sc=new THREE.Group();sc.position.copy(haR).add(new THREE.Vector3(0,.18,0));s.add(sc);
+  const rod=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.5,8),gold);rod.position.y=.15;sc.add(rod);
+  beam=new THREE.Group();beam.position.y=.38;sc.add(beam);
+  const bar=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,2.0,10).rotateZ(Math.PI/2),gold);beam.add(bar);
+  const knob=new THREE.Mesh(new THREE.SphereGeometry(.06,10,8),gold);beam.add(knob);
+  const mkPan=()=>{const p=new THREE.Group();const lm=new THREE.LineBasicMaterial({color:0xd9b15a});
+    for(let k=0;k<3;k++){const a=k/3*Math.PI*2;const gg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(Math.cos(a)*.3,-.95,Math.sin(a)*.3)]);p.add(new THREE.Line(gg,lm));}
+    const bowl=new THREE.Mesh(new THREE.SphereGeometry(.34,24,10,0,Math.PI*2,Math.PI*.62,Math.PI*.38),gold);bowl.position.y=-.7;bowl.castShadow=true;p.add(bowl);
+    const cn=new THREE.Group();cn.position.y=-.98;p.add(cn);p.userData.coins=cn;sc.add(p);return p;};
+  panL=mkPan();panR=mkPan();
+  setScale(0);
+  return s;
+}
+
+/* =========================================================
+   ANIMATIE
+   ========================================================= */
+let tilt=0,tiltTo=0,tiltT=1,tiltFrom=0;
+function setScale(a){const L=SCALE_L;beam.rotation.z=a;const c=Math.cos(a),s=Math.sin(a);
+  panL.position.set(-L*c,SCALE_Y-L*s,0);panR.position.set(L*c,SCALE_Y+L*s,0);}
+function animScale(to){tiltFrom=tilt;tiltTo=to;tiltT=0;}
+function addCoin(side,v){
+  const pan=side==='L'?panL:panR,n=pan.userData.coins.children.length;
+  const col=v==='goed'?0xffe08a:v==='voldoende'?0xd7ac52:0x8f8a84;
+  const c=new THREE.Mesh(new THREE.CylinderGeometry(.11,.11,.035,20),new THREE.MeshStandardMaterial({color:col,metalness:1,roughness:.3,emissive:col,emissiveIntensity:.25}));
+  c.position.set((n%2?.1:-.1),.12+n*.04,(n%3-1)*.07);c.userData.fall=1.4;pan.userData.coins.add(c);
+}
+function storyCam(pos,tgt,dur){if(!moved)camTo(pos,tgt,dur);}
+function camTo(pos,tgt,dur){tween={p0:camPos.clone(),t0:camTgt.clone(),p1:pos.clone(),t1:tgt.clone(),t:0,d:dur};}
+/* ---------- Vrij rondkijken en lopen ---------- */
+let yaw=0,pitch=0,freeReady=false,moved=false;const keys={f:0,b:0,l:0,r:0,tl:0,tr:0};
+function syncAngles(){const d=new THREE.Vector3().subVectors(camTgt,camPos);const h=Math.hypot(d.x,d.z);yaw=Math.atan2(d.x,-d.z);pitch=Math.atan2(d.y,h);}
+function takeControl(){if(tween){tween=null;}syncAngles();if(freeReady)moved=true;}
+function lookDir(){return new THREE.Vector3(Math.sin(yaw)*Math.cos(pitch),Math.sin(pitch),-Math.cos(yaw)*Math.cos(pitch));}
+const PCOL=[[-12.4,-11.2],[-5.6,-5.0],[5.6,-5.0],[12.4,-11.2]];
+function blocked(x,z){
+  if(Math.hypot(x,z+1)>18.0)return true;                 // binnen de zuilengang van de tempel blijven
+  if(Math.abs(x)<4.3&&z<-0.2&&z>-12.2)return true;        // trap en sokkel van Lady Justice
+  for(const[px,pz]of PCOL){if(Math.hypot(x-px,z-pz)<2.35)return true;const fd=Math.hypot(px,11.5-pz);if(Math.hypot(x-(px-px/fd*2.7),z-(pz+(11.5-pz)/fd*2.7))<.9)return true;}
+  return false;}
+function walk(dt){
+  if(!freeReady||$('#panel').classList.contains('on'))return;
+  const turn=(keys.tr-keys.tl);if(turn){takeOnce();yaw+=turn*dt*1.4;}
+  const fw=keys.f-keys.b,st=keys.r-keys.l;if(!fw&&!st&&!turn)return;
+  takeOnce();const sp=4.2*dt,fx=Math.sin(yaw),fz=-Math.cos(yaw);
+  let nx=camPos.x+(fx*fw-fz*st)*sp,nz=camPos.z+(fz*fw+fx*st)*sp;
+  const dC=(x,z)=>Math.hypot(x,z+1),ok=(x,z)=>!blocked(x,z)||(blocked(camPos.x,camPos.z)&&dC(x,z)<dC(camPos.x,camPos.z));
+  if(ok(nx,camPos.z))camPos.x=nx;if(ok(camPos.x,nz))camPos.z=nz;
+  camPos.y+= (1.9-camPos.y)*Math.min(1,dt*3);
+}
+let took=false;function takeOnce(){if(tween||!took){takeControl();took=true;}}
+function aimFromAngles(){camTgt.copy(camPos).add(lookDir().multiplyScalar(10));}
+function initControls(){
+  const cv=$('#gl');let drag=null;
+  cv.addEventListener('pointerdown',e=>{if(!freeReady)return;drag={x:e.clientX,y:e.clientY};cv.classList.add('drag');cv.setPointerCapture(e.pointerId);takeControl();took=true;});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;yaw-=(e.clientX-drag.x)*.0042;pitch=Math.max(-.45,Math.min(.95,pitch+(e.clientY-drag.y)*.0036));drag={x:e.clientX,y:e.clientY};});
+  const end=()=>{drag=null;cv.classList.remove('drag');};cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  const map={KeyW:'f',ArrowUp:'f',KeyS:'b',ArrowDown:'b',KeyA:'l',KeyD:'r',ArrowLeft:'l',ArrowRight:'r',KeyQ:'tl',KeyE:'tr'};
+  addEventListener('keydown',e=>{const k=map[e.code];if(k&&freeReady&&!$('#panel').classList.contains('on')){keys[k]=1;e.preventDefault();}});
+  addEventListener('keyup',e=>{const k=map[e.code];if(k)keys[k]=0;});
+  addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=0));
+  document.querySelectorAll('#pad button').forEach(b=>{const k=b.dataset.k;
+    const on=e=>{e.preventDefault();keys[k]=1;b.classList.add('on');},off=()=>{keys[k]=0;b.classList.remove('on');};
+    b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off);});
+}
+$('#home').addEventListener('click',()=>{const v=$('#veil');v.style.transition='opacity .9s';v.classList.remove('off');hideDlg();$('#panel').classList.remove('on');setTimeout(()=>location.reload(),950);});
+const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+let blindOff=0,glowT=-1;const v3=new THREE.Vector3();
+
+function frame(){
+  const dt=Math.min(clock.getDelta(),.05),T=clock.elapsedTime;
+  if(tween){tween.t+=dt/tween.d;const k=ease(Math.min(1,tween.t));camPos.lerpVectors(tween.p0,tween.p1,k);camTgt.lerpVectors(tween.t0,tween.t1,k);if(tween.t>=1){tween=null;took=false;}}
+  else if(took){walk(dt);aimFromAngles();}
+  else walk(dt);
+  camera.position.copy(camPos).add(v3.set(Math.sin(T*.23)*.18,Math.sin(T*.31)*.08,0));camera.lookAt(camTgt);
+  // opkomst
+  pillars.forEach(p=>{if(p.riseAt!==undefined){const k=Math.min(1,Math.max(0,(T-p.riseAt)/2.2));p.group.position.y=-14*(1-ease(k));}});
+  statue.position.y=STATUE_Y-6*(1-ease(Math.min(1,Math.max(0,(T-.2)/2.6))));
+  pillars.forEach(p=>p.bowl.position.y=p.group.position.y);
+  // vuur
+  flames.forEach((f,i)=>{const big=pillars[i].lit;f.light.intensity=f.base*(1+.25*Math.sin(T*13+i*2)+.15*Math.sin(T*27+i))*(1+big*4);f.light.distance=13+big*9;f.light.position.y=2.4+big*1.2;
+    f.fl.forEach((o,k)=>{o.t+=dt*(1.1+k*.07);if(o.t>1)o.t-=1;const t=o.t;const gr=1+big*1.1;o.s.position.set(Math.sin(k*3+T*4)*.12*t*gr,1.7+t*1.1*gr,Math.cos(k*2+T*3)*.1*t*gr);const sz=((1-t)*.9+.2)*gr;o.s.scale.set(sz*.8,sz*1.2,1);o.s.material.opacity=(1-t)*.95;});});
+  smallFlames.forEach((o,k)=>{o.t+=dt*(1.2+(k%5)*.08);if(o.t>1)o.t-=1;const t=o.t;o.s.position.set(o.x+Math.sin(k+T*4)*.05*t,1.55+t*.6,o.z);const sz=(1-t)*.45+.1;o.s.scale.set(sz*.8,sz*1.2,1);o.s.material.opacity=(1-t)*.9;});
+  // pilaar oplichten
+  pillars.forEach(p=>{p.lit+=(p.target-p.lit)*Math.min(1,dt*3);p.shaft.emissive.setRGB(0,0,0);p.plMat.emissiveIntensity=0;});
+  // banieren wapperen
+  banners.forEach((b,i)=>{b.rotation.x=Math.sin(T*1.3+i)*.04;});
+  // weegschaal
+  if(tiltT<1){tiltT=Math.min(1,tiltT+dt/1.1);const k=1-Math.pow(1-tiltT,3);tilt=tiltFrom+(tiltTo-tiltFrom)*k+Math.sin(tiltT*Math.PI*3)*(1-tiltT)*.06;setScale(tilt);}
+  [panL,panR].forEach(p=>p.userData.coins.children.forEach(c=>{if(c.userData.fall>0){c.userData.fall=Math.max(0,c.userData.fall-dt*3);c.position.y=.12+c.userData.fall;}}));
+  // blinddoek
+  if(blindfold&&blindOff>0&&blindOff<1){blindOff=Math.min(1,blindOff+dt/1.6);blindfold.position.y=6.6+blindOff*.9;blindfold.rotation.x=blindOff*.6;blindfold.material.opacity=1-blindOff;}
+  if(glowT>=0&&glowT<1){glowT=Math.min(1,glowT+dt/2);statueSpot.intensity=120+160*Math.sin(glowT*Math.PI*.5);}
+  // vonkjes
+  const mp=motes.geometry.attributes.position;for(let i=0;i<mp.count;i++){let y=mp.getY(i)+dt*.25;if(y>10)y=.3;mp.setY(i,y);mp.setX(i,mp.getX(i)+Math.sin(T+i)*dt*.05);}mp.needsUpdate=true;
+  // labels volgen de sokkels
+  pillars.forEach((p,i)=>{const w=new THREE.Vector3(0,3.55,.8);p.group.localToWorld(w);w.project(camera);const el=document.getElementById('lbl'+i);if(!el)return;
+    el.style.left=((w.x+1)/2*innerWidth)+'px';el.style.top=((1-w.y)/2*innerHeight)+'px';el.style.visibility=w.z<1?'visible':'hidden';});
+  composer.render();
+}
+
+/* =========================================================
+   VERHAAL
+   ========================================================= */
+let typing=null,onNext=null,full='';
+function say(text,step,next){
+  const d=$('#dlg'),tx=$('#dlgTx');d.classList.add('on');$('#dlgStep').textContent=step||'';
+  full=text;tx.textContent='';onNext=next;clearInterval(typing);let i=0;
+  typing=setInterval(()=>{tx.textContent=full.slice(0,++i);if(i>=full.length){clearInterval(typing);typing=null;}},24);
+}
+function advance(){
+  if(!$('#dlg').classList.contains('on'))return;
+  if(typing){clearInterval(typing);typing=null;$('#dlgTx').textContent=full;return;}
+  const f=onNext;onNext=null;if(f)f();
+}
+$('#dlg').addEventListener('click',advance);
+addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&$('#dlg').classList.contains('on')&&!$('#panel').classList.contains('on')){e.preventDefault();advance();}});
+function hideDlg(){$('#dlg').classList.remove('on');}
+
+const INTRO=[
+ "Welkom, jury. Treed nader.",
+ "Ik ben Lady Justice. Mijn ogen zijn bedekt, zodat ik alleen weeg wat bewezen is.",
+ "Om mij heen staan vier pilaren. Samen dragen zij de minor Digitalisering van Faith.",
+ "Ik toon u elke pilaar met het bewijs. Daarna is het oordeel aan u: onvoldoende, voldoende of goed."
+];
+function startStory(){let i=0;const nxt=()=>{if(i<INTRO.length){say(INTRO[i],`${i+1} / ${INTRO.length}`,nxt);i++;}else pillar(0);};nxt();}
+$('#skip').addEventListener('click',()=>{if(verdicts.length===0&&!$('#panel').classList.contains('on')){clearInterval(typing);typing=null;pillar(0);}$('#skip').style.display='none';});
+
+function litOnly(i){pillars.forEach((p,k)=>p.target=(i==='all'||k===i)?1:0);document.querySelectorAll('.lbl').forEach((l,k)=>l.classList.toggle('lit',i==='all'||k===i));}
+function focusPillar(i){const p=pillars[i].group.position;storyCam(new THREE.Vector3(p.x*.45,2.2,8.2),new THREE.Vector3(p.x*.62,6.0,p.z),1.8);}
+function pillar(i){
+  $('#skip').style.display='none';
+  const c=COMPS[i];litOnly(i);focusPillar(i);
+  const ord=["De eerste","De tweede","De derde","De vierde"][i];
+  say(`${ord} pilaar: ${c.t}. Bekijk het bewijs en spreek uw oordeel uit.`,`Pilaar ${c.n} van IV`,()=>openPanel(i));
+}
+function openPanel(i){
+  hideDlg();const c=COMPS[i],p=$('#panel');
+  p.innerHTML=`<div class="num">PILAAR ${c.n}</div><h3>${c.t}</h3><p class="def">${c.d}</p>
+   <div class="refl">${reflHTML(i)}</div>
+   ${galleryHTML(i)}
+   <div class="ask">UW OORDEEL, JURY</div>
+   <div class="choices">${["onvoldoende","voldoende","goed"].map(v=>`<button type="button" data-v="${v}">${LABEL[v]}</button>`).join('')}</div>`;
+  p.classList.remove('sideL','sideR');p.classList.add(i<2?'sideR':'sideL');p.classList.add('on');p.scrollTop=0;
+  p.querySelectorAll('.choices button').forEach(b=>b.addEventListener('click',()=>judge(i,b.dataset.v)));
+  initGallery(p);
+}
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function reflHTML(i){const r=REFL[i];
+  return `<p class="lead">${esc(r.intro)}</p>`+r.p.map(([h,t,list])=>`<p>${h?`<b>${esc(h)}</b> `:''}${esc(t)}</p>${list?`<ul>${list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}`).join('')
+   +`<p class="better"><b>Wat ik nog wil verbeteren.</b> ${esc(r.better)}</p>`;}
+function galleryHTML(i){const im=REFL[i].img;
+  return `<div class="gal" aria-label="Foto's bij deze competentie"><div class="gal-track">${im.map(([f,c],k)=>`<figure><img src="foto/${f}.jpg" alt="${esc(c)}" loading="lazy"><figcaption><span>${k+1}/${im.length}</span> ${esc(c)}</figcaption></figure>`).join('')}</div>
+   <button type="button" class="gal-btn prev" aria-label="Vorige foto">‹</button><button type="button" class="gal-btn next" aria-label="Volgende foto">›</button>
+   <div class="gal-dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div></div>`;}
+function initGallery(p){const g=p.querySelector('.gal');if(!g)return;const t=g.querySelector('.gal-track'),dots=[...g.querySelectorAll('.gal-dots i')];
+  const idx=()=>Math.round(t.scrollLeft/t.clientWidth);
+  const go=d=>t.scrollTo({left:(idx()+d)*t.clientWidth,behavior:'smooth'});
+  g.querySelector('.prev').onclick=()=>go(-1);g.querySelector('.next').onclick=()=>go(1);
+  t.addEventListener('scroll',()=>{const k=idx();dots.forEach((d,j)=>d.classList.toggle('on',j===k));},{passive:true});
+  dots.forEach((d,j)=>d.onclick=()=>t.scrollTo({left:j*t.clientWidth,behavior:'smooth'}));}
+function setPlaque(i,v){const pm=pillars[i].plMat;pm.map.dispose();pm.map=tex(plaqueCanvas(COMPS[i].n,v?LABEL[v]:null,!!v));pm.needsUpdate=true;}
+function judge(i,v){
+  verdicts[i]=v;$('#panel').classList.remove('on');
+  setPlaque(i,v);
+  storyCam(HOME.pos.clone().add(new THREE.Vector3(.6,.6,-1.6)),new THREE.Vector3(.9,8.1,-6),1.4);
+  setTimeout(()=>{addCoin(v==='onvoldoende'?'L':'R',v);
+    const score=verdicts.reduce((s,x)=>s+(x==='goed'?2:x==='voldoende'?1:-2),0);
+    animScale(Math.max(-.28,Math.min(.28,-score*.045)));},700);
+  const reply={goed:"Genoteerd: goed. Deze pilaar staat stevig.",voldoende:"Genoteerd: voldoende. Deze pilaar draagt.",onvoldoende:"Genoteerd: onvoldoende. Aan deze pilaar moet nog gebouwd worden."}[v];
+  say(reply,`Pilaar ${COMPS[i].n} van IV`,()=>{if(i<3)pillar(i+1);else ending();});
+}
+function ending(){
+  litOnly('all');storyCam(new THREE.Vector3(0,2.6,7.4),new THREE.Vector3(0,8.4,-6.6),2.2);
+  const endLine=ladyModel?"Alle vier de pilaren zijn gewogen. Mijn blinddoek blijft om: ik oordeel niet naar wie, alleen naar wat bewezen is.":"Alle vier de pilaren zijn gewogen. Dan neem ik nu mijn blinddoek af.";
+  say(endLine,"Het oordeel",()=>{
+    if(blindfold)blindOff=.001;glowT=0;
+    setTimeout(()=>{
+      const low=verdicts.filter(v=>v==='onvoldoende').length,good=verdicts.filter(v=>v==='goed').length;
+      const line=low?`De weegschaal heeft gesproken. ${low===1?'Eén pilaar vraagt':'Er zijn pilaren die vragen'} nog om werk, maar het fundament staat.`
+        :good>=3?"De weegschaal heeft gesproken. De tempel staat sterk: dit portfolio verdient een goed."
+        :"De weegschaal heeft gesproken. Alle pilaren dragen: dit portfolio is voldoende.";
+      say(line,"Het oordeel",finalPanel);
+    },1700);
+  });
+}
+function finalPanel(){
+  hideDlg();const p=$('#panel');
+  const overall=verdicts.includes('onvoldoende')?'onvoldoende':verdicts.filter(v=>v==='goed').length>=3?'goed':'voldoende';
+  p.classList.remove('sideL','sideR');p.innerHTML=`<div id="final"><div class="num">EINDOORDEEL VAN DE JURY</div><h3 class="v-${overall}">${LABEL[overall]}</h3>
+   <p class="def">Zo heeft de jury de vier pilaren van Faith gewogen.</p>
+   <ol>${COMPS.map((c,i)=>`<li><span><b style="color:#9a7426">${c.n}</b> &nbsp;${c.t}</span><b class="v-${verdicts[i]}">${LABEL[verdicts[i]]}</b></li>`).join('')}</ol>
+   <div class="finalbtns"><button type="button" id="again">Opnieuw oordelen</button><button type="button" id="back">Terug naar het portfolio</button></div>
+   <p class="fine">Dit is een speelse weergave van het portfolio. De officiële beoordeling volgt de criteria in Brightspace.</p></div>`;
+  p.classList.add('on');
+  $('#again').addEventListener('click',()=>{verdicts.length=0;p.classList.remove('on');
+    [panL,panR].forEach(pn=>pn.userData.coins.clear());COMPS.forEach((c,i)=>setPlaque(i,null));
+    if(blindfold){blindOff=0;blindfold.position.y=6.6;blindfold.rotation.x=0;blindfold.material.opacity=1;}glowT=-1;statueSpot.intensity=120;animScale(0);storyCam(HOME.pos,HOME.tgt,1.5);setTimeout(()=>pillar(0),900);});
+  $('#back').addEventListener('click',()=>location.reload());
+}
+
+</script>
+</body>
+</html>
